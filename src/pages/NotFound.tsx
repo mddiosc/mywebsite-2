@@ -5,7 +5,7 @@ export default function NotFoundPage() {
   const { t } = useTranslation()
 
   return (
-    <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="flex min-h-full items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
         <p className="text-base font-semibold text-indigo-600">404</p>
         <h1 className="mt-4 text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
@@ -21,11 +21,8 @@ export default function NotFoundPage() {
           >
             {t('pages.notFound.goBackHome')}
           </Link>
-          <Link to="/contact" className="text-sm font-semibold text-gray-900">
-            {t('pages.notFound.contactSupport')} <span aria-hidden="true">&rarr;</span>
-          </Link>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

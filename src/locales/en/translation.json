@@ -10,8 +10,7 @@
     "notFound": {
       "pageNotFound": "Page not found",
       "sorryMessage": "Sorry, we couldn’t find the page you’re looking for.",
-      "goBackHome": "Go back home",
-      "contactSupport": "Contact support"
+      "goBackHome": "Go back home"
     }
   }
 }

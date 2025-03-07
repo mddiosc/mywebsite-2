@@ -32,6 +32,7 @@ export function AppRoutes() {
     <>
       <LanguageRedirect />
       <Routes>
+        <Route path="/" element={<Navigate to={`/${useTranslation().i18n.language}`} replace />} />
         <Route path="/:lang" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="projects" element={<Projects />} />
