@@ -5,7 +5,7 @@ import { NavLink } from 'react-router'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-import { LanguageSwitcher } from './LanguageSwitcher'
+import { LanguageSwitcher } from '.'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)

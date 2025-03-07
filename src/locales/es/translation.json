@@ -12,5 +12,16 @@
       "sorryMessage": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
       "goBackHome": "Volver al inicio"
     }
+  },
+  "components": {
+    "hero": {
+      "title": "Bienvenido a Mi Portafolio",
+      "subtitle": "Soy un desarrollador web especializado en tecnologías web modernas.",
+      "ctaPrimary": "Ver Proyectos",
+      "ctaPrimaryLink": "projects",
+      "ctaSecondary": "Saber Más",
+      "ctaSecondaryLink": "about",
+      "imageAlt": "Desarrollador trabajando en una laptop"
+    }
   }
 }

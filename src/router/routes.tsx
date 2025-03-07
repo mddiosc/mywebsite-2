@@ -1,12 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { Routes, Route, Navigate, useLocation } from 'react-router'
 
-import Layout from '../components/Layout'
-import About from '../pages/About'
-import Contact from '../pages/Contact'
-import Home from '../pages/Home'
-import NotFoundPage from '../pages/NotFound'
-import Projects from '../pages/Projects'
+import { Layout } from '../components'
+import { About, Contact, Home, NotFoundPage, Projects } from '../pages'
 
 const supportedLanguages = ['es', 'en'] as const
 type SupportedLanguage = (typeof supportedLanguages)[number]

@@ -12,5 +12,16 @@
       "sorryMessage": "Sorry, we couldn’t find the page you’re looking for.",
       "goBackHome": "Go back home"
     }
+  },
+  "components": {
+    "hero": {
+      "title": "Welcome to My Portfolio",
+      "subtitle": "I am a web developer specializing in modern web technologies.",
+      "ctaPrimary": "View Projects",
+      "ctaPrimaryLink": "projects",
+      "ctaSecondary": "Learn More",
+      "ctaSecondaryLink": "about",
+      "imageAlt": "Developer working on a laptop"
+    }
   }
 }

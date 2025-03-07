@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router'
 
-export function LanguageSwitcher() {
+export default function LanguageSwitcher() {
   const { i18n } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
