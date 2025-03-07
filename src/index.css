@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
+  --font-sans: InterVariable, sans-serif;
   --color-primary: #1d4ed8;
   --color-secondary: #9333ea;
   --border-radius-xl: 1rem;
