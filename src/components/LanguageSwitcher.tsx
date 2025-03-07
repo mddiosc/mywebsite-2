@@ -6,11 +6,11 @@ export function LanguageSwitcher() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const changeLanguage = (language: string) => {
+  const changeLanguage = async (language: string) => {
     const currentPath = location.pathname
     const newPath = currentPath.replace(/\/(es|en)\//, `/${language}/`)
-    i18n.changeLanguage(language)
-    navigate(newPath)
+    await i18n.changeLanguage(language)
+    await navigate(newPath)
   }
 
   return (
@@ -18,7 +18,7 @@ export function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => {
-          changeLanguage('es')
+          void changeLanguage('es')
         }}
         className={`px-2 py-1 text-sm font-medium rounded-md transition-colors
           ${
@@ -32,7 +32,7 @@ export function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => {
-          changeLanguage('en')
+          void changeLanguage('en')
         }}
         className={`px-2 py-1 text-sm font-medium rounded-md transition-colors
           ${
