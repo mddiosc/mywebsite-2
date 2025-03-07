@@ -21,10 +21,10 @@ describe('UserProfile', () => {
   it('muestra el perfil del usuario después de cargar', async () => {
     const mockUser = { name: 'John Doe', email: 'john@example.com' }
 
-    vi.spyOn(window, 'fetch').mockImplementationOnce(() =>
+    vi.spyOn(window, 'fetch').mockImplementationOnce(async () =>
       Promise.resolve({
         ok: true,
-        json: () => Promise.resolve(mockUser),
+        json: async () => Promise.resolve(mockUser),
       } as Response),
     )
 
@@ -39,7 +39,7 @@ describe('UserProfile', () => {
   })
 
   it('muestra error cuando falla la petición', async () => {
-    vi.spyOn(window, 'fetch').mockImplementationOnce(() =>
+    vi.spyOn(window, 'fetch').mockImplementationOnce(async () =>
       Promise.resolve({
         ok: false,
       } as Response),

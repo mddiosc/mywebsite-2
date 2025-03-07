@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { axiosInstance } from '../lib/axios'
+
 interface Todo {
   id: number
   title: string
 }
 
 async function fetchTodos(): Promise<Todo[]> {
-  const res = await fetch('https://jsonplaceholder.typicode.com/todos')
-  return res.json() as Promise<Todo[]>
+  const { data } = await axiosInstance.get<Todo[]>('/todos')
+  return data
 }
 
 export function ExampleComponent() {
