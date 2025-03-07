@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 const Contact = () => {
+  const { t } = useTranslation()
+
   return (
     <div className="relative bg-white">
       <div className="lg:absolute lg:inset-0 lg:left-1/2">
@@ -12,12 +16,9 @@ const Contact = () => {
         <div className="px-6 lg:px-8">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
-              Let's work together
+              {t('contact.letsWorkTogether')}
             </h2>
-            <p className="mt-2 text-lg/8 text-gray-600">
-              Proin volutpat consequat porttitor cras nullam gravida at orci molestie a eu arcu sed
-              ut tincidunt magna.
-            </p>
+            <p className="mt-2 text-lg/8 text-gray-600">{t('contact.description')}</p>
             <form action="#" method="POST" className="mt-16">
               <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div>
@@ -25,7 +26,7 @@ const Contact = () => {
                     htmlFor="first-name"
                     className="block text-sm/6 font-semibold text-gray-900"
                   >
-                    First name
+                    {t('contact.firstName')}
                   </label>
                   <div className="mt-2.5">
                     <input
@@ -42,7 +43,7 @@ const Contact = () => {
                     htmlFor="last-name"
                     className="block text-sm/6 font-semibold text-gray-900"
                   >
-                    Last name
+                    {t('contact.lastName')}
                   </label>
                   <div className="mt-2.5">
                     <input
@@ -56,7 +57,7 @@ const Contact = () => {
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">
-                    Email
+                    {t('contact.email')}
                   </label>
                   <div className="mt-2.5">
                     <input
@@ -70,7 +71,7 @@ const Contact = () => {
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="company" className="block text-sm/6 font-semibold text-gray-900">
-                    Company
+                    {t('contact.company')}
                   </label>
                   <div className="mt-2.5">
                     <input
@@ -85,10 +86,10 @@ const Contact = () => {
                 <div className="sm:col-span-2">
                   <div className="flex justify-between text-sm/6">
                     <label htmlFor="phone" className="block font-semibold text-gray-900">
-                      Phone
+                      {t('contact.phone')}
                     </label>
                     <p id="phone-description" className="text-gray-400">
-                      Optional
+                      {t('contact.optional')}
                     </p>
                   </div>
                   <div className="mt-2.5">
@@ -108,10 +109,10 @@ const Contact = () => {
                       htmlFor="message"
                       className="block text-sm/6 font-semibold text-gray-900"
                     >
-                      How can we help you?
+                      {t('contact.howCanWeHelp')}
                     </label>
                     <p id="message-description" className="text-gray-400">
-                      Max 500 characters
+                      {t('contact.maxCharacters')}
                     </p>
                   </div>
                   <div className="mt-2.5">
@@ -127,7 +128,7 @@ const Contact = () => {
                 </div>
                 <fieldset className="sm:col-span-2">
                   <legend className="block text-sm/6 font-semibold text-gray-900">
-                    Expected budget
+                    {t('contact.expectedBudget')}
                   </legend>
                   <div className="mt-4 space-y-4 text-sm/6 text-gray-600">
                     <div className="flex gap-x-2.5">
@@ -138,7 +139,7 @@ const Contact = () => {
                         type="radio"
                         className="relative mt-1 size-4 appearance-none rounded-full border border-gray-300 before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                       />
-                      <label htmlFor="budget-under-25k">Less than $25K</label>
+                      <label htmlFor="budget-under-25k">{t('contact.budgetUnder25k')}</label>
                     </div>
                     <div className="flex gap-x-2.5">
                       <input
@@ -148,7 +149,7 @@ const Contact = () => {
                         type="radio"
                         className="relative mt-1 size-4 appearance-none rounded-full border border-gray-300 before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                       />
-                      <label htmlFor="budget-25k-50k">$25K – $50K</label>
+                      <label htmlFor="budget-25k-50k">{t('contact.budget25k50k')}</label>
                     </div>
                     <div className="flex gap-x-2.5">
                       <input
@@ -158,7 +159,7 @@ const Contact = () => {
                         type="radio"
                         className="relative mt-1 size-4 appearance-none rounded-full border border-gray-300 before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                       />
-                      <label htmlFor="budget-50k-100k">$50K – $100K</label>
+                      <label htmlFor="budget-50k-100k">{t('contact.budget50k100k')}</label>
                     </div>
                     <div className="flex gap-x-2.5">
                       <input
@@ -168,7 +169,7 @@ const Contact = () => {
                         type="radio"
                         className="relative mt-1 size-4 appearance-none rounded-full border border-gray-300 before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
                       />
-                      <label htmlFor="budget-over-100k">$100K+</label>
+                      <label htmlFor="budget-over-100k">{t('contact.budgetOver100k')}</label>
                     </div>
                   </div>
                 </fieldset>
@@ -178,7 +179,7 @@ const Contact = () => {
                   type="submit"
                   className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Send message
+                  {t('contact.sendMessage')}
                 </button>
               </div>
             </form>

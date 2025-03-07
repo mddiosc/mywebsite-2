@@ -23,5 +23,23 @@
       "ctaSecondaryLink": "about",
       "imageAlt": "Developer working on a laptop"
     }
+  },
+  "contact": {
+    "letsWorkTogether": "Let's work together",
+    "description": "Proin volutpat consequat porttitor cras nullam gravida at orci molestie a eu arcu sed ut tincidunt magna.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "company": "Company",
+    "phone": "Phone",
+    "optional": "Optional",
+    "howCanWeHelp": "How can we help you?",
+    "maxCharacters": "Max 500 characters",
+    "expectedBudget": "Expected budget",
+    "budgetUnder25k": "Less than $25K",
+    "budget25k50k": "$25K – $50K",
+    "budget50k100k": "$50K – $100K",
+    "budgetOver100k": "$100K+",
+    "sendMessage": "Send message"
   }
 }
