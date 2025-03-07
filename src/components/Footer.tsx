@@ -1,6 +1,6 @@
 import { SVGProps } from 'react'
 
-interface IconProps extends SVGProps<SVGSVGElement> {}
+type IconProps = SVGProps<SVGSVGElement>
 
 const navigation = [
   {
@@ -65,19 +65,6 @@ const navigation = [
     ),
   },
 ]
-
-const footerNavigation = {
-  principales: [
-    { name: 'Inicio', href: '/' },
-    { name: 'Acerca de', href: '/about' },
-    { name: 'Servicios', href: '/services' },
-    { name: 'Contacto', href: '/contact' },
-  ],
-  legal: [
-    { name: 'Privacidad', href: '/privacy' },
-    { name: 'Términos', href: '/terms' },
-  ],
-}
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()

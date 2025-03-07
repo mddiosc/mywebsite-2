@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import unusedImports from 'eslint-plugin-unused-imports'
 import testingLibrary from 'eslint-plugin-testing-library'
-import prettier from 'eslint-plugin-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
+import importPlugin from 'eslint-plugin-import'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -19,15 +20,16 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'eslint-plugin-prettier': prettier,
+      prettier: prettierPlugin,
       'unused-imports': unusedImports,
       'testing-library': testingLibrary,
+      import: importPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      'prettier/prettier': 'error',
-      'unused-imports/no-unused-imports-ts': 'error',
+      'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+      'unused-imports/no-unused-imports': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       'import/order': [
         'warn',
