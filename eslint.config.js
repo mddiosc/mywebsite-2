@@ -9,6 +9,7 @@ import prettierPlugin from 'eslint-plugin-prettier'
 import importPlugin from 'eslint-plugin-import'
 import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
+import vitestPlugin from 'eslint-plugin-vitest'
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -37,6 +38,7 @@ export default tseslint.config(
       import: importPlugin,
       'react-x': reactX,
       'react-dom': reactDom,
+      vitest: vitestPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -75,6 +77,23 @@ export default tseslint.config(
           pathGroupsExcludedImportTypes: ['builtin'],
         },
       ],
+    },
+  },
+  {
+    files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
+    plugins: {
+      'testing-library': testingLibrary,
+      vitest: vitestPlugin,
+    },
+    rules: {
+      'testing-library/await-async-queries': 'error',
+      'testing-library/no-await-sync-queries': 'error',
+      'testing-library/no-debugging-utils': 'warn',
+      'testing-library/render-result-naming-convention': 'error',
+      'vitest/consistent-test-it': 'error',
+      'vitest/expect-expect': 'error',
+      'vitest/no-disabled-tests': 'warn',
+      'vitest/no-focused-tests': 'error',
     },
   },
 )
