@@ -20,12 +20,11 @@ export function LanguageSwitcher() {
         onClick={() => {
           void changeLanguage('es')
         }}
-        className={`px-2 py-1 text-sm font-medium rounded-md transition-colors
-          ${
-            i18n.language === 'es'
-              ? 'bg-purple-100 text-purple-700'
-              : 'text-gray-600 hover:text-purple-600'
-          }`}
+        className={`rounded-md px-2 py-1 text-sm font-medium transition-colors ${
+          i18n.language === 'es'
+            ? 'bg-purple-100 text-purple-700'
+            : 'text-gray-600 hover:text-purple-600'
+        }`}
       >
         ES
       </button>
@@ -34,12 +33,11 @@ export function LanguageSwitcher() {
         onClick={() => {
           void changeLanguage('en')
         }}
-        className={`px-2 py-1 text-sm font-medium rounded-md transition-colors
-          ${
-            i18n.language === 'en'
-              ? 'bg-purple-100 text-purple-700'
-              : 'text-gray-600 hover:text-purple-600'
-          }`}
+        className={`rounded-md px-2 py-1 text-sm font-medium transition-colors ${
+          i18n.language === 'en'
+            ? 'bg-purple-100 text-purple-700'
+            : 'text-gray-600 hover:text-purple-600'
+        }`}
       >
         EN
       </button>

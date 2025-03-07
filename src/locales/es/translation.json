@@ -5,5 +5,13 @@
     "projects": "Proyectos",
     "about": "Acerca de",
     "contact": "Contacto"
+  },
+  "pages": {
+    "notFound": {
+      "pageNotFound": "Página no encontrada",
+      "sorryMessage": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
+      "goBackHome": "Volver al inicio",
+      "contactSupport": "Contactar soporte"
+    }
   }
 }

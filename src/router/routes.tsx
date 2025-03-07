@@ -5,13 +5,22 @@ import Layout from '../components/Layout'
 import About from '../pages/About'
 import Contact from '../pages/Contact'
 import Home from '../pages/Home'
+import NotFoundPage from '../pages/NotFound'
 import Projects from '../pages/Projects'
+
+const supportedLanguages = ['es', 'en'] as const
+type SupportedLanguage = (typeof supportedLanguages)[number]
 
 function LanguageRedirect() {
   const { i18n } = useTranslation()
   const location = useLocation()
 
-  if (!location.pathname.includes('/es/') && !location.pathname.includes('/en/')) {
+  const pathSegments = location.pathname.split('/')
+  const langSegment = pathSegments[1] as SupportedLanguage
+
+  const isLanguageSupported = supportedLanguages.includes(langSegment)
+
+  if (!isLanguageSupported) {
     return <Navigate to={`/${i18n.language}/`} replace />
   }
 
@@ -28,6 +37,7 @@ export function AppRoutes() {
           <Route path="projects" element={<Projects />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </>

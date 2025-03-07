@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { queryClient } from './lib/queryClient'
 import { AppRoutes } from './router/routes'
 import './i18n/i18n'
-import './App.css'
+import './styles/App.css'
 
 function App() {
   return (

@@ -8,7 +8,7 @@ interface Todo {
 }
 
 async function fetchTodos(): Promise<Todo[]> {
-  const { data } = await axiosInstance.get<Todo[]>('/todos')
+  const { data } = await axiosInstance.get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
   return data
 }
 
