@@ -31,8 +31,8 @@ export function AppRoutes() {
         <Route path="/" element={<Navigate to={`/${useTranslation().i18n.language}`} replace />} />
         <Route path="/:lang" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="projects" element={<Projects />} />
           <Route path="about" element={<About />} />
+          <Route path="projects" element={<Projects />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

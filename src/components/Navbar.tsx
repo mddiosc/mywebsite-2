@@ -13,8 +13,8 @@ export default function Navbar() {
 
   const navigation = [
     { name: t('navigation.home'), to: `/${i18n.language}/` },
-    { name: t('navigation.projects'), to: `/${i18n.language}/projects` },
     { name: t('navigation.about'), to: `/${i18n.language}/about` },
+    { name: t('navigation.projects'), to: `/${i18n.language}/projects` },
     { name: t('navigation.contact'), to: `/${i18n.language}/contact` },
   ]
 
