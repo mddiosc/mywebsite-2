@@ -12,7 +12,7 @@ export default function Hero() {
     <div className="relative isolate px-6 pt-14 lg:px-8">
       <motion.div
         aria-hidden="true"
-        className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
@@ -36,7 +36,7 @@ export default function Hero() {
         >
           <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
             {t('components.hero.announcement', 'Announcing our next round of funding.')}{' '}
-            <Link to="/announcement" className="font-semibold text-indigo-600">
+            <Link to="/announcement" className="relative z-10 font-semibold text-indigo-600">
               <span aria-hidden="true" className="absolute inset-0" />
               {t('components.hero.readMore', 'Read more')} <span aria-hidden="true">&rarr;</span>
             </Link>
@@ -70,13 +70,13 @@ export default function Hero() {
           >
             <Link
               to={`/${i18n.language}/${t('components.hero.ctaPrimaryLink')}`}
-              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="relative z-10 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {t('components.hero.ctaPrimary')}
             </Link>
             <Link
               to={`/${i18n.language}/${t('components.hero.ctaSecondaryLink')}`}
-              className="text-sm/6 font-semibold text-gray-900"
+              className="relative z-10 text-sm/6 font-semibold text-gray-900"
             >
               {t('components.hero.ctaSecondary')} <span aria-hidden="true">→</span>
             </Link>
@@ -85,7 +85,7 @@ export default function Hero() {
       </div>
       <motion.div
         aria-hidden="true"
-        className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+        className="pointer-events-none absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
