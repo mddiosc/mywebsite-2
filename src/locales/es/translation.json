@@ -11,6 +11,34 @@
       "pageNotFound": "Página no encontrada",
       "sorryMessage": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
       "goBackHome": "Volver al inicio"
+    },
+    "about": {
+      "title": "Sobre Mí",
+      "biography": {
+        "title": "Biografía",
+        "content": "Soy un desarrollador apasionado con experiencia en diversas tecnologías. Me especializo en crear soluciones web eficientes y elegantes que resuelven problemas reales. Mi enfoque combina principios de diseño sólidos con las mejores prácticas de desarrollo."
+      },
+      "skills": {
+        "title": "Habilidades",
+        "items": [
+          "JavaScript/TypeScript",
+          "React y Next.js",
+          "Node.js y Express",
+          "Gestión de estado con Redux/Context API",
+          "HTML5/CSS3 y frameworks de CSS como Tailwind",
+          "Git y control de versiones",
+          "Testing (Jest, React Testing Library)",
+          "CI/CD y metodologías ágiles"
+        ]
+      },
+      "projects": {
+        "title": "Proyectos",
+        "content": "He trabajado en varios proyectos interesantes, incluyendo aplicaciones web de comercio electrónico, plataformas educativas, y herramientas de productividad empresarial. Cada proyecto ha aportado valiosos conocimientos y experiencias que me han ayudado a crecer como desarrollador."
+      },
+      "contact": {
+        "title": "Contacto",
+        "content": "Puedes contactarme a través de mi correo electrónico: ejemplo@correo.com o mediante mis perfiles en redes sociales. Estoy siempre abierto a nuevas oportunidades y colaboraciones interesantes."
+      }
     }
   },
   "components": {

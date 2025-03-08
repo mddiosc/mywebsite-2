@@ -11,6 +11,34 @@
       "pageNotFound": "Page not found",
       "sorryMessage": "Sorry, we couldn't find the page you're looking for.",
       "goBackHome": "Go back home"
+    },
+    "about": {
+      "title": "About Me",
+      "biography": {
+        "title": "Biography",
+        "content": "I am a passionate developer with experience in various technologies. I specialize in creating efficient and elegant web solutions that solve real problems. My approach combines solid design principles with development best practices."
+      },
+      "skills": {
+        "title": "Skills",
+        "items": [
+          "JavaScript/TypeScript",
+          "React and Next.js",
+          "Node.js and Express",
+          "State management with Redux/Context API",
+          "HTML5/CSS3 and CSS frameworks like Tailwind",
+          "Git and version control",
+          "Testing (Jest, React Testing Library)",
+          "CI/CD and agile methodologies"
+        ]
+      },
+      "projects": {
+        "title": "Projects",
+        "content": "I have worked on several interesting projects, including e-commerce web applications, educational platforms, and business productivity tools. Each project has provided valuable knowledge and experiences that have helped me grow as a developer."
+      },
+      "contact": {
+        "title": "Contact",
+        "content": "You can contact me through my email: example@email.com or through my social media profiles. I am always open to new opportunities and interesting collaborations."
+      }
     }
   },
   "components": {
