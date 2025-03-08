@@ -43,5 +43,9 @@
     "budget50k100k": "$50K – $100K",
     "budgetOver100k": "Más de $100K",
     "sendMessage": "Enviar mensaje"
+  },
+  "footer": {
+    "contact": "Contacto",
+    "copyright": "Todos los derechos reservados."
   }
 }

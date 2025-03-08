@@ -9,7 +9,7 @@
   "pages": {
     "notFound": {
       "pageNotFound": "Page not found",
-      "sorryMessage": "Sorry, we couldn’t find the page you’re looking for.",
+      "sorryMessage": "Sorry, we couldn't find the page you're looking for.",
       "goBackHome": "Go back home"
     }
   },
@@ -43,5 +43,9 @@
     "budget50k100k": "$50K – $100K",
     "budgetOver100k": "$100K+",
     "sendMessage": "Send message"
+  },
+  "footer": {
+    "contact": "Contact",
+    "copyright": "All rights reserved."
   }
 }
