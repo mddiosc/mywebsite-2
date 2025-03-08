@@ -45,7 +45,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-white">
+    <footer>
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex justify-center gap-x-6 md:order-2">

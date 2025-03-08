@@ -4,7 +4,7 @@ const Contact = () => {
   const { t } = useTranslation()
 
   return (
-    <div className="relative bg-white">
+    <div className="relative">
       <div className="lg:absolute lg:inset-0 lg:left-1/2">
         <img
           alt=""

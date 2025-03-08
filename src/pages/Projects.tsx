@@ -7,7 +7,7 @@ const Projects = () => {
   if (error) return <div>Error al cargar los proyectos</div>
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="flex flex-col items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
       <h1 className="mb-8 text-4xl font-bold">Mis Proyectos</h1>
       <div className="projects-grid grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {projects?.map((project) => (
