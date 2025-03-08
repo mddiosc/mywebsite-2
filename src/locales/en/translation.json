@@ -21,7 +21,9 @@
       "ctaPrimaryLink": "projects",
       "ctaSecondary": "Learn More",
       "ctaSecondaryLink": "about",
-      "imageAlt": "Developer working on a laptop"
+      "imageAlt": "Developer working on a laptop",
+      "announcement": "Announcing our next round of funding.",
+      "readMore": "Read more"
     }
   },
   "contact": {
