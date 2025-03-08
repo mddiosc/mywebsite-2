@@ -22,8 +22,8 @@ export default function LanguageSwitcher() {
         }}
         className={`rounded-md px-2 py-1 text-sm font-medium transition-colors ${
           i18n.language === 'es'
-            ? 'bg-purple-100 text-purple-700'
-            : 'text-gray-600 hover:text-purple-600'
+            ? 'bg-indigo-100 text-indigo-600'
+            : 'text-gray-600 hover:text-indigo-600'
         }`}
       >
         ES
@@ -35,8 +35,8 @@ export default function LanguageSwitcher() {
         }}
         className={`rounded-md px-2 py-1 text-sm font-medium transition-colors ${
           i18n.language === 'en'
-            ? 'bg-purple-100 text-purple-700'
-            : 'text-gray-600 hover:text-purple-600'
+            ? 'bg-indigo-100 text-indigo-600'
+            : 'text-gray-600 hover:text-indigo-600'
         }`}
       >
         EN
