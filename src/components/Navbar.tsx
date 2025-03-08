@@ -26,7 +26,6 @@ export default function Navbar() {
     { name: t('navigation.contact'), to: `/${i18n.language}/contact`, exact: false },
   ]
 
-  // Animación específica para el panel lateral
   const slideInPanel = {
     hidden: { x: '100%', opacity: 0 },
     visible: { x: 0, opacity: 1 },
