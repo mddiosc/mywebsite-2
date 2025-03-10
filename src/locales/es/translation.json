@@ -14,9 +14,11 @@
     },
     "about": {
       "title": "Sobre Mí",
+      "name": "Miguel Ángel de Dios Calles",
       "biography": {
         "title": "Biografía",
-        "content": "Soy un desarrollador apasionado con experiencia en diversas tecnologías. Me especializo en crear soluciones web eficientes y elegantes que resuelven problemas reales. Mi enfoque combina principios de diseño sólidos con las mejores prácticas de desarrollo."
+        "content": "Soy desarrollador Front-End entusiasta con la creación de aplicaciones web elegantes y funcionales. Tengo formación en desarrollo web y siempre estoy buscando nuevos retos para nunca parar de aprender y crecer profesionalmente. Tengo experiencia en React, Next, Vue y Nuxt. Javascript/Typescript son mi pasión.\n\nCon más de 14 años de experiencia en el mundo del turismo y en particular en el GDS Amadeus y con más de 5 en el mundo del desarrollo front-end, tengo una visión amplia para implementar y añadir un valor agregado en los proyectos de desarrollo de los que formo parte.\n\nTe invito a que veas mis proyectos en la sección \"Proyectos\" o pulsando en el siguiente botón. Si quieres saber más de mi, puedes contactarme en la sección \"Contacto\".",
+        "buttonText": "Ver Proyectos"
       },
       "skills": {
         "title": "Habilidades",

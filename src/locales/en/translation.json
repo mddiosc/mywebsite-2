@@ -14,9 +14,11 @@
     },
     "about": {
       "title": "About Me",
+      "name": "Miguel Ángel de Dios Calles",
       "biography": {
         "title": "Biography",
-        "content": "I am a passionate developer with experience in various technologies. I specialize in creating efficient and elegant web solutions that solve real problems. My approach combines solid design principles with development best practices."
+        "content": "I am a Front-End developer enthusiastic about creating elegant and functional web applications. I have training in web development and am always looking for new challenges to never stop learning and growing professionally. I have experience with React, Next, Vue and Nuxt. Javascript/Typescript are my passion.\n\nWith over 14 years of experience in the tourism industry, particularly with the Amadeus GDS, and more than 5 years in front-end development, I have a broad vision to implement and add value to the development projects I am part of.\n\nI invite you to view my projects in the \"Projects\" section or by clicking the button below. If you want to know more about me, you can contact me in the \"Contact\" section.",
+        "buttonText": "View Projects"
       },
       "skills": {
         "title": "Skills",
