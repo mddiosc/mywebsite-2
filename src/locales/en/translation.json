@@ -41,6 +41,20 @@
         "title": "Contact",
         "content": "You can contact me through my email: example@email.com or through my social media profiles. I am always open to new opportunities and interesting collaborations."
       }
+    },
+    "projects": {
+      "title": "My Projects",
+      "description": "These are some of the projects I've worked on. All of these projects are open-source and available on GitHub.",
+      "portfolio": "Portfolio",
+      "githubInfo": "Showing {{count}} repositories from GitHub",
+      "error": {
+        "title": "Error loading projects",
+        "message": "There was an error loading the projects from GitHub. Please try again later."
+      },
+      "empty": {
+        "title": "No projects found",
+        "message": "We couldn't find any GitHub repositories for this user."
+      }
     }
   },
   "components": {

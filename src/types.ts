@@ -25,6 +25,7 @@ export interface GitHubProject {
   trees_url: string
   statuses_url: string
   languages_url: string
+  languages?: Record<string, number>
   stargazers_url: string
   contributors_url: string
   subscribers_url: string
