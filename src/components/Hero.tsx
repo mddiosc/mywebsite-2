@@ -19,7 +19,10 @@ export default function Hero() {
       >
         <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
           {t('components.hero.announcement', 'Announcing our next round of funding.')}{' '}
-          <Link to="/announcement" className="relative z-10 font-semibold text-indigo-600">
+          <Link
+            to={`/${i18n.language}/contact`}
+            className="relative z-10 font-semibold text-indigo-600"
+          >
             <span aria-hidden="true" className="absolute inset-0" />
             {t('components.hero.readMore', 'Read more')} <span aria-hidden="true">&rarr;</span>
           </Link>

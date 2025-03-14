@@ -59,15 +59,14 @@
   },
   "components": {
     "hero": {
-      "title": "Welcome to My Portfolio",
-      "subtitle": "I am a web developer specializing in modern web technologies.",
+      "title": "Hi, I'm Miguel Ángel de Dios",
+      "subtitle": "Frontend Developer specializing in React, Next.js and TypeScript with over 5 years of experience creating modern and engaging interfaces.",
       "ctaPrimary": "View Projects",
       "ctaPrimaryLink": "projects",
-      "ctaSecondary": "Learn More",
+      "ctaSecondary": "About Me",
       "ctaSecondaryLink": "about",
-      "imageAlt": "Developer working on a laptop",
-      "announcement": "Announcing our next round of funding.",
-      "readMore": "Read more"
+      "announcement": "Always interested in innovative projects",
+      "readMore": "Contact me"
     }
   },
   "contact": {

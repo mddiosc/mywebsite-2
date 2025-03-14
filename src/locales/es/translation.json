@@ -59,15 +59,14 @@
   },
   "components": {
     "hero": {
-      "title": "Bienvenido a Mi Portafolio",
-      "subtitle": "Soy un desarrollador web especializado en tecnologías web modernas.",
+      "title": "Hola, soy Miguel Ángel de Dios",
+      "subtitle": "Desarrollador Frontend especializado en React, Next.js y TypeScript con más de 5 años de experiencia creando interfaces modernas y atractivas.",
       "ctaPrimary": "Ver Proyectos",
       "ctaPrimaryLink": "projects",
-      "ctaSecondary": "Saber Más",
+      "ctaSecondary": "Sobre Mí",
       "ctaSecondaryLink": "about",
-      "imageAlt": "Desarrollador trabajando en una laptop",
-      "announcement": "Anunciando nuestra próxima ronda de financiación.",
-      "readMore": "Leer más"
+      "announcement": "Siempre interesado en proyectos innovadores",
+      "readMore": "Contactar"
     }
   },
   "contact": {
