@@ -20,15 +20,25 @@ const BackgroundDecoration = ({
 }) => (
   <motion.div
     aria-hidden="true"
-    className={`pointer-events-none absolute inset-x-0 ${position} -z-10 transform-gpu overflow-hidden blur-3xl`}
+    className={`pointer-events-none absolute inset-x-0 ${position} -z-10 overflow-hidden blur-3xl`}
+    style={{
+      // Mejoras para Safari/iOS sin cambiar la apariencia
+      WebkitBackfaceVisibility: 'hidden',
+      WebkitTransform: 'translate3d(0, 0, 0)',
+      transform: 'translate3d(0, 0, 0)',
+    }}
     initial="hidden"
     animate="visible"
     variants={fadeIn}
     transition={{ ...commonTransition, duration: 1, delay }}
   >
     <div
-      style={{ clipPath }}
-      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-1155/678 ${rotate ? 'w-[36.125rem]' : 'w-[36.125rem]'} -translate-x-1/2 ${rotate ? 'rotate-[30deg]' : ''} bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]' : 'sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]'}`}
+      style={{
+        clipPath,
+        // Fallback para Safari que no soporta bien clip-path
+        WebkitClipPath: clipPath,
+      }}
+      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-[1155/678] ${rotate ? 'w-[36.125rem]' : 'w-[36.125rem]'} -translate-x-1/2 ${rotate ? 'rotate-[30deg]' : ''} bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]' : 'sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]'}`}
     />
   </motion.div>
 )
