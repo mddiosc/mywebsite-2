@@ -72,8 +72,19 @@
     },
     "projects": {
       "title": "My Projects",
-      "description": "Here are some projects that showcase my experience with modern technologies. Each project was built using tools from the React ecosystem, including Next.js, TypeScript, Tailwind CSS, and React Query, following development best practices.",
+      "description": "Here you'll find a selection of projects that showcase my experience with modern technologies from the React ecosystem. Each project utilizes tools like Next.js, TypeScript, Tailwind CSS, and React Query, following development best practices.",
       "portfolio": "Portfolio",
+      "statistics": {
+        "featuredProjects": "Featured Projects",
+        "githubStars": "GitHub Stars",
+        "technologies": "Technologies",
+        "totalForks": "Total Forks",
+        "liveDemos": "Live Demos"
+      },
+      "topics": {
+        "title": "Popular Technologies & Topics",
+        "description": "Topics and tags I frequently use in my projects"
+      },
       "githubInfo": "Showing {{count}} repositories from GitHub",
       "error": {
         "title": "Error loading projects",

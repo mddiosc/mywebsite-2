@@ -3,7 +3,7 @@
   "navigation": {
     "home": "Inicio",
     "projects": "Proyectos",
-    "about": "Acerca de",
+    "about": "Sobre Mí",
     "contact": "Contacto"
   },
   "pages": {
@@ -72,8 +72,19 @@
     },
     "projects": {
       "title": "Mis Proyectos",
-      "description": "Estos son algunos de los proyectos en los que he trabajado. Todos estos proyectos son de código abierto y están disponibles en GitHub.",
+      "description": "Aquí encontrarás una selección de proyectos que demuestran mi experiencia con tecnologías modernas del ecosistema React. Cada proyecto utiliza herramientas como Next.js, TypeScript, Tailwind CSS y React Query, siguiendo las mejores prácticas de desarrollo.",
       "portfolio": "Portfolio",
+      "statistics": {
+        "featuredProjects": "Proyectos Destacados",
+        "githubStars": "GitHub Stars",
+        "technologies": "Tecnologías",
+        "totalForks": "Total Forks",
+        "liveDemos": "Demos en Vivo"
+      },
+      "topics": {
+        "title": "Tecnologías y Temas Populares",
+        "description": "Topics y etiquetas que uso frecuentemente en mis proyectos"
+      },
       "githubInfo": "Mostrando {{count}} repositorios de GitHub",
       "error": {
         "title": "Error al cargar proyectos",
