@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="rhf-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EC5990"/>
+      <stop offset="100%" stop-color="#F093FB"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#rhf-gradient)" rx="16"/>
+  <rect x="24" y="32" width="80" height="64" fill="#FFF" rx="8"/>
+  <rect x="32" y="48" width="64" height="4" fill="#EC5990" rx="2"/>
+  <rect x="32" y="60" width="48" height="4" fill="#EC5990" rx="2"/>
+  <rect x="32" y="72" width="56" height="4" fill="#EC5990" rx="2"/>
+  <rect x="80" y="80" width="16" height="8" fill="#EC5990" rx="4"/>
+</svg>

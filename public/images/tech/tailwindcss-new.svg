@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="tailwind-original-a" x1="-37.218%" x2="137.218%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#2298BD"/>
+      <stop offset="100%" stop-color="#0ED7B5"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#tailwind-original-a)" d="M64 16c-12 0-18 6-18 18 0-6-6-12-12-12s-18 6-18 18c0 12 6 18 18 18h30c12 0 18-6 18-18 0-12-6-18-18-18zM16 64c0-12 6-18 18-18h30c12 0 18 6 18 18s-6 18-18 18H34c-12 0-18-6-18-18zm48 48c12 0 18-6 18-18 0 6 6 12 12 12s18-6 18-18c0-12-6-18-18-18H64c-12 0-18 6-18 18 0 12 6 18 18 18z"/>
+</svg>

@@ -17,34 +17,62 @@
       "name": "Miguel Ángel de Dios Calles",
       "biography": {
         "title": "Biography",
-        "content": "I am a Front-End developer enthusiastic about creating elegant and functional web applications. I have training in web development and am always looking for new challenges to never stop learning and growing professionally. I have experience with React, Next, Vue and Nuxt. Javascript/Typescript are my passion.\n\nWith over 14 years of experience in the tourism industry, particularly with the Amadeus GDS, and more than 5 years in front-end development, I have a broad vision to implement and add value to the development projects I am part of.\n\nI invite you to view my projects in the \"Projects\" section or by clicking the button below. If you want to know more about me, you can contact me in the \"Contact\" section.",
+        "content": "I am a Front-End developer specialized in creating modern and functional web applications. With solid training in web development, I constantly seek new challenges that allow me to evolve professionally. My experience focuses on React, Next.js, TypeScript and the ecosystem of modern tools like Vite, Tailwind CSS and React Query.\n\nMy experience combines over 14 years in the tourism industry, specialized in Amadeus GDS systems, with more than 5 years in front-end development. This unique perspective allows me to provide technological solutions that understand both business needs and modern technical standards, using React, TypeScript, and monitoring tools like Grafana Faro to create robust and scalable applications.\n\nI invite you to view my projects in the \"Projects\" section or by clicking the button below. If you want to know more about me, you can contact me in the \"Contact\" section.",
         "buttonText": "View Projects"
       },
       "skills": {
         "title": "Skills",
+        "description": "I work with modern technologies from the React ecosystem, specializing in Next.js for SSR/SSG applications, Zustand for global state management, React Query for data fetching, and Vite for build optimization. I use Tailwind CSS for efficient styling and Framer Motion for advanced animations. My experience also includes TypeScript for type safety, Git for version control, and Grafana Faro for application monitoring.",
         "items": [
           "JavaScript/TypeScript",
           "React and Next.js",
           "Node.js and Express",
-          "State management with Redux/Context API",
+          "State management with Redux/Zustand/Context API",
           "HTML5/CSS3 and CSS frameworks like Tailwind",
+          "Styled Components and CSS-in-JS",
+          "Emotion and style systems",
+          "Sass/SCSS and CSS Modules",
+          "React Query/TanStack Query for data fetching",
+          "React Hook Form for form management",
+          "Framer Motion for animations",
+          "React Router for routing",
+          "Vite and modern build tools",
+          "REST APIs and GraphQL",
+          "MongoDB/PostgreSQL databases",
+          "Authentication (JWT, OAuth)",
+          "Monitoring with Grafana Faro and Sentry",
+          "Analytics and performance tracking",
+          "Error tracking and logging",
           "Git and version control",
-          "Testing (Jest, React Testing Library)",
-          "CI/CD and agile methodologies"
+          "Testing (Jest, React Testing Library, Vitest)",
+          "TypeScript advanced patterns",
+          "Performance optimization",
+          "Responsive design and mobile-first approach",
+          "SEO and accessibility (a11y)",
+          "CI/CD and deployment (Vercel, Netlify)",
+          "Docker and containerization",
+          "Agile methodologies and Scrum"
         ]
       },
       "projects": {
         "title": "Projects",
-        "content": "I have worked on several interesting projects, including e-commerce web applications, educational platforms, and business productivity tools. Each project has provided valuable knowledge and experiences that have helped me grow as a developer."
+        "content": "I've worked on various projects ranging from modern web applications to business solutions, utilizing technologies from the React ecosystem. Each project demonstrates my experience with Next.js for SSR/SSG, TypeScript for type safety, Tailwind CSS for efficient styling, React Query for data management, and integration with modern APIs."
       },
       "contact": {
         "title": "Contact",
-        "content": "You can contact me through my email: example@email.com or through my social media profiles. I am always open to new opportunities and interesting collaborations."
+        "content": "Do you have a project in mind or want to collaborate? I'd love to learn more about your idea. You can connect with me on LinkedIn for a quick chat or use the contact form to send me a detailed message.",
+        "emailButton": "View on LinkedIn",
+        "contactFormLink": "Contact form"
+      },
+      "stats": {
+        "frontendYears": "Years specializing in React/TypeScript",
+        "tourismExperience": "Years with Amadeus GDS systems",
+        "completedProjects": "Projects with modern technologies"
       }
     },
     "projects": {
       "title": "My Projects",
-      "description": "These are some of the projects I've worked on. All of these projects are open-source and available on GitHub.",
+      "description": "Here are some projects that showcase my experience with modern technologies. Each project was built using tools from the React ecosystem, including Next.js, TypeScript, Tailwind CSS, and React Query, following development best practices.",
       "portfolio": "Portfolio",
       "githubInfo": "Showing {{count}} repositories from GitHub",
       "error": {

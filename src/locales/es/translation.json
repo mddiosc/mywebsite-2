@@ -17,29 +17,57 @@
       "name": "Miguel Ángel de Dios Calles",
       "biography": {
         "title": "Biografía",
-        "content": "Soy desarrollador Front-End entusiasta con la creación de aplicaciones web elegantes y funcionales. Tengo formación en desarrollo web y siempre estoy buscando nuevos retos para nunca parar de aprender y crecer profesionalmente. Tengo experiencia en React, Next, Vue y Nuxt. Javascript/Typescript son mi pasión.\n\nCon más de 14 años de experiencia en el mundo del turismo y en particular en el GDS Amadeus y con más de 5 en el mundo del desarrollo front-end, tengo una visión amplia para implementar y añadir un valor agregado en los proyectos de desarrollo de los que formo parte.\n\nTe invito a que veas mis proyectos en la sección \"Proyectos\" o pulsando en el siguiente botón. Si quieres saber más de mi, puedes contactarme en la sección \"Contacto\".",
+        "content": "Soy desarrollador Front-End especializado en la creación de aplicaciones web modernas y funcionales. Con sólida formación en desarrollo web, busco constantemente nuevos desafíos que me permitan evolucionar profesionalmente. Mi experiencia se centra en React, Next.js, TypeScript y el ecosistema de herramientas modernas como Vite, Tailwind CSS y React Query.\n\nMi experiencia combina más de 14 años en la industria del turismo, especializado en sistemas GDS Amadeus, con más de 5 años en desarrollo front-end. Esta perspectiva única me permite aportar soluciones tecnológicas que entienden tanto las necesidades del negocio como los estándares técnicos modernos, utilizando React, TypeScript, y herramientas de monitorización como Grafana Faro para crear aplicaciones robustas y escalables.\n\nTe invito a que veas mis proyectos en la sección \"Proyectos\" o pulsando en el siguiente botón. Si quieres saber más de mi, puedes contactarme en la sección \"Contacto\".",
         "buttonText": "Ver Proyectos"
       },
       "skills": {
         "title": "Habilidades",
+        "description": "Mi especialización se centra en JavaScript/TypeScript y el ecosistema React. Trabajo con tecnologías modernas como Next.js, Zustand para gestión de estado, React Query para manejo de datos, y herramientas como Vite, Tailwind CSS y Framer Motion para crear experiencias de usuario excepcionales.",
         "items": [
           "JavaScript/TypeScript",
           "React y Next.js",
           "Node.js y Express",
-          "Gestión de estado con Redux/Context API",
+          "Gestión de estado con Redux/Zustand/Context API",
           "HTML5/CSS3 y frameworks de CSS como Tailwind",
+          "Styled Components y CSS-in-JS",
+          "Emotion y sistemas de estilos",
+          "Sass/SCSS y CSS Modules",
+          "React Query/TanStack Query para manejo de datos",
+          "React Hook Form para gestión de formularios",
+          "Framer Motion para animaciones",
+          "React Router para enrutamiento",
+          "Vite y herramientas de build modernas",
+          "APIs REST y GraphQL",
+          "Bases de datos MongoDB/PostgreSQL",
+          "Autenticación (JWT, OAuth)",
+          "Monitorización con Grafana Faro y Sentry",
+          "Analytics y seguimiento de rendimiento",
+          "Tracking de errores y logging",
           "Git y control de versiones",
-          "Testing (Jest, React Testing Library)",
-          "CI/CD y metodologías ágiles"
+          "Testing (Jest, React Testing Library, Vitest)",
+          "Patrones avanzados de TypeScript",
+          "Optimización de rendimiento",
+          "Diseño responsivo y mobile-first",
+          "SEO y accesibilidad (a11y)",
+          "CI/CD y despliegue (Vercel, Netlify)",
+          "Docker y containerización",
+          "Metodologías ágiles y Scrum"
         ]
       },
       "projects": {
         "title": "Proyectos",
-        "content": "He trabajado en varios proyectos interesantes, incluyendo aplicaciones web de comercio electrónico, plataformas educativas, y herramientas de productividad empresarial. Cada proyecto ha aportado valiosos conocimientos y experiencias que me han ayudado a crecer como desarrollador."
+        "content": "He desarrollado aplicaciones web diversas, desde plataformas de e-commerce con React y TypeScript hasta herramientas empresariales con Next.js y bases de datos MongoDB/PostgreSQL. Implemento testing con Jest y React Testing Library, despliego en Vercel/Netlify, y utilizo Docker para containerización. Cada proyecto incorpora monitorización con Sentry y Grafana Faro para garantizar la calidad en producción."
       },
       "contact": {
         "title": "Contacto",
-        "content": "Puedes contactarme a través de mi correo electrónico: ejemplo@correo.com o mediante mis perfiles en redes sociales. Estoy siempre abierto a nuevas oportunidades y colaboraciones interesantes."
+        "content": "¿Tienes un proyecto en mente o quieres colaborar? Me encantaría conocer más sobre tu idea. Puedes conectar conmigo en LinkedIn para una charla rápida o utilizar el formulario de contacto para enviarme un mensaje detallado.",
+        "emailButton": "Ver en LinkedIn",
+        "contactFormLink": "Formulario de contacto"
+      },
+      "stats": {
+        "frontendYears": "Años especializándome en React/TypeScript",
+        "tourismExperience": "Años con sistemas Amadeus GDS",
+        "completedProjects": "Proyectos con tecnologías modernas"
       }
     },
     "projects": {
