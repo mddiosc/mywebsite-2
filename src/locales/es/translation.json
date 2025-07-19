@@ -87,14 +87,38 @@
   },
   "components": {
     "hero": {
-      "title": "Hola, soy Miguel Ángel de Dios",
-      "subtitle": "Desarrollador Frontend especializado en React, Next.js y TypeScript con más de 5 años de experiencia creando interfaces modernas y atractivas.",
+      "title": "Miguel Ángel de Dios",
+      "subtitle": "Desarrollador Frontend Senior especializado en el ecosistema React. Combino 5+ años desarrollando aplicaciones web modernas con 14 años de experiencia empresarial en sistemas críticos. Experto en TypeScript, Next.js, y arquitecturas escalables.",
       "ctaPrimary": "Ver Proyectos",
       "ctaPrimaryLink": "projects",
       "ctaSecondary": "Sobre Mí",
       "ctaSecondaryLink": "about",
-      "announcement": "Siempre interesado en proyectos innovadores",
+      "announcement": "🚀 Disponible para proyectos enterprise con React/TypeScript",
       "readMore": "Contactar"
+    },
+    "homeFeatures": {
+      "title": "Especialización técnica",
+      "subtitle": "Experiencia con tecnologías modernas del ecosistema React",
+      "description": "Desarrollo aplicaciones web escalables utilizando las mejores prácticas de la industria. Mi enfoque combina experiencia empresarial con conocimiento profundo de tecnologías frontend modernas, desde arquitectura de componentes hasta optimización de rendimiento.",
+      "features": [
+        {
+          "title": "React & TypeScript",
+          "description": "Desarrollo de aplicaciones robustas con React 18+ y TypeScript. Experiencia en hooks avanzados, context patterns, error boundaries y optimización de rendimiento con profiling tools.",
+          "icon": "⚛️"
+        },
+        {
+          "title": "Next.js & Performance",
+          "description": "Implementación de aplicaciones full-stack con SSR, SSG, ISR y App Router. Optimización con Web Vitals, image optimization, dynamic imports y estrategias de caching avanzadas.",
+          "icon": "🚀"
+        },
+        {
+          "title": "State Management & APIs",
+          "description": "Gestión de estado compleja con Zustand y Context API. Integración de APIs con React Query/TanStack Query, manejo de cache, invalidación y sincronización de datos en tiempo real.",
+          "icon": "🏗️"
+        }
+      ],
+      "ctaPrimary": "Ver Proyectos",
+      "ctaSecondary": "Mi Experiencia"
     }
   },
   "contact": {

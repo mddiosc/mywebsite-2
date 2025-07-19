@@ -87,14 +87,38 @@
   },
   "components": {
     "hero": {
-      "title": "Hi, I'm Miguel Ángel de Dios",
-      "subtitle": "Frontend Developer specializing in React, Next.js and TypeScript with over 5 years of experience creating modern and engaging interfaces.",
+      "title": "Miguel Ángel de Dios",
+      "subtitle": "Senior Frontend Developer specialized in the React ecosystem. I combine 5+ years developing modern web applications with 14 years of enterprise experience in critical systems. Expert in TypeScript, Next.js, and scalable architectures.",
       "ctaPrimary": "View Projects",
       "ctaPrimaryLink": "projects",
       "ctaSecondary": "About Me",
       "ctaSecondaryLink": "about",
-      "announcement": "Always interested in innovative projects",
+      "announcement": "🚀 Available for enterprise React/TypeScript projects",
       "readMore": "Contact me"
+    },
+    "homeFeatures": {
+      "title": "Technical Specialization",
+      "subtitle": "Experience with modern React ecosystem technologies",
+      "description": "I build scalable web applications using industry best practices. My approach combines enterprise experience with deep knowledge of modern frontend technologies, from component architecture to performance optimization.",
+      "features": [
+        {
+          "title": "React & TypeScript",
+          "description": "Building robust applications with React 18+ and TypeScript. Experience in advanced hooks, context patterns, error boundaries, and performance optimization with profiling tools.",
+          "icon": "⚛️"
+        },
+        {
+          "title": "Next.js & Performance",
+          "description": "Full-stack application implementation with SSR, SSG, ISR, and App Router. Optimization with Web Vitals, image optimization, dynamic imports, and advanced caching strategies.",
+          "icon": "🚀"
+        },
+        {
+          "title": "State Management & APIs",
+          "description": "Complex state management with Zustand and Context API. API integration with React Query/TanStack Query, cache handling, invalidation, and real-time data synchronization.",
+          "icon": "🏗️"
+        }
+      ],
+      "ctaPrimary": "View Projects",
+      "ctaSecondary": "My Experience"
     }
   },
   "contact": {
