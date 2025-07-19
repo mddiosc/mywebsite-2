@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 import { motion } from 'framer-motion'
 
-import { fadeIn, fadeInUp, smoothTransition } from '../lib/animations'
+import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
 
 const HomeFeatures = () => {
   const { t, i18n } = useTranslation()

@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 
-import { Hero, HomeFeatures } from '../components'
-import { fadeIn, smoothTransition } from '../lib/animations'
+import { Hero, HomeFeatures } from './components'
+
+import { fadeIn, smoothTransition } from '../../lib/animations'
 
 const Home = () => {
   return (

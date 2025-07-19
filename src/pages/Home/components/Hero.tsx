@@ -3,8 +3,9 @@ import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import { HERO_ANIMATION_CONFIG } from '../constants/heroAnimations'
-import { useHeroData } from '../hooks/useHeroData'
-import { fadeIn, scaleIn, smoothTransition } from '../lib/animations'
+import { useHeroData } from '../hooks'
+
+import { fadeIn, scaleIn, smoothTransition } from '@/lib/animations'
 
 export default function Hero() {
   const { title, subtitle, announcement, readMore, language } = useHeroData()
