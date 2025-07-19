@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
 
-import { ANIMATION_CONFIG } from '../constants/animations'
-import type { Technology } from '../constants/technologies'
-import { commonTransition, slideIn } from '../lib/animations'
+import { ANIMATION_CONFIG } from '@/constants/animations'
+import type { Technology } from '@/constants/technologies'
+import { commonTransition, slideIn } from '@/lib/animations'
 
 interface TechnologyGridProps {
   technologies: Technology[]

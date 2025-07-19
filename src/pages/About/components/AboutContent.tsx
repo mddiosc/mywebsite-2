@@ -2,9 +2,10 @@ import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
 
-import { ANIMATION_CONFIG } from '../constants/animations'
-import type { Stat } from '../hooks/useAboutData'
-import { commonTransition, slideIn } from '../lib/animations'
+import type { Stat } from '../types'
+
+import { ANIMATION_CONFIG } from '@/constants/animations'
+import { commonTransition, slideIn } from '@/lib/animations'
 
 interface AboutContentProps {
   biographyParagraphs: string[]

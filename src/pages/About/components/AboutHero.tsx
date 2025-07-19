@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 
 import { motion } from 'framer-motion'
 
-import { ANIMATION_CONFIG } from '../constants/animations'
-import { commonTransition, slideIn } from '../lib/animations'
+import { ANIMATION_CONFIG } from '@/constants/animations'
+import { commonTransition, slideIn } from '@/lib/animations'
 
 interface AboutHeroProps {
   biographyParagraphs: string[]
