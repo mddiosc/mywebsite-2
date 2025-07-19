@@ -55,6 +55,9 @@ const useProjects = (options?: UseQueryOptions<GitHubProject[]>) => {
   return useQuery<GitHubProject[]>({
     queryKey: ['projects'],
     queryFn: fetchProjects,
+    select: (data) => {
+      return data.filter((project) => project.id !== 334629076)
+    },
     ...options,
   })
 }

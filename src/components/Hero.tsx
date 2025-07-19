@@ -3,20 +3,14 @@ import { Link } from 'react-router'
 
 import { motion } from 'framer-motion'
 
-import { fadeIn, slideIn, scaleIn, commonTransition } from '../lib/animations'
+import { fadeIn, scaleIn, commonTransition } from '../lib/animations'
 
 export default function Hero() {
   const { t, i18n } = useTranslation()
 
   return (
     <div className="mx-auto">
-      <motion.div
-        className="hidden sm:mb-8 sm:flex sm:justify-center"
-        initial="hidden"
-        animate="visible"
-        variants={slideIn}
-        transition={{ ...commonTransition, delay: 0.2 }}
-      >
+      <div className="hidden sm:mb-8 sm:flex sm:justify-center">
         <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
           {t('components.hero.announcement', 'Announcing our next round of funding.')}{' '}
           <Link
@@ -27,7 +21,7 @@ export default function Hero() {
             {t('components.hero.readMore', 'Read more')} <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
-      </motion.div>
+      </div>
       <div className="text-center">
         <motion.h1
           className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl"

@@ -11,31 +11,17 @@ const Contact = () => {
   return (
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-        <motion.h2
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-          transition={{ ...commonTransition, delay: 0.1 }}
-          className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl"
-        >
+        <div className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">
           <h2 className="text-base/7 font-semibold text-indigo-600">
             {t('pages.projects.portfolio')}
           </h2>
           <p className="mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">
             {t('contact.letsWorkTogether')}
           </p>
-        </motion.h2>
-        <motion.p
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-          transition={{ ...commonTransition, delay: 0.2 }}
-          className="mx-auto max-w-2xl lg:max-w-none"
-        >
-          <p className="mt-6 text-lg/8 text-gray-600">{t('contact.description')}</p>
-        </motion.p>
+        </div>
+        <p className="mx-auto mt-6 max-w-2xl text-lg/8 text-gray-600 lg:max-w-none">
+          {t('contact.description')}
+        </p>
       </div>
 
       <motion.form
