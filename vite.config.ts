@@ -7,12 +7,12 @@ import { defineConfig } from 'vite'
 import { configDefaults } from 'vitest/config'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     tailwindcss(),
     // Plugin de Grafana Faro para subir source maps (solo en builds de producción)
-    ...(process.env.NODE_ENV === 'production' && process.env.VITE_GRAFANA_FARO_API_KEY
+    ...(mode === 'production' && process.env.VITE_GRAFANA_FARO_API_KEY
       ? [
           faroUploader({
             appName: 'mywebsite2.0',
@@ -26,7 +26,6 @@ export default defineConfig({
       : []),
   ],
   build: {
-    // Generar source maps en producción para Grafana Faro
     sourcemap: true,
   },
   resolve: {
@@ -41,4 +40,4 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
     exclude: [...configDefaults.exclude, 'e2e/*'],
   },
-})
+}))
