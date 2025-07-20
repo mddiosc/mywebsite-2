@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     tailwindcss(),
-    // Plugin de Grafana Faro para subir source maps (solo en builds de producción)
     ...(mode === 'production' && process.env.VITE_GRAFANA_FARO_API_KEY
       ? [
           faroUploader({
