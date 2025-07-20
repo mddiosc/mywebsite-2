@@ -10,7 +10,7 @@ import { queryClient } from './lib/queryClient'
 
 import './styles/index.css'
 
-const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined
+const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 
 const root = document.getElementById('root')
 if (root) {

@@ -69,5 +69,5 @@ export const VALID_HTTP_STATUS_CODES = [200, 201, 302] as const
  * Direct link to the developer's LinkedIn profile used in the contact header
  * for professional networking and alternative contact method.
  */
-export const LINKEDIN_PROFILE_URL = `https://www.linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME}/`
+export const LINKEDIN_PROFILE_URL = `https://www.linkedin.com/in/${import.meta.env.VITE_LINKEDIN_USERNAME ?? 'miguel-angel-de-dios-calles'}/`
 export const LINKEDIN_URL = LINKEDIN_PROFILE_URL

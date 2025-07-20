@@ -5,7 +5,7 @@ interface ApiErrorResponse {
   status?: number
 }
 
-const baseURL = (import.meta.env['VITE_API_URL'] as string) || 'http://localhost:3000'
+const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
 const instance: AxiosInstance = axios.create({
   baseURL,

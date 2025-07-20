@@ -8,7 +8,7 @@ import { commonTransition, slideIn } from '@/lib/animations'
 
 const AboutContact = () => {
   const { t, i18n } = useTranslation()
-  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME
+  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME ?? ''
 
   return (
     <motion.div

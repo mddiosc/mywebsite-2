@@ -64,7 +64,7 @@ const submitContactForm = async (
 
   const sanitizedData = sanitizeData(data)
 
-  const getformId = import.meta.env.VITE_GETFORM_ID as string | undefined
+  const getformId = import.meta.env.VITE_GETFORM_ID
   if (!getformId) {
     throw new Error('VITE_GETFORM_ID environment variable is not configured')
   }

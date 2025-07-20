@@ -23,8 +23,8 @@ export default function Footer() {
   const { t, i18n } = useTranslation()
   const currentYear = new Date().getFullYear()
 
-  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME
-  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME ?? ''
+  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME ?? ''
 
   const navigation = [
     {
