@@ -6,7 +6,7 @@ export interface GitHubProject {
   private: boolean
   owner: Owner
   html_url: string
-  description: null
+  description: null | string
   fork: boolean
   url: string
   forks_url: string
