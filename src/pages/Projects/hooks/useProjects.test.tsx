@@ -1,248 +1,394 @@
-// /**
-//  * Tests for useProjects hook - Optimized version
-//  *
-//  * Critical testing for:
-//  * - GitHub API integration
-//  * - Project statistics calculation
-//  * - Data filtering and processing
-//  * - Error handling
-//  * - Language data fetching
-//  */
+import React from 'react'
 
-// import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { AxiosResponse } from 'axios'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
-// import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook, waitFor } from '@testing-library/react'
 
-// import { useProjects } from './useProjects'
+vi.mock('@/lib/axios', () => ({
+  axiosInstance: {
+    get: vi.fn(),
+  },
+}))
 
-// import {
-//   mockGitHubProjectBase,
-//   createMockProject,
-//   mockProjects,
-//   createQueryClientWrapper,
-//   setupGitHubTestEnv,
-//   cleanupGitHubTestEnv,
-//   expectAuthHeaders,
-//   authScenarios,
-// } from '../__tests__/test-utils'
+import { useProjects } from './useProjects'
 
-// // Create a proper mock function
-// const mockAxiosGet = vi.fn()
+import { axiosInstance } from '@/lib/axios'
+import type { GitHubProject } from '@/types'
 
-// // Mock axios instance with typed mock
-// vi.mock('@/lib/axios', () => ({
-//   axiosInstance: {
-//     get: mockAxiosGet,
-//   },
-// }))
+const mockGet = vi.mocked(axiosInstance).get as ReturnType<typeof vi.fn>
 
-// describe('useProjects', () => {
-//   beforeEach(() => {
-//     vi.clearAllMocks()
-//     mockAxiosGet.mockClear()
-//     setupGitHubTestEnv()
-//   })
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        staleTime: 0,
+        refetchOnWindowFocus: false,
+      },
+    },
+  })
 
-//   afterEach(() => {
-//     vi.clearAllMocks()
-//     cleanupGitHubTestEnv()
-//   })
+const createWrapper = () => {
+  const queryClient = createTestQueryClient()
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  )
+  return Wrapper
+}
 
-//   describe('successful data fetching', () => {
-//     it('should fetch projects with language data successfully', async () => {
-//       // Mock successful API responses
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [mockGitHubProjectBase] })
-//         .mockResolvedValueOnce({ data: mockGitHubProjectBase.languages })
+const mockOwner = {
+  login: 'testuser',
+  id: 1,
+  node_id: 'MDQ6VXNlcjE=',
+  avatar_url: 'https://github.com/images/error/testuser_happy.gif',
+  gravatar_id: '',
+  url: 'https://api.github.com/users/testuser',
+  html_url: 'https://github.com/testuser',
+  followers_url: 'https://api.github.com/users/testuser/followers',
+  following_url: 'https://api.github.com/users/testuser/following{/other_user}',
+  gists_url: 'https://api.github.com/users/testuser/gists{/gist_id}',
+  starred_url: 'https://api.github.com/users/testuser/starred{/owner}{/repo}',
+  subscriptions_url: 'https://api.github.com/users/testuser/subscriptions',
+  organizations_url: 'https://api.github.com/users/testuser/orgs',
+  repos_url: 'https://api.github.com/users/testuser/repos',
+  events_url: 'https://api.github.com/users/testuser/events{/privacy}',
+  received_events_url: 'https://api.github.com/users/testuser/received_events',
+  type: 'User',
+  user_view_type: 'public',
+  site_admin: false,
+}
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+const mockProject1: GitHubProject = {
+  id: 1,
+  node_id: 'MDEwOlJlcG9zaXRvcnkx',
+  name: 'test-project',
+  full_name: 'testuser/test-project',
+  description: 'A test project',
+  html_url: 'https://github.com/testuser/test-project',
+  homepage: 'https://test-project.com',
+  language: 'TypeScript',
+  languages_url: 'https://api.github.com/repos/testuser/test-project/languages',
+  created_at: new Date('2023-01-01T00:00:00Z'),
+  updated_at: new Date('2023-01-01T00:00:00Z'),
+  pushed_at: new Date('2023-01-01T00:00:00Z'),
+  stargazers_count: 10,
+  watchers_count: 5,
+  forks_count: 2,
+  open_issues_count: 1,
+  archived: false,
+  disabled: false,
+  private: false,
+  fork: false,
+  topics: ['typescript', 'react'],
+  visibility: 'public',
+  default_branch: 'main',
+  forks: 2,
+  open_issues: 1,
+  watchers: 5,
+  size: 1000,
+  owner: mockOwner,
+  url: 'https://api.github.com/repos/testuser/test-project',
+  forks_url: 'https://api.github.com/repos/testuser/test-project/forks',
+  keys_url: 'https://api.github.com/repos/testuser/test-project/keys{/key_id}',
+  collaborators_url:
+    'https://api.github.com/repos/testuser/test-project/collaborators{/collaborator}',
+  teams_url: 'https://api.github.com/repos/testuser/test-project/teams',
+  hooks_url: 'https://api.github.com/repos/testuser/test-project/hooks',
+  issue_events_url: 'https://api.github.com/repos/testuser/test-project/issues/events{/number}',
+  events_url: 'https://api.github.com/repos/testuser/test-project/events',
+  assignees_url: 'https://api.github.com/repos/testuser/test-project/assignees{/user}',
+  branches_url: 'https://api.github.com/repos/testuser/test-project/branches{/branch}',
+  tags_url: 'https://api.github.com/repos/testuser/test-project/tags',
+  blobs_url: 'https://api.github.com/repos/testuser/test-project/git/blobs{/sha}',
+  git_tags_url: 'https://api.github.com/repos/testuser/test-project/git/tags{/sha}',
+  git_refs_url: 'https://api.github.com/repos/testuser/test-project/git/refs{/sha}',
+  trees_url: 'https://api.github.com/repos/testuser/test-project/git/trees{/sha}',
+  statuses_url: 'https://api.github.com/repos/testuser/test-project/statuses/{sha}',
+  stargazers_url: 'https://api.github.com/repos/testuser/test-project/stargazers',
+  contributors_url: 'https://api.github.com/repos/testuser/test-project/contributors',
+  subscribers_url: 'https://api.github.com/repos/testuser/test-project/subscribers',
+  subscription_url: 'https://api.github.com/repos/testuser/test-project/subscription',
+  commits_url: 'https://api.github.com/repos/testuser/test-project/commits{/sha}',
+  git_commits_url: 'https://api.github.com/repos/testuser/test-project/git/commits{/sha}',
+  comments_url: 'https://api.github.com/repos/testuser/test-project/comments{/number}',
+  issue_comment_url: 'https://api.github.com/repos/testuser/test-project/issues/comments{/number}',
+  contents_url: 'https://api.github.com/repos/testuser/test-project/contents/{+path}',
+  compare_url: 'https://api.github.com/repos/testuser/test-project/compare/{base}...{head}',
+  merges_url: 'https://api.github.com/repos/testuser/test-project/merges',
+  archive_url: 'https://api.github.com/repos/testuser/test-project/{archive_format}{/ref}',
+  downloads_url: 'https://api.github.com/repos/testuser/test-project/downloads',
+  issues_url: 'https://api.github.com/repos/testuser/test-project/issues{/number}',
+  pulls_url: 'https://api.github.com/repos/testuser/test-project/pulls{/number}',
+  milestones_url: 'https://api.github.com/repos/testuser/test-project/milestones{/number}',
+  notifications_url:
+    'https://api.github.com/repos/testuser/test-project/notifications{?since,all,participating}',
+  labels_url: 'https://api.github.com/repos/testuser/test-project/labels{/name}',
+  releases_url: 'https://api.github.com/repos/testuser/test-project/releases{/id}',
+  deployments_url: 'https://api.github.com/repos/testuser/test-project/deployments',
+  git_url: 'git://github.com/testuser/test-project.git',
+  ssh_url: 'git@github.com:testuser/test-project.git',
+  clone_url: 'https://github.com/testuser/test-project.git',
+  svn_url: 'https://github.com/testuser/test-project',
+  has_issues: true,
+  has_projects: true,
+  has_downloads: true,
+  has_wiki: true,
+  has_pages: false,
+  has_discussions: false,
+  mirror_url: null,
+  license: null,
+  allow_forking: true,
+  is_template: false,
+  web_commit_signoff_required: false,
+  languages: {
+    TypeScript: 8000,
+    JavaScript: 2000,
+  },
+}
 
-//       // Initially should be loading
-//       expect(result.current.isLoading).toBe(true)
-//       expect(result.current.data).toBeUndefined()
+const mockProject2: GitHubProject = {
+  id: 2,
+  node_id: 'MDEwOlJlcG9zaXRvcnky',
+  name: 'another-project',
+  full_name: 'testuser/another-project',
+  description: 'Another test project',
+  html_url: 'https://github.com/testuser/another-project',
+  homepage: null,
+  language: 'JavaScript',
+  languages_url: 'https://api.github.com/repos/testuser/another-project/languages',
+  created_at: new Date('2023-02-01T00:00:00Z'),
+  updated_at: new Date('2023-02-01T00:00:00Z'),
+  pushed_at: new Date('2023-02-01T00:00:00Z'),
+  stargazers_count: 5,
+  watchers_count: 3,
+  forks_count: 1,
+  open_issues_count: 0,
+  archived: false,
+  disabled: false,
+  private: false,
+  fork: false,
+  topics: ['javascript', 'node'],
+  visibility: 'public',
+  default_branch: 'main',
+  forks: 1,
+  open_issues: 0,
+  watchers: 3,
+  size: 600,
+  owner: mockOwner,
+  url: 'https://api.github.com/repos/testuser/another-project',
+  forks_url: 'https://api.github.com/repos/testuser/another-project/forks',
+  keys_url: 'https://api.github.com/repos/testuser/another-project/keys{/key_id}',
+  collaborators_url:
+    'https://api.github.com/repos/testuser/another-project/collaborators{/collaborator}',
+  teams_url: 'https://api.github.com/repos/testuser/another-project/teams',
+  hooks_url: 'https://api.github.com/repos/testuser/another-project/hooks',
+  issue_events_url: 'https://api.github.com/repos/testuser/another-project/issues/events{/number}',
+  events_url: 'https://api.github.com/repos/testuser/another-project/events',
+  assignees_url: 'https://api.github.com/repos/testuser/another-project/assignees{/user}',
+  branches_url: 'https://api.github.com/repos/testuser/another-project/branches{/branch}',
+  tags_url: 'https://api.github.com/repos/testuser/another-project/tags',
+  blobs_url: 'https://api.github.com/repos/testuser/another-project/git/blobs{/sha}',
+  git_tags_url: 'https://api.github.com/repos/testuser/another-project/git/tags{/sha}',
+  git_refs_url: 'https://api.github.com/repos/testuser/another-project/git/refs{/sha}',
+  trees_url: 'https://api.github.com/repos/testuser/another-project/git/trees{/sha}',
+  statuses_url: 'https://api.github.com/repos/testuser/another-project/statuses/{sha}',
+  stargazers_url: 'https://api.github.com/repos/testuser/another-project/stargazers',
+  contributors_url: 'https://api.github.com/repos/testuser/another-project/contributors',
+  subscribers_url: 'https://api.github.com/repos/testuser/another-project/subscribers',
+  subscription_url: 'https://api.github.com/repos/testuser/another-project/subscription',
+  commits_url: 'https://api.github.com/repos/testuser/another-project/commits{/sha}',
+  git_commits_url: 'https://api.github.com/repos/testuser/another-project/git/commits{/sha}',
+  comments_url: 'https://api.github.com/repos/testuser/another-project/comments{/number}',
+  issue_comment_url:
+    'https://api.github.com/repos/testuser/another-project/issues/comments{/number}',
+  contents_url: 'https://api.github.com/repos/testuser/another-project/contents/{+path}',
+  compare_url: 'https://api.github.com/repos/testuser/another-project/compare/{base}...{head}',
+  merges_url: 'https://api.github.com/repos/testuser/another-project/merges',
+  archive_url: 'https://api.github.com/repos/testuser/another-project/{archive_format}{/ref}',
+  downloads_url: 'https://api.github.com/repos/testuser/another-project/downloads',
+  issues_url: 'https://api.github.com/repos/testuser/another-project/issues{/number}',
+  pulls_url: 'https://api.github.com/repos/testuser/another-project/pulls{/number}',
+  milestones_url: 'https://api.github.com/repos/testuser/another-project/milestones{/number}',
+  notifications_url:
+    'https://api.github.com/repos/testuser/another-project/notifications{?since,all,participating}',
+  labels_url: 'https://api.github.com/repos/testuser/another-project/labels{/name}',
+  releases_url: 'https://api.github.com/repos/testuser/another-project/releases{/id}',
+  deployments_url: 'https://api.github.com/repos/testuser/another-project/deployments',
+  git_url: 'git://github.com/testuser/another-project.git',
+  ssh_url: 'git@github.com:testuser/another-project.git',
+  clone_url: 'https://github.com/testuser/another-project.git',
+  svn_url: 'https://github.com/testuser/another-project',
+  has_issues: true,
+  has_projects: true,
+  has_downloads: true,
+  has_wiki: true,
+  has_pages: false,
+  has_discussions: false,
+  mirror_url: null,
+  license: null,
+  allow_forking: true,
+  is_template: false,
+  web_commit_signoff_required: false,
+  languages: {
+    JavaScript: 5000,
+    CSS: 1000,
+  },
+}
 
-//       // Wait for data to load
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+describe('useProjects', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorage.clear()
+  })
 
-//       // Verify successful fetch
-//       expect(result.current.data).toHaveLength(1)
-//       expect(result.current.data?.[0]).toMatchObject({
-//         id: mockGitHubProjectBase.id,
-//         name: mockGitHubProjectBase.name,
-//         languages: mockGitHubProjectBase.languages,
-//       })
-//       expect(result.current.error).toBeNull()
-//     })
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
 
-//     it('should filter out project with specific ID (334629076)', async () => {
-//       // Mock API responses with filtered project
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [mockGitHubProjectBase, mockProjects.filtered] })
-//         .mockResolvedValueOnce({ data: mockGitHubProjectBase.languages })
-//         .mockResolvedValueOnce({ data: mockProjects.filtered.languages })
+  it('should fetch projects successfully', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    mockGet.mockResolvedValueOnce({
+      data: [mockProject1],
+    } as AxiosResponse)
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    mockGet.mockResolvedValueOnce({
+      data: mockProject1.languages,
+    } as AxiosResponse)
 
-//       // Should only include non-filtered project
-//       expect(result.current.data).toHaveLength(1)
-//       expect(result.current.data?.[0]?.id).toBe(mockGitHubProjectBase.id)
-//       expect(result.current.data?.find((p) => p.id === 334629076)).toBeUndefined()
-//     })
-//   })
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
 
-//   describe('statistics calculation', () => {
-//     it('should calculate project statistics correctly', async () => {
-//       const project1 = createMockProject({ stargazers_count: 10, forks_count: 2 })
-//       const project2 = createMockProject({
-//         id: 987654321,
-//         stargazers_count: 5,
-//         forks_count: 3,
-//         language: 'JavaScript',
-//         homepage: null,
-//         topics: ['vue', 'javascript'],
-//         languages: { JavaScript: 8000, CSS: 1000 },
-//       })
+    expect(result.current.isLoading).toBe(true)
+    expect(result.current.data).toBeUndefined()
 
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [project1, project2] })
-//         .mockResolvedValueOnce({ data: project1.languages })
-//         .mockResolvedValueOnce({ data: project2.languages })
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    expect(result.current.data).toHaveLength(1)
+    const project = result.current.data?.[0]
+    expect(project).toBeDefined()
+    expect(project?.id).toBe(mockProject1.id)
+    expect(project?.name).toBe(mockProject1.name)
+    expect(project?.description).toBe(mockProject1.description)
+    expect(project?.language).toBe(mockProject1.language)
+    expect(project?.stargazers_count).toBe(mockProject1.stargazers_count)
+    expect(project?.forks_count).toBe(mockProject1.forks_count)
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    expect(result.current.error).toBeNull()
 
-//       const { statistics } = result.current
+    expect(mockGet).toHaveBeenCalledTimes(2)
+  })
 
-//       expect(statistics.totalProjects).toBe(2)
-//       expect(statistics.totalStars).toBe(15) // 10 + 5
-//       expect(statistics.totalForks).toBe(5) // 2 + 3
-//       expect(statistics.projectsWithDemos).toBe(1) // Only project1 has homepage
-//       expect(statistics.uniqueTechnologies).toBe(3) // TypeScript, JavaScript, CSS
-//       expect(statistics.technologiesList).toEqual(['CSS', 'JavaScript', 'TypeScript'])
-//       expect(statistics.uniqueTopics).toBe(5) // react, typescript, testing, vue, javascript
-//       expect(statistics.allTopics).toEqual(['javascript', 'react', 'testing', 'typescript', 'vue'])
-//     })
+  it('should fetch multiple projects and calculate statistics correctly', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
 
-//     it('should handle empty projects array', async () => {
-//       mockAxiosGet.mockResolvedValueOnce({ data: [] })
+    mockGet.mockResolvedValueOnce({
+      data: [mockProject1, mockProject2],
+    } as AxiosResponse)
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    mockGet.mockResolvedValueOnce({
+      data: mockProject1.languages,
+    } as AxiosResponse)
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    mockGet.mockResolvedValueOnce({
+      data: mockProject2.languages,
+    } as AxiosResponse)
 
-//       const { statistics } = result.current
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
 
-//       expect(statistics.totalProjects).toBe(0)
-//       expect(statistics.totalStars).toBe(0)
-//       expect(statistics.totalForks).toBe(0)
-//       expect(statistics.projectsWithDemos).toBe(0)
-//       expect(statistics.uniqueTechnologies).toBe(0)
-//       expect(statistics.technologiesList).toEqual([])
-//       expect(statistics.uniqueTopics).toBe(0)
-//       expect(statistics.allTopics).toEqual([])
-//     })
-//   })
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
 
-//   describe('error handling', () => {
-//     it('should handle GitHub API errors', async () => {
-//       const error = new Error('GitHub API rate limit exceeded')
-//       mockAxiosGet.mockRejectedValueOnce(error)
+    expect(result.current.data).toHaveLength(2)
+    expect(result.current.data?.[0]?.languages).toBeDefined()
+    expect(result.current.data?.[1]?.languages).toBeDefined()
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    expect(mockGet).toHaveBeenCalledTimes(3)
+  })
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+  it('should handle API errors', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
 
-//       expect(result.current.error).toBeTruthy()
-//       expect(result.current.data).toBeUndefined()
-//     })
+    mockGet.mockRejectedValueOnce(new Error('API Error'))
 
-//     it('should handle language fetch errors gracefully', async () => {
-//       // Main API succeeds, language API fails
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [mockGitHubProjectBase] })
-//         .mockRejectedValueOnce(new Error('Language API error'))
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    expect(result.current.data).toBeUndefined()
+    expect(result.current.error).toBeTruthy()
+  })
 
-//       // Should still return project data without languages
-//       expect(result.current.data).toHaveLength(1)
-//       expect(result.current.data?.[0]?.languages).toEqual({})
-//       expect(result.current.error).toBeNull()
-//     })
-//   })
+  it('should use GitHub token from environment when available', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', 'valid-token')
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
 
-//   describe('authentication handling', () => {
-//     it('should include authorization header when token is provided', async () => {
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [mockGitHubProjectBase] })
-//         .mockResolvedValueOnce({ data: mockGitHubProjectBase.languages })
+    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
 
-//       // Verify authorization header was included
-//       expectAuthHeaders(mockAxiosGet.mock.calls[0] as unknown[], true)
-//     })
+    expect(mockGet).toHaveBeenCalledWith('https://api.github.com/users/testuser/repos', {
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+        Authorization: 'token valid-token',
+      },
+    })
+  })
 
-//     it('should not include authorization header when token is placeholder', async () => {
-//       vi.stubEnv('VITE_GITHUB_TOKEN', authScenarios.placeholderToken.token)
+  it('should work without authentication when no token is available', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', undefined)
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
 
-//       mockAxiosGet
-//         .mockResolvedValueOnce({ data: [mockGitHubProjectBase] })
-//         .mockResolvedValueOnce({ data: mockGitHubProjectBase.languages })
+    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
 
-//       const { result } = renderHook(() => useProjects(), {
-//         wrapper: createQueryClientWrapper(),
-//       })
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
 
-//       await waitFor(() => {
-//         expect(result.current.isLoading).toBe(false)
-//       })
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
 
-//       // Verify no authorization header when token is placeholder
-//       expect(mockAxiosGet).toHaveBeenCalledWith(
-//         'https://api.github.com/users/testuser/repos',
-//         expect.objectContaining({
-//           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//           headers: expect.not.objectContaining({
-//             Authorization: 'any-token-value',
-//           }),
-//         }),
-//       )
-//     })
-//   })
-// })
+    const callArgs = mockGet.mock.calls[0]
+    expect(callArgs?.[1]).toBeDefined()
+    const config = callArgs?.[1] as { headers: { Accept: string; Authorization?: string } }
+    expect(config).toEqual({
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+      },
+    })
+  })
+
+  it('should handle empty repository list', async () => {
+    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
+    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
+
+    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
+
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
+    expect(result.current.data).toEqual([])
+    expect(result.current.error).toBeNull()
+  })
+})

@@ -1,13 +1,3 @@
-/**
- * Utilidades de testing para el módulo Projects
- *
- * Este archivo contiene:
- * - Mock data reutilizable para GitHubProject
- * - Funciones helper para crear test data
- * - Configuraciones comunes para tests
- * - Wrappers y providers compartidos
- */
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { expect, vi } from 'vitest'
 
