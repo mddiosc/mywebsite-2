@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { motion } from 'framer-motion'
 
 import { commonTransition, fadeIn } from '../lib/animations'
+import { useFaroPageTracking } from '../lib/faroPageTracking'
 
 import { Footer, Navbar } from '.'
 
@@ -43,6 +44,8 @@ const BackgroundDecoration = ({
 )
 
 const Layout = () => {
+  useFaroPageTracking()
+
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <Navbar />

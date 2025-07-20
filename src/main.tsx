@@ -6,9 +6,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
+import { initializeFaroSDK } from './lib/faro'
 import { queryClient } from './lib/queryClient'
 
 import './styles/index.css'
+
+// Inicializar Grafana Faro antes de renderizar la aplicación
+initializeFaroSDK()
 
 const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 

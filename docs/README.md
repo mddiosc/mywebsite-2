@@ -13,6 +13,7 @@ docs/
 │   ├── DEVELOPMENT.md      # Development setup and guidelines
 │   ├── I18N.md            # Internationalization implementation
 │   ├── TESTING.md         # Testing strategy and guidelines
+│   ├── GRAFANA_FARO.md    # Frontend observability with Grafana Faro
 │   └── CONTRIBUTING.md    # Contribution guidelines
 └── es/              # Spanish documentation
     ├── README.md           # Descripción del proyecto e inicio rápido
@@ -21,6 +22,7 @@ docs/
     ├── DEVELOPMENT.md      # Configuración de desarrollo y guías
     ├── I18N.md            # Implementación de internacionalización
     ├── TESTING.md         # Estrategia y guías de testing
+    ├── GRAFANA_FARO.md    # Observabilidad frontend con Grafana Faro
     └── CONTRIBUTING.md    # Guías de contribución
 ```
 
