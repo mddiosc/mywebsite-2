@@ -25,7 +25,10 @@ export const ContactFormSchema = z.object({
   email: z
     .string()
     .max(100, 'validation.email.max')
-    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'validation.email.invalid'),
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/,
+      'validation.email.invalid',
+    ),
   'project-type': z.enum(['personal', 'business', 'consulting', 'opensource', 'other']),
   message: z
     .string()
