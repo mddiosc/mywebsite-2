@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { render, RenderOptions } from '@testing-library/react'
+import { render, RenderOptions, RenderResult } from '@testing-library/react'
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -15,7 +15,10 @@ const createTestQueryClient = () =>
     },
   })
 
-export function renderWithProviders(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
+export function renderWithProviders(
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'wrapper'>,
+): RenderResult {
   const testQueryClient = createTestQueryClient()
   return render(ui, {
     wrapper: ({ children }) => (

@@ -2,7 +2,7 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "composite": true,
-    "types": ["node", "jsdom", "vitest/globals", "@testing-library/jest-dom", "vitest/importMeta"]
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom", "vitest/importMeta"]
   },
   "include": [
     "src/**/*.test.ts",
