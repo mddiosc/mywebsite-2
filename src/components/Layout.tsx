@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router'
 
+import { Analytics } from '@vercel/analytics/react'
 import { motion } from 'framer-motion'
 
 import { commonTransition, fadeIn } from '../lib/animations'
@@ -56,6 +57,7 @@ const Layout = () => {
         />
       </main>
       <Footer />
+      <Analytics />
     </div>
   )
 }
