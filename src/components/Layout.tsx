@@ -44,7 +44,7 @@ const BackgroundDecoration = ({
 
 const Layout = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-neutral-950">
+    <div className="flex min-h-screen flex-col bg-white">
       <Navbar />
       <main className="relative isolate flex min-h-[60vh] w-full flex-1">
         <BackgroundDecoration position="-top-40 sm:-top-80" rotate />

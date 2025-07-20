@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+:root {
+  color-scheme: light only;
+}
+
 @theme {
   --font-sans: InterVariable, sans-serif;
   --color-primary: #1d4ed8;
