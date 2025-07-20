@@ -30,7 +30,6 @@ export const initializeFaroSDK = () => {
   }
 
   const faroUrl = import.meta.env.VITE_GRAFANA_FARO_URL
-  const faroApiKey = import.meta.env.VITE_GRAFANA_FARO_API_KEY
 
   if (!faroUrl) {
     console.warn('Grafana Faro URL not configured')
@@ -40,7 +39,6 @@ export const initializeFaroSDK = () => {
   try {
     initializeFaro({
       url: faroUrl,
-      apiKey: faroApiKey,
       app: {
         name: 'mywebsite2.0',
         version: '1.0.0',
