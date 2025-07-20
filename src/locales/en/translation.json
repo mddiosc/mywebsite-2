@@ -134,7 +134,7 @@
   },
   "contact": {
     "letsWorkTogether": "Let's work together",
-    "description": "Proin volutpat consequat porttitor cras nullam gravida at orci molestie a eu arcu sed ut tincidunt magna.",
+    "description": "Do you have a project in mind or want to collaborate? I'd love to learn more about your idea. You can connect with me on LinkedIn for a quick chat or use the contact form to send me a detailed message.",
     "firstName": "First name",
     "lastName": "Last name",
     "email": "Email",
@@ -148,7 +148,45 @@
     "budget25k50k": "$25K – $50K",
     "budget50k100k": "$50K – $100K",
     "budgetOver100k": "$100K+",
-    "sendMessage": "Send message"
+    "sendMessage": "Send message",
+    "sending": "Sending...",
+    "successTitle": "Message sent successfully!",
+    "successMessage": "Thank you for contacting me. I'll get back to you as soon as possible.",
+    "sendAnotherMessage": "Send another message",
+    "errorTitle": "Error sending message",
+    "errorMessage": "There was a problem sending your message. Please try again.",
+    "connectLinkedIn": "Connect on LinkedIn",
+    "orUseForm": "or use the form",
+    "name": "Name",
+    "namePlaceholder": "Your full name",
+    "emailPlaceholder": "your.email@example.com",
+    "projectType": "Project type",
+    "projectTypePlaceholder": "Select project type",
+    "projectTypes": {
+      "personal": "Personal project",
+      "business": "Business project",
+      "consulting": "Consulting",
+      "opensource": "Open source",
+      "other": "Other"
+    },
+    "message": "Message",
+    "messagePlaceholder": "Tell me about your project and how I can help you...",
+    "validation": {
+      "name": {
+        "min": "Name must be at least 2 characters",
+        "max": "Name cannot exceed 50 characters",
+        "invalid": "Name contains invalid characters"
+      },
+      "email": {
+        "max": "Email cannot exceed 100 characters",
+        "invalid": "Please enter a valid email"
+      },
+      "message": {
+        "min": "Message must be at least 10 characters",
+        "max": "Message cannot exceed 500 characters",
+        "suspicious": "Message contains suspicious content. Please review your text"
+      }
+    }
   },
   "footer": {
     "contact": "Contact",

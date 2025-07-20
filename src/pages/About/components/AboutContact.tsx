@@ -8,6 +8,7 @@ import { commonTransition, slideIn } from '@/lib/animations'
 
 const AboutContact = () => {
   const { t, i18n } = useTranslation()
+  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME
 
   return (
     <motion.div
@@ -24,7 +25,7 @@ const AboutContact = () => {
         <p className="mt-6 text-lg/8 text-gray-600">{t('pages.about.contact.content')}</p>
         <div className="mt-10 flex gap-x-6">
           <a
-            href="https://www.linkedin.com/in/mddiosc/"
+            href={`https://www.linkedin.com/in/${linkedinUsername}/`}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

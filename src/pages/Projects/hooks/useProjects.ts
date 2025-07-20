@@ -99,8 +99,8 @@ const fetchProjects = async (): Promise<GitHubProject[]> => {
   }
 
   // Add authorization header if token is available
-  const githubToken = import.meta.env['VITE_GITHUB_TOKEN'] as string | undefined
-  const githubUsername = (import.meta.env['VITE_GITHUB_USERNAME'] as string) || 'mddiosc'
+  const githubToken = import.meta.env.VITE_GITHUB_TOKEN as string | undefined
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME
 
   if (githubToken && githubToken !== 'your_github_token_here') {
     headers['Authorization'] = `token ${githubToken}`

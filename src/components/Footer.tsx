@@ -23,16 +23,19 @@ export default function Footer() {
   const { t, i18n } = useTranslation()
   const currentYear = new Date().getFullYear()
 
+  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME
+  const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME
+
   const navigation = [
     {
       name: 'GitHub',
-      href: 'https://github.com/mddiosc',
+      href: `https://github.com/${githubUsername}`,
       isInternal: false,
       icon: GitHubIcon,
     },
     {
       name: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/mddiosc/',
+      href: `https://www.linkedin.com/in/${linkedinUsername}/`,
       isInternal: false,
       icon: LinkedInIcon,
     },

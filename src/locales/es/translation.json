@@ -134,7 +134,7 @@
   },
   "contact": {
     "letsWorkTogether": "Trabajemos juntos",
-    "description": "Proin volutpat consequat porttitor cras nullam gravida at orci molestie a eu arcu sed ut tincidunt magna.",
+    "description": "¿Tienes un proyecto en mente o quieres colaborar? Me encantaría conocer más sobre tu idea. Puedes conectar conmigo en LinkedIn para una charla rápida o utilizar el formulario de contacto para enviarme un mensaje detallado.",
     "firstName": "Nombre",
     "lastName": "Apellido",
     "email": "Correo electrónico",
@@ -147,8 +147,46 @@
     "budgetUnder25k": "Menos de $25K",
     "budget25k50k": "$25K – $50K",
     "budget50k100k": "$50K – $100K",
-    "budgetOver100k": "Más de $100K",
-    "sendMessage": "Enviar mensaje"
+    "budgetOver100k": "$100K+",
+    "sendMessage": "Enviar mensaje",
+    "sending": "Enviando...",
+    "successTitle": "¡Mensaje enviado con éxito!",
+    "successMessage": "Gracias por contactarme. Te responderé lo antes posible.",
+    "sendAnotherMessage": "Enviar otro mensaje",
+    "errorTitle": "Error al enviar el mensaje",
+    "errorMessage": "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.",
+    "connectLinkedIn": "Conectar en LinkedIn",
+    "orUseForm": "o usa el formulario",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre completo",
+    "emailPlaceholder": "tu.email@ejemplo.com",
+    "projectType": "Tipo de proyecto",
+    "projectTypePlaceholder": "Selecciona el tipo de proyecto",
+    "projectTypes": {
+      "personal": "Proyecto personal",
+      "business": "Proyecto empresarial",
+      "consulting": "Consultoría",
+      "opensource": "Código abierto",
+      "other": "Otro"
+    },
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntame sobre tu proyecto y cómo puedo ayudarte...",
+    "validation": {
+      "name": {
+        "min": "El nombre debe tener al menos 2 caracteres",
+        "max": "El nombre no puede exceder 50 caracteres",
+        "invalid": "El nombre contiene caracteres no válidos"
+      },
+      "email": {
+        "max": "El email no puede exceder 100 caracteres",
+        "invalid": "Por favor ingresa un email válido"
+      },
+      "message": {
+        "min": "El mensaje debe tener al menos 10 caracteres",
+        "max": "El mensaje no puede exceder 500 caracteres",
+        "suspicious": "El mensaje contiene contenido sospechoso. Por favor revisa tu texto"
+      }
+    }
   },
   "footer": {
     "contact": "Contacto",
