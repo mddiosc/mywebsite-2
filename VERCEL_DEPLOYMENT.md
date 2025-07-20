@@ -65,7 +65,7 @@ Para cada variable de entorno:
 
 El proyecto está configurado para usar:
 
-- **Build Command**: `pnpm build:vercel`
+- **Build Command**: `pnpm build`
 - **Output Directory**: `dist`
 - **Install Command**: `pnpm install`
 

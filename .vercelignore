@@ -1,0 +1,28 @@
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+src/test/**
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Development files
+.env.local
+.env.development
+.env.test
+.eslintcache
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
