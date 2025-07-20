@@ -97,8 +97,9 @@ Después del deployment, verifica que:
 
 #### Error: TypeScript compilation issues
 
-- El proyecto usa `tsconfig.app.json` para production builds
-- Los archivos de test están excluidos del build de producción
+- El proyecto usa configuración de TypeScript separada para producción y testing
+- `tsconfig.json` raíz solo incluye configuración de producción
+- Los archivos de test están excluidos del build de producción automáticamente
 
 #### Variables de entorno no definidas
 

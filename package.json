@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc -b tsconfig.app.json && vite build",
-    "build:vercel": "tsc -b tsconfig.app.json && vite build",
+    "build": "tsc -b && vite build",
+    "build:vercel": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
@@ -19,7 +19,7 @@
     "test:coverage": "vitest run --coverage",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc -b --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
