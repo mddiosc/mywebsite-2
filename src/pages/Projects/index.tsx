@@ -63,10 +63,12 @@ const ProjectsPage = () => {
         {hasTopics && <TopicsDisplay topics={statistics.allTopics} />}
 
         {/* Error State */}
-        <ProjectsError error={error} />
+        {error && <ProjectsError error={error} />}
 
-        {/* Projects Grid */}
-        {projects && <ProjectsGrid projects={projects} isLoading={isLoading} error={error} />}
+        {/* Projects Grid - Always render unless there's an error or empty state */}
+        {!error && !isEmpty && (
+          <ProjectsGrid projects={projects ?? []} isLoading={isLoading} error={error} />
+        )}
 
         {/* Empty State */}
         {isEmpty && <ProjectsEmptyState />}
