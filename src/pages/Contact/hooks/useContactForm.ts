@@ -12,7 +12,6 @@ import { useMutation } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { z } from 'zod'
 
-import { useFaroLogger } from '../../../lib/faro'
 import { ContactFormSchema, type ContactFormData, type SubmitFormOptions } from '../types'
 
 /**
@@ -103,23 +102,15 @@ const submitContactForm = async (
 
 export const useContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const { logEvent, logError } = useFaroLogger()
 
   const mutation = useMutation({
     mutationFn: async (data: ContactFormData) => {
-      logEvent('contact_form_submission_started', {
-        projectType: data['project-type'],
-        hasRecaptcha: !!executeRecaptcha,
-      })
-
       let recaptchaToken: string | undefined
       if (executeRecaptcha) {
         try {
           recaptchaToken = await executeRecaptcha('contact_form')
-          logEvent('recaptcha_success', { action: 'contact_form' })
         } catch (error) {
           console.warn('reCAPTCHA execution failed:', error)
-          logError(error as Error, { context: 'recaptcha_execution' })
         }
       }
 
@@ -127,17 +118,12 @@ export const useContactForm = () => {
     },
     onSuccess: (response) => {
       console.log('Message sent successfully! Status:', response.status)
-      logEvent('contact_form_submission_success', {
-        status: response.status,
-        isRedirect: response.status === 302,
-      })
       if (response.status === 302) {
         console.log('Getform.io redirect response (expected behavior)')
       }
     },
     onError: (error) => {
       console.error('Error sending message:', error)
-      logError(error, { context: 'contact_form_submission' })
     },
   })
 
