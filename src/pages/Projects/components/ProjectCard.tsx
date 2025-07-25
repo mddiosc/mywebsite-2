@@ -73,15 +73,15 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           window.open(project.html_url, '_blank')
         }
       }}
-      className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-lg"
+      className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="aspect-h-4 aspect-w-3 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-48">
+      <div className="aspect-h-3 aspect-w-4 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-40">
         <div className="h-full w-full bg-gradient-to-br from-indigo-50 to-indigo-100 object-cover object-center sm:h-full sm:w-full">
           <div className="flex h-full items-center justify-center">
             {/* Project icon/illustration */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-16 w-16 text-indigo-300"
+              className="h-14 w-14 text-indigo-300"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
@@ -94,18 +94,22 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex flex-col space-y-2">
-          <h3 className="text-lg font-medium text-gray-900">
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex flex-col space-y-3">
+          <h3 className="text-lg font-semibold text-gray-900">
             <a href={project.html_url} target="_blank" rel="noopener noreferrer">
               {project.name}
             </a>
           </h3>
-          <p className="line-clamp-3 min-h-[4.5rem] text-sm text-gray-500">{project.description}</p>
+          <div className="flex-1">
+            <p className="text-sm leading-relaxed text-gray-600">
+              {project.description ?? 'No description available'}
+            </p>
+          </div>
         </div>
 
-        <div className="mt-4 flex flex-1 flex-col justify-between">
-          <div className="space-y-3">
+        <div className="mt-6 flex flex-1 flex-col justify-between">
+          <div className="space-y-4">
             {/* Display multiple languages if available */}
             {hasMultipleLanguages ? (
               <div>
@@ -153,11 +157,11 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
               </div>
             )}
 
-            {/* Topics/Tags - Fixed height container */}
-            <div className="h-16">
+            {/* Topics/Tags - Flexible height container */}
+            <div className="mt-auto">
               {project.topics.length > 0 ? (
                 <div className="flex flex-wrap gap-1">
-                  {project.topics.slice(0, 3).map((topic) => (
+                  {project.topics.slice(0, 4).map((topic) => (
                     <span
                       key={topic}
                       className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
@@ -165,9 +169,9 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                       {topic}
                     </span>
                   ))}
-                  {project.topics.length > 3 && (
+                  {project.topics.length > 4 && (
                     <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-500">
-                      +{project.topics.length - 3}
+                      +{project.topics.length - 4}
                     </span>
                   )}
                 </div>
@@ -176,8 +180,8 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           </div>
 
           {/* Bottom section - always at the bottom */}
-          <div className="space-y-3">
-            <p className="text-sm text-gray-500">Updated on {formattedDate}</p>
+          <div className="mt-6 space-y-4">
+            <p className="text-xs text-gray-500">Updated on {formattedDate}</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-x-3">
                 {/* Stars count */}
