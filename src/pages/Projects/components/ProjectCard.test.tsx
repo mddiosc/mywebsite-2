@@ -176,14 +176,15 @@ describe('ProjectCard', () => {
 
     it('should format date correctly in Spanish locale', () => {
       const project = createMockProject({
+        created_at: new Date('2023-01-01T00:00:00Z'),
         updated_at: new Date('2023-12-25T10:30:00Z'),
       })
 
       render(<ProjectCard project={project} delay={0} />)
 
-      // Should format date in Spanish locale as per the component
-      expect(screen.getByText(/diciembre/)).toBeInTheDocument()
-      expect(screen.getByText(/2023/)).toBeInTheDocument()
+      // Should format both dates in Spanish locale as per the component
+      expect(screen.getByText(/Created on 1 de enero de 2023/)).toBeInTheDocument()
+      expect(screen.getByText(/Updated on 25 de diciembre de 2023/)).toBeInTheDocument()
     })
   })
 

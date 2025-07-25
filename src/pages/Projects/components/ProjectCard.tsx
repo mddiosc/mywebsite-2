@@ -65,7 +65,13 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
 
-  const formattedDate = new Date(project.updated_at).toLocaleDateString('es-ES', {
+  const formattedUpdatedDate = new Date(project.updated_at).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+
+  const formattedCreatedDate = new Date(project.created_at).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -241,9 +247,10 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
 
         {/* Bottom section - Always at the bottom with consistent height */}
         <div className="mt-auto">
-          {/* Fixed height container for date */}
-          <div className="mb-3 h-4">
-            <p className="text-xs text-gray-500">Updated on {formattedDate}</p>
+          {/* Fixed height container for dates */}
+          <div className="mb-3 h-8 space-y-1">
+            <p className="text-xs text-gray-500">Created on {formattedCreatedDate}</p>
+            <p className="text-xs text-gray-500">Updated on {formattedUpdatedDate}</p>
           </div>
 
           {/* Fixed height container for actions */}
