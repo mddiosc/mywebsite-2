@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   autoUpdate,
@@ -49,6 +50,7 @@ interface ProjectCardProps {
  * @param delay - Animation delay for the card entrance
  */
 const ProjectCard = ({ project, delay }: ProjectCardProps) => {
+  const { t, i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   const { refs, floatingStyles, context } = useFloating({
@@ -65,13 +67,16 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
 
-  const formattedUpdatedDate = new Date(project.updated_at).toLocaleDateString('es-ES', {
+  // Get current language from i18n
+  const currentLocale = i18n.language === 'es' ? 'es-ES' : 'en-US'
+
+  const formattedUpdatedDate = new Date(project.updated_at).toLocaleDateString(currentLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 
-  const formattedCreatedDate = new Date(project.created_at).toLocaleDateString('es-ES', {
+  const formattedCreatedDate = new Date(project.created_at).toLocaleDateString(currentLocale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -153,7 +158,9 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           {/* Display multiple languages if available */}
           {hasMultipleLanguages ? (
             <div>
-              <p className="mb-1 text-sm font-medium text-gray-500">Languages:</p>
+              <p className="mb-1 text-sm font-medium text-gray-500">
+                {t('pages.projects.card.languages')}
+              </p>
               <div className="flex flex-wrap gap-1">
                 {/* Languages progress bar */}
                 <div className="flex h-2 w-full overflow-hidden rounded-full bg-gray-100">
@@ -215,7 +222,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                     {...getReferenceProps()}
                     className="inline-flex cursor-help items-center rounded-md bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-200"
                   >
-                    +{project.topics.length - 4} more
+                    +{project.topics.length - 4} {t('pages.projects.card.moreTopics')}
                   </span>
                   {isOpen && (
                     <FloatingPortal>
@@ -225,7 +232,9 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                         {...getFloatingProps()}
                         className="z-50 w-max max-w-xs rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg"
                       >
-                        <p className="mb-2 text-xs font-medium text-gray-600">Additional topics:</p>
+                        <p className="mb-2 text-xs font-medium text-gray-600">
+                          {t('pages.projects.card.additionalTopics')}
+                        </p>
                         <div className="flex flex-wrap gap-1">
                           {project.topics.slice(4).map((topic) => (
                             <span
@@ -249,8 +258,12 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         <div className="mt-auto">
           {/* Fixed height container for dates */}
           <div className="mb-3 h-8 space-y-1">
-            <p className="text-xs text-gray-500">Created on {formattedCreatedDate}</p>
-            <p className="text-xs text-gray-500">Updated on {formattedUpdatedDate}</p>
+            <p className="text-xs text-gray-500">
+              {t('pages.projects.card.createdOn')} {formattedCreatedDate}
+            </p>
+            <p className="text-xs text-gray-500">
+              {t('pages.projects.card.updatedOn')} {formattedUpdatedDate}
+            </p>
           </div>
 
           {/* Fixed height container for actions */}
@@ -306,7 +319,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                       d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"
                     />
                   </svg>
-                  Demo
+                  {t('pages.projects.card.demo')}
                 </a>
               )}
             </div>
