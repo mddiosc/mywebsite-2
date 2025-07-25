@@ -9,8 +9,7 @@ Welcome to the complete documentation for Miguel Ángel de Dios's personal portf
 - [🎨 UI Components Documentation](./COMPONENTS.md)
 - [🌐 Internationalization Guide](./I18N.md)
 - [🧪 Testing Documentation](./TESTING.md)
-- [📋 Contributing Guidelines](./CONTRIBUTING.md)
-- [📈 Performance Guide](./PERFORMANCE.md)
+- [� reCAPTCHA Setup Guide](./RECAPTCHA_SETUP.md)
 
 ## 🌟 Project Overview
 
@@ -164,16 +163,7 @@ For detailed information about specific aspects of the project, please refer to 
 - **[Components](./COMPONENTS.md)** - UI component library and usage guidelines
 - **[Internationalization](./I18N.md)** - Multi-language support implementation
 - **[Testing](./TESTING.md)** - Testing strategies and coverage guidelines
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](./CONTRIBUTING.md) for detailed information about:
-
-- Code of conduct
-- Development workflow
-- Pull request process
-- Coding standards
-- Testing requirements
+- **[reCAPTCHA Setup](./RECAPTCHA_SETUP.md)** - Anti-spam protection configuration
 
 ## 📄 License
 

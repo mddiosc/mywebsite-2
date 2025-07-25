@@ -66,7 +66,7 @@ pnpm preview
 - [🎨 UI Components](./docs/en/COMPONENTS.md)
 - [🌐 Internationalization](./docs/en/I18N.md)
 - [🧪 Testing](./docs/en/TESTING.md)
-- [📋 Contributing](./docs/en/CONTRIBUTING.md)
+- [📋 reCAPTCHA Setup](./docs/en/RECAPTCHA_SETUP.md)
 
 ## 🛠️ Tech Stack
 
@@ -143,10 +143,6 @@ pnpm test             # Run tests
 pnpm test:watch       # Run tests in watch mode
 pnpm test:coverage    # Run tests with coverage
 ```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](./docs/en/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ## 📄 License
 

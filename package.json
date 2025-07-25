@@ -90,6 +90,9 @@
     "ignoredBuiltDependencies": [
       "@swc/core",
       "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "@vercel/speed-insights"
     ]
   }
 }
