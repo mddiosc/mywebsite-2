@@ -29,18 +29,16 @@ const ProjectsGrid = ({ projects, isLoading, error }: ProjectsGridProps) => {
       {/* Projects loaded */}
       {!isLoading &&
         !error &&
-        projects
-          .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-          .map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              delay={
-                PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_BASE +
-                index * PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_INCREMENT
-              }
-            />
-          ))}
+        projects.map((project, index) => (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            delay={
+              PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_BASE +
+              index * PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_INCREMENT
+            }
+          />
+        ))}
     </motion.div>
   )
 }
