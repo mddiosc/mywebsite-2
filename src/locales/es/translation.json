@@ -83,7 +83,17 @@
       },
       "topics": {
         "title": "Tecnologías y Temas Populares",
-        "description": "Topics y etiquetas que uso frecuentemente en mis proyectos"
+        "description": "Topics y etiquetas que uso frecuentemente en mis proyectos",
+        "additionalTopics": "Topics adicionales:"
+      },
+      "card": {
+        "createdOn": "Creado el",
+        "updatedOn": "Actualizado el",
+        "languages": "Lenguajes:",
+        "noLanguage": "Lenguaje no especificado",
+        "noDescription": "Descripción no disponible",
+        "demo": "Demo",
+        "moreTopics": "más"
       },
       "githubInfo": "Mostrando {{count}} repositorios de GitHub",
       "error": {
