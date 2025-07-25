@@ -59,7 +59,7 @@ pnpm preview
 - [**🧩 Documentación de Componentes**](./COMPONENTS.md) - APIs, props y ejemplos de uso
 - [**🌐 Guía de Internacionalización**](./I18N.md) - Configuración multiidioma completa
 - [**🧪 Guía de Pruebas**](./TESTING.md) - Estrategias y configuración de testing
-- [**🤝 Guía de Contribución**](./CONTRIBUTING.md) - Cómo contribuir al proyecto efectivamente
+- [**🔒 Configuración de reCAPTCHA**](./RECAPTCHA_SETUP.md) - Guía de configuración de protección anti-spam
 
 ## 🛠️ Stack Tecnológico
 
@@ -136,10 +136,6 @@ pnpm test             # Ejecutar pruebas
 pnpm test:watch       # Ejecutar pruebas en modo watch
 pnpm test:coverage    # Ejecutar pruebas con cobertura
 ```
-
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Por favor lee nuestra [Guía de Contribución](./CONTRIBUTING.md) para detalles sobre nuestro código de conducta y el proceso para enviar pull requests.
 
 ## 📄 Licencia
 

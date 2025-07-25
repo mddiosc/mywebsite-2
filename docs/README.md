@@ -13,7 +13,7 @@ docs/
 │   ├── DEVELOPMENT.md      # Development setup and guidelines
 │   ├── I18N.md            # Internationalization implementation
 │   ├── TESTING.md         # Testing strategy and guidelines
-│   └── CONTRIBUTING.md    # Contribution guidelines
+│   └── RECAPTCHA_SETUP.md # reCAPTCHA configuration guide
 └── es/              # Spanish documentation
     ├── README.md           # Descripción del proyecto e inicio rápido
     ├── ARCHITECTURE.md     # Arquitectura del sistema y patrones de diseño
@@ -21,7 +21,7 @@ docs/
     ├── DEVELOPMENT.md      # Configuración de desarrollo y guías
     ├── I18N.md            # Implementación de internacionalización
     ├── TESTING.md         # Estrategia y guías de testing
-    └── CONTRIBUTING.md    # Guías de contribución
+    └── RECAPTCHA_SETUP.md # Guía de configuración de reCAPTCHA
 ```
 
 ## 🌍 Language Support
@@ -70,7 +70,7 @@ When making changes:
 
 ## 📖 Reading Order
 
-For new contributors, we recommend reading the documentation in this order:
+For developers working with this project, we recommend reading the documentation in this order:
 
 1. **README** - Project overview and quick start
 2. **DEVELOPMENT** - Setup and development workflow
@@ -78,6 +78,6 @@ For new contributors, we recommend reading the documentation in this order:
 4. **COMPONENTS** - Component library details
 5. **I18N** - Internationalization approach
 6. **TESTING** - Testing strategy
-7. **CONTRIBUTING** - Contribution guidelines
+7. **RECAPTCHA_SETUP** - Anti-spam protection setup
 
 Each document is self-contained but cross-references related topics for deeper understanding.
