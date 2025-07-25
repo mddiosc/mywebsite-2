@@ -1,3 +1,18 @@
+import { useState } from 'react'
+
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift,
+  useFloating,
+  useHover,
+  useFocus,
+  useDismiss,
+  useRole,
+  useInteractions,
+} from '@floating-ui/react'
 import { motion } from 'framer-motion'
 
 import { GitHubProject } from '@/types'
@@ -34,6 +49,22 @@ interface ProjectCardProps {
  * @param delay - Animation delay for the card entrance
  */
 const ProjectCard = ({ project, delay }: ProjectCardProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    middleware: [offset(8), flip(), shift({ padding: 8 })],
+    whileElementsMounted: autoUpdate,
+  })
+
+  const hover = useHover(context)
+  const focus = useFocus(context)
+  const dismiss = useDismiss(context)
+  const role = useRole(context, { role: 'tooltip' })
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
+
   const formattedDate = new Date(project.updated_at).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
@@ -73,9 +104,9 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           window.open(project.html_url, '_blank')
         }
       }}
-      className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+      className="group relative flex h-full cursor-pointer flex-col rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="aspect-h-3 aspect-w-4 sm:aspect-none bg-gray-200 group-hover:opacity-75 sm:h-40">
+      <div className="aspect-h-3 aspect-w-4 sm:aspect-none overflow-hidden bg-gray-200 group-hover:opacity-75 sm:h-40">
         <div className="h-full w-full bg-gradient-to-br from-indigo-50 to-indigo-100 object-cover object-center sm:h-full sm:w-full">
           <div className="flex h-full items-center justify-center">
             {/* Project icon/illustration */}
@@ -172,9 +203,37 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                 </span>
               ))}
               {project.topics.length > 4 && (
-                <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-500">
-                  +{project.topics.length - 4}
-                </span>
+                <>
+                  <span
+                    ref={refs.setReference}
+                    {...getReferenceProps()}
+                    className="inline-flex cursor-help items-center rounded-md bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-200"
+                  >
+                    +{project.topics.length - 4} more
+                  </span>
+                  {isOpen && (
+                    <FloatingPortal>
+                      <div
+                        ref={refs.setFloating}
+                        style={floatingStyles}
+                        {...getFloatingProps()}
+                        className="z-50 w-max max-w-xs rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg"
+                      >
+                        <p className="mb-2 text-xs font-medium text-gray-600">Additional topics:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {project.topics.slice(4).map((topic) => (
+                            <span
+                              key={topic}
+                              className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
+                            >
+                              {topic}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </FloatingPortal>
+                  )}
+                </>
               )}
             </div>
           ) : null}

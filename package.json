@@ -22,6 +22,7 @@
     "type-check": "tsc -b --noEmit"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.13",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.1.1",
