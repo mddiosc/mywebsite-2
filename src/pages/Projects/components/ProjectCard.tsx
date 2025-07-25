@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -51,21 +51,49 @@ interface ProjectCardProps {
  */
 const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   const { t, i18n } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
+  const [isTopicsOpen, setIsTopicsOpen] = useState(false)
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
+  const [isDescriptionTruncated, setIsDescriptionTruncated] = useState(false)
+  const descriptionTextRef = useRef<HTMLParagraphElement>(null)
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
+  const {
+    refs: topicsRefs,
+    floatingStyles: topicsFloatingStyles,
+    context: topicsContext,
+  } = useFloating({
+    open: isTopicsOpen,
+    onOpenChange: setIsTopicsOpen,
     middleware: [offset(8), flip(), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
   })
 
-  const hover = useHover(context)
-  const focus = useFocus(context)
-  const dismiss = useDismiss(context)
-  const role = useRole(context, { role: 'tooltip' })
+  const {
+    refs: descriptionRefs,
+    floatingStyles: descriptionFloatingStyles,
+    context: descriptionContext,
+  } = useFloating({
+    open: isDescriptionOpen,
+    onOpenChange: setIsDescriptionOpen,
+    middleware: [offset(8), flip(), shift({ padding: 8 })],
+    whileElementsMounted: autoUpdate,
+  })
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, dismiss, role])
+  const topicsHover = useHover(topicsContext)
+  const topicsFocus = useFocus(topicsContext)
+  const topicsDismiss = useDismiss(topicsContext)
+  const topicsRole = useRole(topicsContext, { role: 'tooltip' })
+
+  const descriptionHover = useHover(descriptionContext)
+  const descriptionFocus = useFocus(descriptionContext)
+  const descriptionDismiss = useDismiss(descriptionContext)
+  const descriptionRole = useRole(descriptionContext, { role: 'tooltip' })
+
+  const { getReferenceProps: getTopicsReferenceProps, getFloatingProps: getTopicsFloatingProps } =
+    useInteractions([topicsHover, topicsFocus, topicsDismiss, topicsRole])
+  const {
+    getReferenceProps: getDescriptionReferenceProps,
+    getFloatingProps: getDescriptionFloatingProps,
+  } = useInteractions([descriptionHover, descriptionFocus, descriptionDismiss, descriptionRole])
 
   // Get current language from i18n
   const currentLocale = i18n.language === 'es' ? 'es-ES' : 'en-US'
@@ -103,6 +131,19 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         .slice(0, 4)
     : []
 
+  // Get description with fallback
+  const description = project.description ?? t('pages.projects.card.noDescription')
+
+  // Effect to check if description is truncated by checking scroll height vs client height
+  useEffect(() => {
+    if (descriptionTextRef.current) {
+      const element = descriptionTextRef.current
+      // Check if content overflows the container (is truncated)
+      const isTruncated = element.scrollHeight > element.clientHeight
+      setIsDescriptionTruncated(isTruncated)
+    }
+  }, [description])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -111,7 +152,9 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
       onClick={(e) => {
         // Only navigate to GitHub if not clicking on an interactive element
         const target = e.target as HTMLElement
-        if (!target.closest('a')) {
+        const hasHelperCursor =
+          target.classList.contains('cursor-help') || target.closest('.cursor-help')
+        if (!target.closest('a') && !target.closest('button') && !hasHelperCursor) {
           window.open(project.html_url, '_blank')
         }
       }}
@@ -147,10 +190,36 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         </div>
 
         {/* Description section - Fixed height */}
-        <div className="mb-4 h-24 overflow-hidden">
-          <p className="line-clamp-5 text-sm leading-relaxed text-gray-600">
-            {project.description ?? 'No description available'}
-          </p>
+        <div className="mb-4 h-24">
+          <div className="relative h-full">
+            <div
+              ref={isDescriptionTruncated ? descriptionRefs.setReference : undefined}
+              {...(isDescriptionTruncated ? getDescriptionReferenceProps() : {})}
+              className={`h-full overflow-hidden ${isDescriptionTruncated ? 'cursor-help' : ''}`}
+            >
+              <p
+                ref={descriptionTextRef}
+                className="line-clamp-4 text-sm leading-relaxed text-gray-600"
+              >
+                {description}
+              </p>
+            </div>
+            {isDescriptionOpen && isDescriptionTruncated && (
+              <FloatingPortal>
+                <div
+                  ref={descriptionRefs.setFloating}
+                  style={descriptionFloatingStyles}
+                  {...getDescriptionFloatingProps()}
+                  className="z-50 w-max max-w-md rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-lg"
+                >
+                  <p className="mb-2 text-xs font-medium text-gray-600">
+                    {t('pages.projects.card.fullDescription')}
+                  </p>
+                  <p className="text-sm leading-relaxed text-gray-700">{description}</p>
+                </div>
+              </FloatingPortal>
+            )}
+          </div>
         </div>
 
         {/* Languages section - Fixed height */}
@@ -218,18 +287,18 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
               {project.topics.length > 4 && (
                 <>
                   <span
-                    ref={refs.setReference}
-                    {...getReferenceProps()}
+                    ref={topicsRefs.setReference}
+                    {...getTopicsReferenceProps()}
                     className="inline-flex cursor-help items-center rounded-md bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-200"
                   >
                     +{project.topics.length - 4} {t('pages.projects.card.moreTopics')}
                   </span>
-                  {isOpen && (
+                  {isTopicsOpen && (
                     <FloatingPortal>
                       <div
-                        ref={refs.setFloating}
-                        style={floatingStyles}
-                        {...getFloatingProps()}
+                        ref={topicsRefs.setFloating}
+                        style={topicsFloatingStyles}
+                        {...getTopicsFloatingProps()}
                         className="z-50 w-max max-w-xs rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg"
                       >
                         <p className="mb-2 text-xs font-medium text-gray-600">

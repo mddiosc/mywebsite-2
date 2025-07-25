@@ -93,7 +93,10 @@
         "noLanguage": "No language specified",
         "noDescription": "No description available",
         "demo": "Demo",
-        "moreTopics": "more"
+        "moreTopics": "more",
+        "showFullDescription": "Show full description",
+        "fullDescription": "Full description:",
+        "additionalTopics": "Additional topics:"
       },
       "githubInfo": "Showing {{count}} repositories from GitHub",
       "error": {
