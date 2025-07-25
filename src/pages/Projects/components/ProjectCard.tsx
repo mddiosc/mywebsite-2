@@ -78,12 +78,16 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
     whileElementsMounted: autoUpdate,
   })
 
-  const topicsHover = useHover(topicsContext)
+  const topicsHover = useHover(topicsContext, {
+    enabled: !('ontouchstart' in window), // Disable hover on touch devices
+  })
   const topicsFocus = useFocus(topicsContext)
   const topicsDismiss = useDismiss(topicsContext)
   const topicsRole = useRole(topicsContext, { role: 'tooltip' })
 
-  const descriptionHover = useHover(descriptionContext)
+  const descriptionHover = useHover(descriptionContext, {
+    enabled: !('ontouchstart' in window), // Disable hover on touch devices
+  })
   const descriptionFocus = useFocus(descriptionContext)
   const descriptionDismiss = useDismiss(descriptionContext)
   const descriptionRole = useRole(descriptionContext, { role: 'tooltip' })
@@ -144,6 +148,22 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
     }
   }, [description])
 
+  // Handle mobile tap for description tooltip
+  const handleDescriptionClick = (e: React.MouseEvent) => {
+    if ('ontouchstart' in window && isDescriptionTruncated) {
+      e.stopPropagation()
+      setIsDescriptionOpen(!isDescriptionOpen)
+    }
+  }
+
+  // Handle mobile tap for topics tooltip
+  const handleTopicsClick = (e: React.MouseEvent) => {
+    if ('ontouchstart' in window) {
+      e.stopPropagation()
+      setIsTopicsOpen(!isTopicsOpen)
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -196,6 +216,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
               ref={isDescriptionTruncated ? descriptionRefs.setReference : undefined}
               {...(isDescriptionTruncated ? getDescriptionReferenceProps() : {})}
               className={`h-full overflow-hidden ${isDescriptionTruncated ? 'cursor-help' : ''}`}
+              onClick={handleDescriptionClick}
             >
               <p
                 ref={descriptionTextRef}
@@ -212,10 +233,34 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                   {...getDescriptionFloatingProps()}
                   className="z-50 w-max max-w-md rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm shadow-lg"
                 >
-                  <p className="mb-2 text-xs font-medium text-gray-600">
-                    {t('pages.projects.card.fullDescription')}
-                  </p>
-                  <p className="text-sm leading-relaxed text-gray-700">{description}</p>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="mb-2 text-xs font-medium text-gray-600">
+                        {t('pages.projects.card.fullDescription')}
+                      </p>
+                      <p className="text-sm leading-relaxed text-gray-700">{description}</p>
+                    </div>
+                    {/* Close button for mobile */}
+                    {'ontouchstart' in window && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setIsDescriptionOpen(false)
+                        }}
+                        className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                        aria-label="Cerrar"
+                      >
+                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </FloatingPortal>
             )}
@@ -289,6 +334,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                   <span
                     ref={topicsRefs.setReference}
                     {...getTopicsReferenceProps()}
+                    onClick={handleTopicsClick}
                     className="inline-flex cursor-help items-center rounded-md bg-indigo-100 px-2 py-1 text-xs font-medium text-indigo-600 transition-colors hover:bg-indigo-200"
                   >
                     +{project.topics.length - 4} {t('pages.projects.card.moreTopics')}
@@ -301,18 +347,42 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                         {...getTopicsFloatingProps()}
                         className="z-50 w-max max-w-xs rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg"
                       >
-                        <p className="mb-2 text-xs font-medium text-gray-600">
-                          {t('pages.projects.card.additionalTopics')}
-                        </p>
-                        <div className="flex flex-wrap gap-1">
-                          {project.topics.slice(4).map((topic) => (
-                            <span
-                              key={topic}
-                              className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <p className="mb-2 text-xs font-medium text-gray-600">
+                              {t('pages.projects.card.additionalTopics')}
+                            </p>
+                            <div className="flex flex-wrap gap-1">
+                              {project.topics.slice(4).map((topic) => (
+                                <span
+                                  key={topic}
+                                  className="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
+                                >
+                                  {topic}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          {/* Close button for mobile */}
+                          {'ontouchstart' in window && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setIsTopicsOpen(false)
+                              }}
+                              className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                              aria-label="Cerrar"
                             >
-                              {topic}
-                            </span>
-                          ))}
+                              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                  fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          )}
                         </div>
                       </div>
                     </FloatingPortal>
