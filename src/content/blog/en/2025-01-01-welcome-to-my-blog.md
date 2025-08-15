@@ -1,7 +1,7 @@
 ---
 title: "Welcome to my Personal Blog"
 description: "An introduction to my new personal blog where I'll share thoughts about web development, technology, and more."
-date: "2025-08-15"
+date: "2025-01-01"
 tags: ["personal", "blog", "introduction"]
 author: "Miguel Ángel de Dios"
 slug: "welcome-to-my-blog"
@@ -10,13 +10,21 @@ featured: true
 
 Hello! 👋 I'm excited to welcome you to my personal blog, a space where I'll share my thoughts, experiences, and knowledge about web development and technology.
 
+I'm a frontend developer specialized in React and TypeScript, with a unique perspective on building robust and scalable web applications. My previous experience with critical systems has given me a particular vision about the importance of performance, precision, and user experience.
+
+## My approach to development
+
+I firmly believe that the best web applications combine technical elegance with simplicity of use. My work focuses on creating interfaces that are intuitive for users but solid inside, applying engineering principles I've learned working with systems that handle millions of transactions.
+
 ## What will you find here?
 
 In this blog, I plan to write about:
 
 - **Frontend Development**: Tutorials, tips, and best practices with React, TypeScript, and other modern technologies
-- **Professional Experiences**: Reflections on projects, challenges, and learnings in my career
+- **Application Architecture**: Technical decisions, trade-offs, and patterns that work in the real world
+- **Professional Experiences**: Reflections on current projects, challenges, and learnings in my daily work
 - **Technology**: Analysis of new tools, frameworks, and trends in the development world
+- **Performance and optimization**: Techniques for creating fast and efficient web applications
 - **Personal Thoughts**: Ideas about the tech industry, productivity, and professional growth
 
 ## My Tech Stack

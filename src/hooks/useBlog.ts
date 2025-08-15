@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useQuery } from '@tanstack/react-query'
 
-import type { BlogPost, BlogPostMeta, BlogLanguage } from '../types/blog'
+import type { BlogPost, BlogLanguage } from '../types/blog'
 
 function calculateReadingTime(content: string): number {
   const wordsPerMinute = 200
@@ -63,33 +63,60 @@ function parseFrontmatter(content: string): { meta: Record<string, unknown>; con
 
 async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
   try {
+    // Simulamos el delay para mostrar el loading state
     await new Promise((resolve) => setTimeout(resolve, 100))
-
-    const modules = import.meta.glob('/src/content/blog/**/*.md', {
-      eager: true,
-      query: '?raw',
-      import: 'default',
-    })
 
     const posts: BlogPost[] = []
 
-    for (const [path, content] of Object.entries(modules)) {
-      if (!path.includes(`/${language}/`)) continue
+    // Usamos import.meta.glob para cargar los archivos markdown
+    const modules = import.meta.glob('/src/content/blog/**/*.md', {
+      query: '?raw',
+      import: 'default',
+      eager: false,
+    })
 
-      const { meta, content: markdownContent } = parseFrontmatter(content as string)
+    for (const [filePath, moduleLoader] of Object.entries(modules)) {
+      // Verificamos si el archivo corresponde al idioma actual
+      if (!filePath.includes(`/blog/${language}/`)) continue
 
-      if (!meta['title'] || !meta['slug'] || !meta['date']) continue
+      try {
+        const content = await moduleLoader()
 
-      const post: BlogPost = {
-        meta: meta as unknown as BlogPostMeta,
-        content: markdownContent,
-        slug: meta['slug'] as string,
-        readingTime: calculateReadingTime(markdownContent),
+        if (typeof content !== 'string') {
+          console.warn(`Expected string content from ${filePath}, got ${typeof content}`)
+          continue
+        }
+
+        const { meta, content: markdownContent } = parseFrontmatter(content)
+
+        if (!meta['title'] || !meta['date']) continue
+
+        // Extraemos el slug del nombre del archivo
+        const fileName = filePath.split('/').pop() ?? ''
+        const slug = fileName.replace('.md', '')
+
+        const post: BlogPost = {
+          meta: {
+            title: meta['title'] as string,
+            description: meta['description'] as string,
+            date: meta['date'] as string,
+            author: meta['author'] as string,
+            tags: meta['tags'] as string[],
+            featured: meta['featured'] as boolean,
+            slug,
+          },
+          content: markdownContent,
+          slug,
+          readingTime: calculateReadingTime(markdownContent),
+        }
+
+        posts.push(post)
+      } catch (postError) {
+        console.warn(`Error loading post from ${filePath}:`, postError)
       }
-
-      posts.push(post)
     }
 
+    // Ordenamos por fecha (más recientes primero)
     posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
     return posts
