@@ -220,6 +220,7 @@
     "featured": "Featured",
     "author": "Author",
     "postNotFound": "Post not found",
+    "backToBlog": "Back to blog",
     "error": {
       "title": "Error loading blog",
       "retry": "Retry"

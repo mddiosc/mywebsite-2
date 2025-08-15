@@ -220,6 +220,7 @@
     "featured": "Destacado",
     "author": "Autor",
     "postNotFound": "Post no encontrado",
+    "backToBlog": "Volver al blog",
     "error": {
       "title": "Error al cargar el blog",
       "retry": "Reintentar"

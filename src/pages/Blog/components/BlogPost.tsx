@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
-import { useParams, Navigate } from 'react-router'
+import { useParams, Navigate, Link } from 'react-router'
 
 import { motion } from 'framer-motion'
 import rehypeHighlight from 'rehype-highlight'
@@ -48,14 +48,42 @@ export function BlogPost() {
         articleTags={post.meta.tags}
       />
 
-      <motion.article
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeIn}
         transition={smoothTransition}
         className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
       >
-        <div className="mx-auto max-w-4xl">
+        {/* Back to blog button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="mb-8"
+        >
+          <Link
+            to={`/${i18n.language}/blog`}
+            className="group inline-flex items-center gap-3 text-sm font-medium text-gray-500 transition-all duration-200 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-300"
+          >
+            <svg
+              className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            <span className="relative">{t('blog.backToBlog')}</span>
+          </Link>
+        </motion.div>
+
+        <article className="mx-auto max-w-4xl">
           <motion.header
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,8 +174,8 @@ export function BlogPost() {
               {post.content}
             </ReactMarkdown>
           </motion.div>
-        </div>
-      </motion.article>
+        </article>
+      </motion.div>
     </>
   )
 }
