@@ -18,7 +18,7 @@ import 'highlight.js/styles/github-dark.css'
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation()
-  const { data: post, isLoading: loading, error } = useBlogPost(slug ?? '')
+  const { data: post, isLoading: loading, error, refetch } = useBlogPost(slug ?? '')
 
   if (!slug) {
     return <Navigate to={`/${i18n.language}/blog`} replace />
@@ -29,7 +29,12 @@ export function BlogPost() {
   }
 
   if (error || !post) {
-    return <BlogError message={error?.message ?? t('blog.postNotFound')} />
+    return (
+      <BlogError
+        message={error?.message ?? t('blog.postNotFound')}
+        onRetry={() => void refetch()}
+      />
+    )
   }
 
   return (
@@ -106,7 +111,6 @@ export function BlogPost() {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
               components={{
-                // Personalizar componentes si es necesario
                 h1: ({ children }) => (
                   <h1 className="mt-8 mb-6 text-3xl font-bold text-gray-900 dark:text-white">
                     {children}

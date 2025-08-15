@@ -112,7 +112,7 @@ export function useBlogPosts() {
 }
 
 export function useBlogPost(slug: string) {
-  const { data: posts, isLoading: postsLoading, error } = useBlogPosts()
+  const { data: posts, isLoading: postsLoading, error, refetch } = useBlogPosts()
 
   const post = posts?.find((p) => p.slug === slug) ?? null
 
@@ -120,5 +120,6 @@ export function useBlogPost(slug: string) {
     data: post,
     isLoading: postsLoading,
     error: !post && !postsLoading && !error ? new Error('Post no encontrado') : error,
+    refetch,
   }
 }

@@ -10,7 +10,7 @@ import { fadeIn, smoothTransition } from '../../lib/animations'
 
 export default function Blog() {
   const { t } = useTranslation()
-  const { data: posts, isLoading: loading, error } = useBlogPosts()
+  const { data: posts, isLoading: loading, error, refetch } = useBlogPosts()
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function Blog() {
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             {loading && <BlogLoading />}
-            {error && <BlogError message={error.message} />}
+            {error && <BlogError message={error.message} onRetry={() => void refetch()} />}
             {!loading && !error && posts && <BlogList posts={posts} />}
           </motion.div>
         </div>

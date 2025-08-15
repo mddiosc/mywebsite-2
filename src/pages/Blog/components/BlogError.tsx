@@ -2,10 +2,20 @@ import { useTranslation } from 'react-i18next'
 
 interface BlogErrorProps {
   message: string
+  onRetry?: () => void
 }
 
-export function BlogError({ message }: BlogErrorProps) {
+export function BlogError({ message, onRetry }: BlogErrorProps) {
   const { t } = useTranslation()
+
+  const handleRetry = () => {
+    if (onRetry) {
+      onRetry()
+    } else {
+      // Fallback to page reload if no refetch function is provided
+      window.location.reload()
+    }
+  }
 
   return (
     <div className="py-12 text-center">
@@ -30,9 +40,7 @@ export function BlogError({ message }: BlogErrorProps) {
       <p className="text-gray-600 dark:text-gray-300">{message}</p>
       <button
         type="button"
-        onClick={() => {
-          window.location.reload()
-        }}
+        onClick={handleRetry}
         className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
       >
         {t('blog.error.retry')}
