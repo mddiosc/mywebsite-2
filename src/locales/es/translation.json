@@ -4,17 +4,23 @@
     "home": "Inicio",
     "projects": "Proyectos",
     "about": "Sobre Mí",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "blog": "Blog"
   },
   "pages": {
     "notFound": {
+      "title": "Página no encontrada",
       "pageNotFound": "Página no encontrada",
+      "description": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
       "sorryMessage": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
       "goBackHome": "Volver al inicio"
     },
     "about": {
       "title": "Sobre Mí",
       "name": "Miguel Ángel de Dios Calles",
+      "hero": {
+        "subtitle": "Desarrollador Frontend Senior especializado en el ecosistema React con más de 5 años construyendo aplicaciones web modernas y 14 años de experiencia empresarial."
+      },
       "biography": {
         "title": "Biografía",
         "content": "Soy desarrollador Front-End especializado en la creación de aplicaciones web modernas y funcionales. Con sólida formación en desarrollo web, busco constantemente nuevos desafíos que me permitan evolucionar profesionalmente. Mi experiencia se centra en React, Next.js, TypeScript y el ecosistema de herramientas modernas como Vite, Tailwind CSS y React Query.\n\nMi experiencia combina más de 14 años en la industria del turismo, especializado en sistemas GDS Amadeus, con más de 5 años en desarrollo front-end. Esta perspectiva única me permite aportar soluciones tecnológicas que entienden tanto las necesidades del negocio como los estándares técnicos modernos, utilizando React, TypeScript, y herramientas de monitorización como Grafana Faro para crear aplicaciones robustas y escalables.\n\nTe invito a que veas mis proyectos en la sección \"Proyectos\" o pulsando en el siguiente botón. Si quieres saber más de mi, puedes contactarme en la sección \"Contacto\".",
@@ -146,6 +152,9 @@
     }
   },
   "contact": {
+    "header": {
+      "subtitle": "¿Tienes un proyecto en mente o quieres colaborar? Me encantaría conocer más sobre tu idea."
+    },
     "letsWorkTogether": "Trabajemos juntos",
     "description": "¿Tienes un proyecto en mente o quieres colaborar? Me encantaría conocer más sobre tu idea. Puedes conectar conmigo en LinkedIn para una charla rápida o utilizar el formulario de contacto para enviarme un mensaje detallado.",
     "firstName": "Nombre",
@@ -199,6 +208,22 @@
         "max": "El mensaje no puede exceder 500 caracteres",
         "suspicious": "El mensaje contiene contenido sospechoso. Por favor revisa tu texto"
       }
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Mis pensamientos, experiencias y lecciones aprendidas en el desarrollo web",
+    "noPosts": "No hay posts disponibles en este momento",
+    "loading": "Cargando posts...",
+    "readMore": "Leer más",
+    "readingTime": "{{minutes}} min de lectura",
+    "featured": "Destacado",
+    "author": "Autor",
+    "postNotFound": "Post no encontrado",
+    "backToBlog": "Volver al blog",
+    "error": {
+      "title": "Error al cargar el blog",
+      "retry": "Reintentar"
     }
   },
   "footer": {

@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { HelmetProvider } from 'react-helmet-async'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -17,17 +18,19 @@ const root = document.getElementById('root')
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        {recaptchaSiteKey ? (
-          <GoogleReCaptchaProvider reCaptchaKey={recaptchaSiteKey}>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          {recaptchaSiteKey ? (
+            <GoogleReCaptchaProvider reCaptchaKey={recaptchaSiteKey}>
+              <App />
+            </GoogleReCaptchaProvider>
+          ) : (
             <App />
-          </GoogleReCaptchaProvider>
-        ) : (
-          <App />
-        )}
-        <ReactQueryDevtools initialIsOpen={false} />
-        <SpeedInsights />
-      </QueryClientProvider>
+          )}
+          <ReactQueryDevtools initialIsOpen={false} />
+          <SpeedInsights />
+        </QueryClientProvider>
+      </HelmetProvider>
     </StrictMode>,
   )
 }

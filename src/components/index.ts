@@ -1,3 +1,4 @@
+export { DocumentHead } from './DocumentHead'
 export { default as Footer } from './Footer'
 export { default as LanguageSwitcher } from './LanguageSwitcher'
 export { default as Layout } from './Layout'

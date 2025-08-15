@@ -4,17 +4,23 @@
     "home": "Home",
     "projects": "Projects",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "blog": "Blog"
   },
   "pages": {
     "notFound": {
+      "title": "Page not found",
       "pageNotFound": "Page not found",
+      "description": "Sorry, we couldn't find the page you're looking for.",
       "sorryMessage": "Sorry, we couldn't find the page you're looking for.",
       "goBackHome": "Go back home"
     },
     "about": {
       "title": "About Me",
       "name": "Miguel Ángel de Dios Calles",
+      "hero": {
+        "subtitle": "Senior Frontend Developer specialized in the React ecosystem with 5+ years building modern web applications and 14 years of enterprise experience."
+      },
       "biography": {
         "title": "Biography",
         "content": "I am a Front-End developer specialized in creating modern and functional web applications. With solid training in web development, I constantly seek new challenges that allow me to evolve professionally. My experience focuses on React, Next.js, TypeScript and the ecosystem of modern tools like Vite, Tailwind CSS and React Query.\n\nMy experience combines over 14 years in the tourism industry, specialized in Amadeus GDS systems, with more than 5 years in front-end development. This unique perspective allows me to provide technological solutions that understand both business needs and modern technical standards, using React, TypeScript, and monitoring tools like Grafana Faro to create robust and scalable applications.\n\nI invite you to view my projects in the \"Projects\" section or by clicking the button below. If you want to know more about me, you can contact me in the \"Contact\" section.",
@@ -146,6 +152,9 @@
     }
   },
   "contact": {
+    "header": {
+      "subtitle": "Do you have a project in mind or want to collaborate? I'd love to learn more about your idea."
+    },
     "letsWorkTogether": "Let's work together",
     "description": "Do you have a project in mind or want to collaborate? I'd love to learn more about your idea. You can connect with me on LinkedIn for a quick chat or use the contact form to send me a detailed message.",
     "firstName": "First name",
@@ -199,6 +208,22 @@
         "max": "Message cannot exceed 500 characters",
         "suspicious": "Message contains suspicious content. Please review your text"
       }
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "My thoughts, experiences and lessons learned in web development",
+    "noPosts": "No posts available at the moment",
+    "loading": "Loading posts...",
+    "readMore": "Read more",
+    "readingTime": "{{minutes}} min read",
+    "featured": "Featured",
+    "author": "Author",
+    "postNotFound": "Post not found",
+    "backToBlog": "Back to blog",
+    "error": {
+      "title": "Error loading blog",
+      "retry": "Retry"
     }
   },
   "footer": {
