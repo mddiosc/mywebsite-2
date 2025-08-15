@@ -28,3 +28,5 @@ Con más de 5 años en desarrollo front-end y una formación sólida en tecnolog
 ---
 
 *¿Tienes alguna pregunta o sugerencia? No dudes en contactarme.*
+
+## Test de lint-staged

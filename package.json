@@ -90,6 +90,9 @@
       "prettier --write",
       "eslint --fix",
       "vitest related --run"
+    ],
+    "*.md": [
+      "markdownlint --fix"
     ]
   },
   "pnpm": {
