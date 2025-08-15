@@ -23,6 +23,7 @@ export default function Navbar() {
     { name: t('navigation.home'), to: `/${i18n.language}/`, exact: true },
     { name: t('navigation.about'), to: `/${i18n.language}/about`, exact: false },
     { name: t('navigation.projects'), to: `/${i18n.language}/projects`, exact: false },
+    { name: t('navigation.blog'), to: `/${i18n.language}/blog`, exact: false },
     { name: t('navigation.contact'), to: `/${i18n.language}/contact`, exact: false },
   ]
 

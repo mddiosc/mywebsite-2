@@ -4,7 +4,8 @@
     "home": "Home",
     "projects": "Projects",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "blog": "Blog"
   },
   "pages": {
     "notFound": {
@@ -199,6 +200,21 @@
         "max": "Message cannot exceed 500 characters",
         "suspicious": "Message contains suspicious content. Please review your text"
       }
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "My thoughts, experiences and lessons learned in web development",
+    "noPosts": "No posts available at the moment",
+    "loading": "Loading posts...",
+    "readMore": "Read more",
+    "readingTime": "{{minutes}} min read",
+    "featured": "Featured",
+    "author": "Author",
+    "postNotFound": "Post not found",
+    "error": {
+      "title": "Error loading blog",
+      "retry": "Retry"
     }
   },
   "footer": {

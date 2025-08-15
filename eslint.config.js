@@ -9,7 +9,7 @@ import prettierPlugin from 'eslint-plugin-prettier'
 import importPlugin from 'eslint-plugin-import'
 import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
-import vitestPlugin from 'eslint-plugin-vitest'
+import vitestPlugin from '@vitest/eslint-plugin'
 
 export default tseslint.config(
   { ignores: ['dist', '**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx', 'src/test/**/*'] },
