@@ -7,8 +7,11 @@
  */
 
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { ContactForm, ContactHeader, ContactSuccess } from './components'
+
+import { DocumentHead } from '../../components'
 
 /**
  * Contact page root component
@@ -20,6 +23,7 @@ import { ContactForm, ContactHeader, ContactSuccess } from './components'
  * @returns JSX element containing the complete contact page experience
  */
 const Contact = () => {
+  const { t } = useTranslation()
   const [showSuccess, setShowSuccess] = useState(false)
 
   /**
@@ -43,10 +47,18 @@ const Contact = () => {
   }
 
   return (
-    <div className="py-24 sm:py-32">
-      <ContactHeader />
-      <ContactForm onSuccess={handleSuccess} />
-    </div>
+    <>
+      <DocumentHead
+        title={`${t('navigation.contact')} - Portfolio`}
+        description={t('contact.header.subtitle')}
+        keywords="contact, email, message, communication, get in touch"
+      />
+
+      <div className="py-24 sm:py-32">
+        <ContactHeader />
+        <ContactForm onSuccess={handleSuccess} />
+      </div>
+    </>
   )
 }
 

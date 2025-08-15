@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import { useParams, Navigate } from 'react-router'
@@ -10,6 +9,7 @@ import remarkGfm from 'remark-gfm'
 import { BlogError } from './BlogError'
 import { BlogLoading } from './BlogLoading'
 
+import { DocumentHead } from '../../../components/DocumentHead'
 import { useBlogPost } from '../../../hooks/useBlog'
 import { fadeIn, smoothTransition } from '../../../lib/animations'
 
@@ -34,18 +34,14 @@ export function BlogPost() {
 
   return (
     <>
-      <Helmet>
-        <title>{post.meta.title} - Portfolio</title>
-        <meta name="description" content={post.meta.description} />
-        <meta property="og:title" content={post.meta.title} />
-        <meta property="og:description" content={post.meta.description} />
-        <meta property="og:type" content="article" />
-        <meta property="article:published_time" content={post.meta.date} />
-        <meta property="article:author" content={post.meta.author} />
-        {post.meta.tags.map((tag) => (
-          <meta key={tag} property="article:tag" content={tag} />
-        ))}
-      </Helmet>
+      <DocumentHead
+        title={`${post.meta.title} - Portfolio`}
+        description={post.meta.description}
+        ogType="article"
+        articlePublishedTime={post.meta.date}
+        articleAuthor={post.meta.author}
+        articleTags={post.meta.tags}
+      />
 
       <motion.article
         initial="hidden"

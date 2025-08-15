@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 
@@ -6,6 +5,7 @@ import { motion } from 'framer-motion'
 
 import { BlogList, BlogError, BlogLoading, BlogPost } from './components'
 
+import { DocumentHead } from '../../components/DocumentHead'
 import { useBlogPosts } from '../../hooks/useBlog'
 import { fadeIn, smoothTransition } from '../../lib/animations'
 
@@ -20,13 +20,11 @@ export default function Blog() {
 
   return (
     <>
-      <Helmet>
-        <title>{t('blog.title')} - Portfolio</title>
-        <meta name="description" content={t('blog.description')} />
-        <meta property="og:title" content={`${t('blog.title')} - Portfolio`} />
-        <meta property="og:description" content={t('blog.description')} />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <DocumentHead
+        title={`${t('blog.title')} - Portfolio`}
+        description={t('blog.description')}
+        ogType="website"
+      />
 
       <motion.div
         initial="hidden"
