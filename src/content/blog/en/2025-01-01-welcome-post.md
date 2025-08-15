@@ -4,7 +4,7 @@ description: "An introduction to my new personal blog where I'll share thoughts 
 date: "2025-01-01"
 tags: ["personal", "blog", "introduction"]
 author: "Miguel Ángel de Dios"
-slug: "welcome-to-my-blog"
+slug: "welcome-post"
 featured: true
 ---
 

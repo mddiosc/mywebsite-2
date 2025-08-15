@@ -4,6 +4,7 @@ description: "The story of how I transitioned from programming flight reservatio
 date: "2025-01-15"
 author: "Miguel Ángel de Dios"
 tags: ["career", "frontend", "react", "typescript", "career transition"]
+slug: "gds-to-react"
 featured: true
 ---
 

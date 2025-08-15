@@ -4,7 +4,7 @@ description: "Una introducción a mi nuevo blog personal donde compartiré refle
 date: "2025-01-01"
 tags: ["personal", "blog", "introducción"]
 author: "Miguel Ángel de Dios"
-slug: "bienvenido-a-mi-blog"
+slug: "welcome-post"
 featured: true
 ---
 

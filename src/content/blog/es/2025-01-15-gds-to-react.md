@@ -4,12 +4,13 @@ description: "La historia de cómo pasé de programar reservas de vuelos con Ama
 date: "2025-01-15"
 author: "Miguel Ángel de Dios"
 tags: ["carrera", "frontend", "react", "typescript", "transición profesional"]
+slug: "gds-to-react"
 featured: true
 ---
 
 Hace 14 años me despertaba cada mañana pensando en códigos de aeropuerto, tarifas de vuelos y la complejidad infinita de los sistemas de reservas Amadeus. Hoy me despierto pensando en componentes React, hooks personalizados y cómo optimizar el rendimiento de una aplicación web.
 
-Como mencioné en mi [post de bienvenida](/blog/bienvenido-a-mi-blog), esta es la historia completa de cómo llegué hasta aquí, y por qué elegí las tecnologías que ves en este portfolio.
+Como mencioné en mi [post de bienvenida](/blog/welcome-post), esta es la historia completa de cómo llegué hasta aquí, y por qué elegí las tecnologías que ves en este portfolio.
 
 ## Los años de Amadeus: Más que reservas de vuelos
 
