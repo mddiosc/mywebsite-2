@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 import { motion } from 'framer-motion'
 
@@ -11,6 +11,7 @@ interface BlogListProps {
 
 export function BlogList({ posts }: BlogListProps) {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
 
   if (posts.length === 0) {
     return (
@@ -30,7 +31,7 @@ export function BlogList({ posts }: BlogListProps) {
           transition={{ duration: 0.5, delay: index * 0.1 }}
           className="group relative flex h-full cursor-pointer flex-col rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
           onClick={() => {
-            window.location.href = `/${i18n.language}/blog/${post.slug}`
+            void navigate(`/${i18n.language}/blog/${post.slug}`)
           }}
         >
           {/* Header section with gradient background */}

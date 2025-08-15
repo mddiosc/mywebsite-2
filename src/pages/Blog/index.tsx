@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
 
 import { motion } from 'framer-motion'
 
-import { BlogList, BlogError, BlogLoading, BlogPost } from './components'
+import { BlogList, BlogError, BlogLoading } from './components'
 
 import { DocumentHead } from '../../components/DocumentHead'
 import { useBlogPosts } from '../../hooks/useBlog'
@@ -11,12 +10,7 @@ import { fadeIn, smoothTransition } from '../../lib/animations'
 
 export default function Blog() {
   const { t } = useTranslation()
-  const { slug } = useParams<{ slug?: string }>()
   const { data: posts, isLoading: loading, error } = useBlogPosts()
-
-  if (slug) {
-    return <BlogPost />
-  }
 
   return (
     <>

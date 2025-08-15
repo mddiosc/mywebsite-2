@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router'
 import { Layout } from '../components'
 import { About, Contact, Home, NotFoundPage, Projects } from '../pages'
 import Blog from '../pages/Blog'
+import { BlogPost } from '../pages/Blog/components'
 
 const supportedLanguages = ['es', 'en'] as const
 type SupportedLanguage = (typeof supportedLanguages)[number]
@@ -36,7 +37,7 @@ export function AppRoutes() {
           <Route path="projects" element={<Projects />} />
           <Route path="contact" element={<Contact />} />
           <Route path="blog" element={<Blog />} />
-          <Route path="blog/:slug" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogPost />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
