@@ -1,0 +1,22 @@
+{
+  "es": [
+    {
+      "slug": "2025-01-01-welcome-post",
+      "filename": "2025-01-01-welcome-post.md"
+    },
+    {
+      "slug": "2025-01-15-gds-to-react",
+      "filename": "2025-01-15-gds-to-react.md"
+    }
+  ],
+  "en": [
+    {
+      "slug": "2025-01-01-welcome-post",
+      "filename": "2025-01-01-welcome-post.md"
+    },
+    {
+      "slug": "2025-01-15-gds-to-react",
+      "filename": "2025-01-15-gds-to-react.md"
+    }
+  ]
+}

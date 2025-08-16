@@ -61,85 +61,8 @@ function parseFrontmatter(content: string): { meta: Record<string, unknown>; con
   return { meta, content: markdownContent }
 }
 
-type BlogIndex = Record<
-  string,
-  {
-    slug: string
-    filename: string
-  }[]
->
-
-async function loadBlogPostsFromPublic(language: BlogLanguage): Promise<BlogPost[]> {
-  try {
-    console.log('🔍 Debug - Loading posts using public/ approach for language:', language)
-
-    // Primero cargamos el índice de posts
-    const indexResponse = await fetch('/content/blog-index.json')
-    if (!indexResponse.ok) {
-      throw new Error(`Failed to load blog index: ${indexResponse.statusText}`)
-    }
-
-    const blogIndex = (await indexResponse.json()) as BlogIndex
-    const postsForLanguage = blogIndex[language] ?? []
-
-    console.log('🔍 Debug - Posts found in index:', postsForLanguage)
-
-    const posts: BlogPost[] = []
-
-    for (const postInfo of postsForLanguage) {
-      try {
-        const response = await fetch(`/content/blog/${language}/${postInfo.filename}`)
-        if (!response.ok) {
-          console.warn(`Failed to load post ${postInfo.filename}:`, response.statusText)
-          continue
-        }
-
-        const content = await response.text()
-        console.log('🔍 Debug - Loaded content for:', postInfo.filename)
-
-        const { meta, content: markdownContent } = parseFrontmatter(content)
-
-        if (!meta['title'] || !meta['date']) {
-          console.warn(`Missing required metadata in ${postInfo.filename}`)
-          continue
-        }
-
-        const post: BlogPost = {
-          meta: {
-            title: meta['title'] as string,
-            description: meta['description'] as string,
-            date: meta['date'] as string,
-            author: meta['author'] as string,
-            tags: meta['tags'] as string[],
-            featured: meta['featured'] as boolean,
-            slug: postInfo.slug,
-          },
-          content: markdownContent,
-          slug: postInfo.slug,
-          readingTime: calculateReadingTime(markdownContent),
-        }
-
-        posts.push(post)
-        console.log('🔍 Debug - Added post:', post.meta.title)
-      } catch (postError) {
-        console.warn(`Error loading post ${postInfo.filename}:`, postError)
-      }
-    }
-
-    console.log('🔍 Debug - Total posts loaded from public:', posts.length)
-    posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
-
-    return posts
-  } catch (err) {
-    console.error('Error loading blog posts from public:', err)
-    throw new Error('Error al cargar los posts del blog')
-  }
-}
-
 async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
-  // Intentamos primero con el método original (import.meta.glob)
   try {
-    console.log('🔍 Debug - Trying import.meta.glob approach')
     await new Promise((resolve) => setTimeout(resolve, 100))
 
     const posts: BlogPost[] = []
@@ -202,20 +125,13 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
       }
     }
 
-    console.log('🔍 Debug - Total posts found with import.meta.glob:', posts.length)
+    console.log('🔍 Debug - Total posts found:', posts.length)
+    posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
-    if (posts.length > 0) {
-      posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
-      return posts
-    } else {
-      console.log('🔍 Debug - No posts found with import.meta.glob, trying public/ approach')
-      // Si no encontramos posts, intentamos con el método de public/
-      return await loadBlogPostsFromPublic(language)
-    }
+    return posts
   } catch (err) {
-    console.error('Error with import.meta.glob, trying public/ approach:', err)
-    // Si falla el método original, usamos el método de public/
-    return await loadBlogPostsFromPublic(language)
+    console.error('Error loading blog posts:', err)
+    throw new Error('Error al cargar los posts del blog')
   }
 }
 
