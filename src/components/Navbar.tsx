@@ -13,6 +13,7 @@ import { LanguageSwitcher } from '.'
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t, i18n } = useTranslation()
+  const lang = (i18n.resolvedLanguage ?? i18n.language).slice(0, 2)
   const location = useLocation()
 
   useEffect(() => {
@@ -20,11 +21,11 @@ export default function Navbar() {
   }, [location.pathname])
 
   const navigation = [
-    { name: t('navigation.home'), to: `/${i18n.language}/`, exact: true },
-    { name: t('navigation.about'), to: `/${i18n.language}/about`, exact: false },
-    { name: t('navigation.projects'), to: `/${i18n.language}/projects`, exact: false },
-    { name: t('navigation.blog'), to: `/${i18n.language}/blog`, exact: false },
-    { name: t('navigation.contact'), to: `/${i18n.language}/contact`, exact: false },
+    { name: t('navigation.home'), to: `/${lang}/`, exact: true },
+    { name: t('navigation.about'), to: `/${lang}/about`, exact: false },
+    { name: t('navigation.projects'), to: `/${lang}/projects`, exact: false },
+    { name: t('navigation.blog'), to: `/${lang}/blog`, exact: false },
+    { name: t('navigation.contact'), to: `/${lang}/contact`, exact: false },
   ]
 
   const slideInPanel = {
@@ -38,7 +39,7 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex lg:flex-1">
-            <NavLink to={`/${i18n.language}/`} className="-m-1.5 p-1.5">
+            <NavLink to={`/${lang}/`} className="-m-1.5 p-1.5">
               <img alt="" src="/logo_positive.svg" className="h-12 w-auto" />
             </NavLink>
           </div>
@@ -105,7 +106,7 @@ export default function Navbar() {
             >
               <div className="flex items-center justify-between">
                 <NavLink
-                  to={`/${i18n.language}/`}
+                  to={`/${lang}/`}
                   className="-m-1.5 p-1.5"
                   onClick={() => {
                     setMobileMenuOpen(false)

@@ -18,10 +18,11 @@ import 'highlight.js/styles/github-dark.css'
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation()
+  const lang = (i18n.resolvedLanguage ?? i18n.language).slice(0, 2)
   const { data: post, isLoading: loading, error, refetch } = useBlogPost(slug ?? '')
 
   if (!slug) {
-    return <Navigate to={`/${i18n.language}/blog`} replace />
+    return <Navigate to={`/${lang}/blog`} replace />
   }
 
   if (loading) {
@@ -92,7 +93,7 @@ export function BlogPost() {
           >
             <div className="mb-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
               <time dateTime={post.meta.date}>
-                {new Date(post.meta.date).toLocaleDateString(i18n.language, {
+                {new Date(post.meta.date).toLocaleDateString(lang, {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',

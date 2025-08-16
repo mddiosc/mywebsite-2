@@ -14,23 +14,27 @@ function LanguageRedirect() {
   const location = useLocation()
 
   const pathSegments = location.pathname.split('/')
-  const langSegment = pathSegments[1] as SupportedLanguage
+  const langSegmentRaw = pathSegments[1] ?? ''
+  const langSegment = langSegmentRaw.slice(0, 2) as SupportedLanguage
 
   const isLanguageSupported = supportedLanguages.includes(langSegment)
 
   if (!isLanguageSupported) {
-    return <Navigate to={`/${i18n.language}/`} replace />
+    const normalized = (i18n.resolvedLanguage ?? i18n.language).slice(0, 2)
+    return <Navigate to={`/${normalized}/`} replace />
   }
 
   return null
 }
 
 export function AppRoutes() {
+  const { i18n } = useTranslation()
+  const defaultLang = (i18n.resolvedLanguage ?? i18n.language).slice(0, 2)
   return (
     <>
       <LanguageRedirect />
       <Routes>
-        <Route path="/" element={<Navigate to={`/${useTranslation().i18n.language}`} replace />} />
+        <Route path="/" element={<Navigate to={`/${defaultLang}`} replace />} />
         <Route path="/:lang" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
