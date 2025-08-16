@@ -68,25 +68,22 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
 
     const posts: BlogPost[] = []
 
-    // Usamos import.meta.glob para cargar los archivos markdown
+    // Cargamos los archivos markdown como texto plano y de forma eager para evitar imports dinámicos
     const modules = import.meta.glob('/src/content/blog/**/*.md', {
       query: '?raw',
       import: 'default',
-      eager: false,
+      eager: true,
     })
 
-    for (const [filePath, moduleLoader] of Object.entries(modules)) {
+    for (const [filePath, content] of Object.entries(modules)) {
       // Verificamos si el archivo corresponde al idioma actual
       if (!filePath.includes(`/blog/${language}/`)) continue
 
       try {
-        const content = await moduleLoader()
-
         if (typeof content !== 'string') {
           console.warn(`Expected string content from ${filePath}, got ${typeof content}`)
           continue
         }
-
         const { meta, content: markdownContent } = parseFrontmatter(content)
 
         if (!meta['title'] || !meta['date']) continue
@@ -128,7 +125,7 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
 
 export function useBlogPosts() {
   const { i18n } = useTranslation()
-  const language = i18n.language as BlogLanguage
+  const language = (i18n.resolvedLanguage ?? i18n.language).slice(0, 2) as BlogLanguage
 
   return useQuery({
     queryKey: ['blog-posts', language],
