@@ -9,6 +9,8 @@ src/test/**
 docs/
 *.md
 !README.md
+# Allow blog content markdown to be included in the build
+!src/content/blog/**/*.md
 
 # Development files
 .env.local
