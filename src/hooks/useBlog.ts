@@ -11,10 +11,14 @@ function calculateReadingTime(content: string): number {
 }
 
 function parseFrontmatter(content: string): { meta: Record<string, unknown>; content: string } {
+  console.log('🔍 Debug - parseFrontmatter input preview:', content.substring(0, 200))
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
   const exec = frontmatterRegex.exec(content)
 
+  console.log('🔍 Debug - Frontmatter regex match:', !!exec)
+
   if (!exec) {
+    console.warn('🔍 Debug - No frontmatter found!')
     return { meta: {}, content }
   }
 
@@ -96,11 +100,16 @@ async function loadBlogPostsFromPublic(language: BlogLanguage): Promise<BlogPost
 
         const content = await response.text()
         console.log('🔍 Debug - Loaded content for:', postInfo.filename)
+        console.log('🔍 Debug - Content preview (first 200 chars):', content.substring(0, 200))
 
         const { meta, content: markdownContent } = parseFrontmatter(content)
+        console.log('🔍 Debug - Parsed meta:', meta)
+        console.log('🔍 Debug - Meta title:', meta['title'])
+        console.log('🔍 Debug - Meta date:', meta['date'])
 
         if (!meta['title'] || !meta['date']) {
           console.warn(`Missing required metadata in ${postInfo.filename}`)
+          console.warn('Meta object:', meta)
           continue
         }
 
