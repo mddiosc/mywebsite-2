@@ -75,9 +75,16 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
       eager: true,
     })
 
+    console.log('🔍 All found modules:', Object.keys(modules))
+    console.log('🔍 Looking for language:', language)
+
     for (const [filePath, module] of Object.entries(modules)) {
+      console.log('🔍 Processing file:', filePath)
       // Verificamos si el archivo corresponde al idioma actual
-      if (!filePath.includes(`/blog/${language}/`)) continue
+      if (!filePath.includes(`/blog/${language}/`)) {
+        console.log('🔍 Skipping file (wrong language):', filePath)
+        continue
+      }
 
       try {
         const content = module
@@ -111,11 +118,13 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
         }
 
         posts.push(post)
+        console.log('🔍 Added post:', post.meta.title)
       } catch (postError) {
         console.warn(`Error loading post from ${filePath}:`, postError)
       }
     }
 
+    console.log('🔍 Total posts found:', posts.length)
     // Ordenamos por fecha (más recientes primero)
     posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
