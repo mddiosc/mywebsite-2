@@ -40,7 +40,7 @@ const AboutHero = ({ biographyParagraphs }: AboutHeroProps) => {
         <rect fill="url(#about-hero-pattern)" width="100%" height="100%" strokeWidth={0} />
       </svg>
       <div className="overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 pt-36 pb-24 sm:pt-40 lg:px-8 lg:pt-32">
+        <div className="mx-auto max-w-7xl px-6 pt-16 pb-16 sm:pt-24 sm:pb-20 lg:px-8 lg:pt-32 lg:pb-24">
           <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <motion.div
               className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl"
