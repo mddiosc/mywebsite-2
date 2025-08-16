@@ -54,7 +54,7 @@ const Contact = () => {
         keywords="contact, email, message, communication, get in touch"
       />
 
-      <div className="py-24 sm:py-32">
+      <div className="py-12 sm:py-24 lg:py-32">
         <ContactHeader />
         <ContactForm onSuccess={handleSuccess} />
       </div>

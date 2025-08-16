@@ -48,7 +48,7 @@ const Layout = () => {
       <Navbar />
       <main className="relative isolate flex min-h-[60vh] w-full flex-1">
         <BackgroundDecoration position="-top-40 sm:-top-80" rotate />
-        <div className="mx-auto w-full max-w-7xl flex-grow px-4 py-6 sm:px-6 md:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-7xl flex-grow px-4 py-4 sm:px-6 sm:py-6 md:px-8 lg:px-10">
           <Outlet />
         </div>
         <BackgroundDecoration

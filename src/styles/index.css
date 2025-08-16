@@ -10,3 +10,23 @@
   --color-secondary: #9333ea;
   --border-radius-xl: 1rem;
 }
+
+/* Custom mobile optimizations */
+@media (max-width: 640px) {
+  /* Reduce excessive vertical spacing on mobile */
+  .mobile-optimized {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Ensure text doesn't get too cramped */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+  }
+
+  /* Optimize touch targets for mobile */
+  button, a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

@@ -35,7 +35,7 @@ export default function Hero() {
           {title}
         </motion.h1>
         <motion.p
-          className="mx-auto mt-6 max-w-4xl text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:text-2xl/8"
+          className="mx-auto mt-4 max-w-4xl text-lg font-medium text-pretty text-gray-600 sm:mt-6 sm:text-xl lg:mt-8 lg:text-2xl/8"
           initial="hidden"
           animate="visible"
           variants={fadeIn}

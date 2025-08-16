@@ -19,7 +19,7 @@ const Home = () => {
       />
 
       <motion.div
-        className="flex min-h-[calc(100vh-8rem)] flex-col items-center justify-center"
+        className="flex min-h-[calc(100vh-12rem)] flex-col items-center justify-center sm:min-h-[calc(100vh-8rem)]"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
@@ -31,7 +31,7 @@ const Home = () => {
         </div>
 
         {/* Features Section - Continuous flow */}
-        <div className="mt-12 w-full sm:mt-16 lg:mt-20">
+        <div className="mt-8 w-full sm:mt-12 lg:mt-16 xl:mt-20">
           <HomeFeatures />
         </div>
       </motion.div>
