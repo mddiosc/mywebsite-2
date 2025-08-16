@@ -4,6 +4,6 @@
   "outputDirectory": "dist",
   "installCommand": "pnpm install",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!content/).*)", "destination": "/index.html" }
   ]
 }

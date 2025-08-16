@@ -11,30 +11,22 @@ function calculateReadingTime(content: string): number {
 }
 
 function parseFrontmatter(content: string): { meta: Record<string, unknown>; content: string } {
-  console.log('🔍 Parsing frontmatter, content starts with:', content.substring(0, 50))
-
   const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
   const exec = frontmatterRegex.exec(content)
 
   if (!exec) {
-    console.log('🔍 No frontmatter match found')
     return { meta: {}, content }
   }
 
   const frontmatterText = exec[1]
   const markdownContent = exec[2]
 
-  console.log('🔍 Frontmatter text:', frontmatterText?.substring(0, 200) ?? 'undefined')
-
   if (!frontmatterText || !markdownContent) {
-    console.log('🔍 Empty frontmatter or content')
     return { meta: {}, content }
   }
 
   const meta: Record<string, unknown> = {}
   const lines = frontmatterText.split('\n')
-
-  console.log('🔍 Processing', lines.length, 'frontmatter lines')
 
   for (const line of lines) {
     const trimmedLine = line.trim()
@@ -93,16 +85,10 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
           }
 
           const content = await fileResponse.text()
-          console.log(`🔍 Content for ${filename} (first 300 chars):`, content.substring(0, 300))
-
           const { meta, content: markdownContent } = parseFrontmatter(content)
-          console.log(`🔍 Parsed meta for ${filename}:`, meta)
-          console.log(`🔍 Meta keys:`, Object.keys(meta))
-          console.log(`🔍 Has title:`, !!meta['title'], 'Has date:', !!meta['date'])
 
           if (!meta['title'] || !meta['date']) {
             console.log(`Skipping ${filename}: missing required metadata`)
-            console.log(`🔍 Title value:`, meta['title'], 'Date value:', meta['date'])
             continue
           }
 
