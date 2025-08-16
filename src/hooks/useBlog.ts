@@ -69,7 +69,7 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
     const posts: BlogPost[] = []
 
     // Usamos import.meta.glob para cargar los archivos markdown
-    const modules = import.meta.glob('/src/content/blog/**/*.md', {
+    const modules = import.meta.glob('../content/blog/**/*.md', {
       query: '?raw',
       import: 'default',
       eager: true,
@@ -81,7 +81,7 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
     for (const [filePath, module] of Object.entries(modules)) {
       console.log('🔍 Processing file:', filePath)
       // Verificamos si el archivo corresponde al idioma actual
-      if (!filePath.includes(`/blog/${language}/`)) {
+      if (!filePath.includes(`/${language}/`)) {
         console.log('🔍 Skipping file (wrong language):', filePath)
         continue
       }
