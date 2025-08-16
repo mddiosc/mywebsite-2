@@ -221,6 +221,9 @@
     "author": "Autor",
     "postNotFound": "Post no encontrado",
     "backToBlog": "Volver al blog",
+    "fullDescription": "Descripción completa:",
+    "moreTags": "más",
+    "additionalTags": "Etiquetas adicionales:",
     "error": {
       "title": "Error al cargar el blog",
       "retry": "Reintentar"
