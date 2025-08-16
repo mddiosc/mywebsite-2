@@ -73,11 +73,23 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
       eager: true,
     })
 
+    console.log('🔍 Debug - All found modules:', Object.keys(modules))
+    console.log('🔍 Debug - Looking for language:', language)
+
     for (const [filePath, module] of Object.entries(modules)) {
-      if (!filePath.includes(`/blog/${language}/`)) continue
+      console.log('🔍 Debug - Processing file:', filePath)
+      if (!filePath.includes(`/blog/${language}/`)) {
+        console.log('🔍 Debug - Skipping file (wrong language):', filePath)
+        continue
+      }
 
       try {
         const content = module
+        console.log('🔍 Debug - Module content type:', typeof content)
+        console.log(
+          '🔍 Debug - Module content preview:',
+          typeof content === 'string' ? content.substring(0, 100) + '...' : content,
+        )
 
         if (typeof content !== 'string') {
           console.warn(`Expected string content from ${filePath}, got ${typeof content}`)
@@ -88,7 +100,6 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
 
         if (!meta['title'] || !meta['date']) continue
 
-        // Extraemos el slug del nombre del archivo
         const fileName = filePath.split('/').pop() ?? ''
         const slug = fileName.replace('.md', '')
 
@@ -108,11 +119,13 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
         }
 
         posts.push(post)
+        console.log('🔍 Debug - Added post:', post.meta.title)
       } catch (postError) {
         console.warn(`Error loading post from ${filePath}:`, postError)
       }
     }
 
+    console.log('🔍 Debug - Total posts found:', posts.length)
     posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
     return posts
