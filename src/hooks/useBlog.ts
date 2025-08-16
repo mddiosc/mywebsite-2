@@ -72,15 +72,15 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
     const modules = import.meta.glob('/src/content/blog/**/*.md', {
       query: '?raw',
       import: 'default',
-      eager: false,
+      eager: true,
     })
 
-    for (const [filePath, moduleLoader] of Object.entries(modules)) {
+    for (const [filePath, module] of Object.entries(modules)) {
       // Verificamos si el archivo corresponde al idioma actual
       if (!filePath.includes(`/blog/${language}/`)) continue
 
       try {
-        const content = await moduleLoader()
+        const content = module
 
         if (typeof content !== 'string') {
           console.warn(`Expected string content from ${filePath}, got ${typeof content}`)
