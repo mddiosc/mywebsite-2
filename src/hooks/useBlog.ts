@@ -68,98 +68,51 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
 
     const posts: BlogPost[] = []
 
-    // Importamos los archivos markdown directamente
-    try {
-      if (language === 'es') {
-        const { default: welcomePost } = await import(
-          '../content/blog/es/2025-01-01-welcome-post.md?raw'
-        )
-        const { default: gdsPost } = await import(
-          '../content/blog/es/2025-01-15-gds-to-react.md?raw'
-        )
+    // Lista de archivos markdown disponibles
+    const postFiles = ['2025-01-01-welcome-post.md', '2025-01-15-gds-to-react.md']
 
-        const postsData = [
-          { content: welcomePost, filename: '2025-01-01-welcome-post.md' },
-          { content: gdsPost, filename: '2025-01-15-gds-to-react.md' },
-        ]
+    console.log(`🔍 Loading ${String(postFiles.length)} posts for language: ${language}`)
 
-        console.log('🔍 Found ES posts:', postsData.length)
+    // Cargar cada archivo markdown usando fetch
+    for (const filename of postFiles) {
+      try {
+        const response = await fetch(`/content/blog/${language}/${filename}`)
 
-        for (const { content, filename } of postsData) {
-          const { meta, content: markdownContent } = parseFrontmatter(content)
-
-          if (!meta['title'] || !meta['date']) {
-            console.log('🔍 Skipping post with missing metadata:', filename)
-            continue
-          }
-
-          const slug = filename.replace('.md', '')
-
-          const post: BlogPost = {
-            meta: {
-              title: meta['title'] as string,
-              description: meta['description'] as string,
-              date: meta['date'] as string,
-              author: meta['author'] as string,
-              tags: meta['tags'] as string[],
-              featured: meta['featured'] as boolean,
-              slug,
-            },
-            content: markdownContent,
-            slug,
-            readingTime: calculateReadingTime(markdownContent),
-          }
-
-          posts.push(post)
-          console.log('🔍 Added post:', post.meta.title)
+        if (!response.ok) {
+          console.log(`🔍 Failed to load ${filename}:`, response.status)
+          continue
         }
-      } else {
-        // language === 'en'
-        const { default: welcomePost } = await import(
-          '../content/blog/en/2025-01-01-welcome-post.md?raw'
-        )
-        const { default: gdsPost } = await import(
-          '../content/blog/en/2025-01-15-gds-to-react.md?raw'
-        )
 
-        const postsData = [
-          { content: welcomePost, filename: '2025-01-01-welcome-post.md' },
-          { content: gdsPost, filename: '2025-01-15-gds-to-react.md' },
-        ]
+        const content = await response.text()
+        const { meta, content: markdownContent } = parseFrontmatter(content)
 
-        console.log('🔍 Found EN posts:', postsData.length)
-
-        for (const { content, filename } of postsData) {
-          const { meta, content: markdownContent } = parseFrontmatter(content)
-
-          if (!meta['title'] || !meta['date']) {
-            console.log('🔍 Skipping post with missing metadata:', filename)
-            continue
-          }
-
-          const slug = filename.replace('.md', '')
-
-          const post: BlogPost = {
-            meta: {
-              title: meta['title'] as string,
-              description: meta['description'] as string,
-              date: meta['date'] as string,
-              author: meta['author'] as string,
-              tags: meta['tags'] as string[],
-              featured: meta['featured'] as boolean,
-              slug,
-            },
-            content: markdownContent,
-            slug,
-            readingTime: calculateReadingTime(markdownContent),
-          }
-
-          posts.push(post)
-          console.log('🔍 Added post:', post.meta.title)
+        if (!meta['title'] || !meta['date']) {
+          console.log('🔍 Skipping post with missing metadata:', filename)
+          continue
         }
+
+        const slug = filename.replace('.md', '')
+
+        const post: BlogPost = {
+          meta: {
+            title: meta['title'] as string,
+            description: meta['description'] as string,
+            date: meta['date'] as string,
+            author: meta['author'] as string,
+            tags: meta['tags'] as string[],
+            featured: meta['featured'] as boolean,
+            slug,
+          },
+          content: markdownContent,
+          slug,
+          readingTime: calculateReadingTime(markdownContent),
+        }
+
+        posts.push(post)
+        console.log('🔍 Added post:', post.meta.title)
+      } catch (error) {
+        console.log(`🔍 Error loading ${filename}:`, error)
       }
-    } catch (importError) {
-      console.error('Error importing markdown files:', importError)
     }
 
     console.log('🔍 Total posts found:', posts.length)
