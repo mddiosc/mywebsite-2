@@ -17,7 +17,10 @@ import {
 } from '@floating-ui/react'
 import { motion } from 'framer-motion'
 
+import { BlogFilters, type FilterState } from './BlogFilters'
+
 import type { BlogPost } from '../../../types/blog'
+import { filterAndSortPosts, getFilteredStats } from '../utils/filterUtils'
 
 interface BlogListProps {
   posts: BlogPost[]
@@ -25,7 +28,18 @@ interface BlogListProps {
 
 export function BlogList({ posts }: BlogListProps) {
   const { t } = useTranslation()
+  const [filters, setFilters] = useState<FilterState>({
+    search: '',
+    selectedTags: [],
+    sortBy: 'date-desc',
+    showFeatured: false,
+  })
 
+  // Filter and sort posts
+  const filteredPosts = filterAndSortPosts(posts, filters)
+  const stats = getFilteredStats(posts, filteredPosts)
+
+  // Handle no posts
   if (posts.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -35,10 +49,70 @@ export function BlogList({ posts }: BlogListProps) {
   }
 
   return (
-    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post, index) => (
-        <BlogCard key={post.slug} post={post} index={index} />
-      ))}
+    <div>
+      {/* Filters */}
+      <BlogFilters posts={posts} filters={filters} onFiltersChange={setFilters} />
+
+      {/* Results */}
+      {stats.hasResults ? (
+        <>
+          {/* Results count */}
+          {stats.filtered !== stats.total && (
+            <div className="mb-4 text-sm text-gray-600">
+              {t('blog.filters.showingResults', {
+                count: stats.filtered,
+                total: stats.total,
+              })}
+            </div>
+          )}
+
+          {/* Blog grid */}
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {filteredPosts.map((post, index) => (
+              <BlogCard key={post.slug} post={post} index={index} />
+            ))}
+          </div>
+        </>
+      ) : (
+        /* No results */
+        <div className="py-16 text-center">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 ring-1 ring-gray-100">
+            <svg
+              className="h-8 w-8 text-indigo-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <h3 className="mb-3 text-xl font-semibold text-gray-900">
+            {t('blog.filters.noResults')}
+          </h3>
+          <p className="mx-auto mb-6 max-w-sm text-gray-600">
+            {t('blog.filters.noResultsDescription')}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setFilters({
+                search: '',
+                selectedTags: [],
+                sortBy: 'date-desc',
+                showFeatured: false,
+              })
+            }}
+            className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+          >
+            {t('blog.filters.clearAll')}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
