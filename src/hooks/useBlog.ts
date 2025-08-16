@@ -63,59 +63,62 @@ function parseFrontmatter(content: string): { meta: Record<string, unknown>; con
 
 async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
   try {
-    // Simulamos el delay para mostrar el loading state
-    await new Promise((resolve) => setTimeout(resolve, 100))
-
     const posts: BlogPost[] = []
 
-    // Lista de archivos markdown disponibles
-    const postFiles = ['2025-01-01-welcome-post.md', '2025-01-15-gds-to-react.md']
-
-    console.log(`🔍 Loading ${String(postFiles.length)} posts for language: ${language}`)
-
-    // Cargar cada archivo markdown usando fetch
-    for (const filename of postFiles) {
-      try {
-        const response = await fetch(`/content/blog/${language}/${filename}`)
-
-        if (!response.ok) {
-          console.log(`🔍 Failed to load ${filename}:`, response.status)
-          continue
-        }
-
-        const content = await response.text()
-        const { meta, content: markdownContent } = parseFrontmatter(content)
-
-        if (!meta['title'] || !meta['date']) {
-          console.log('🔍 Skipping post with missing metadata:', filename)
-          continue
-        }
-
-        const slug = filename.replace('.md', '')
-
-        const post: BlogPost = {
-          meta: {
-            title: meta['title'] as string,
-            description: meta['description'] as string,
-            date: meta['date'] as string,
-            author: meta['author'] as string,
-            tags: meta['tags'] as string[],
-            featured: meta['featured'] as boolean,
-            slug,
-          },
-          content: markdownContent,
-          slug,
-          readingTime: calculateReadingTime(markdownContent),
-        }
-
-        posts.push(post)
-        console.log('🔍 Added post:', post.meta.title)
-      } catch (error) {
-        console.log(`🔍 Error loading ${filename}:`, error)
+    // Cargamos el índice de archivos disponibles
+    try {
+      const indexResponse = await fetch('/content/blog/index.json')
+      if (!indexResponse.ok) {
+        console.log('No se pudo cargar el índice de posts')
+        return []
       }
+
+      const index = (await indexResponse.json()) as Record<string, string[]>
+      const possibleFiles = index[language] ?? []
+
+      for (const filename of possibleFiles) {
+        try {
+          const fileResponse = await fetch(`/content/blog/${language}/${filename}`)
+
+          if (!fileResponse.ok) {
+            continue // Archivo no existe, saltamos
+          }
+
+          const content = await fileResponse.text()
+          const { meta, content: markdownContent } = parseFrontmatter(content)
+
+          if (!meta['title'] || !meta['date']) {
+            console.log(`Skipping ${filename}: missing required metadata`)
+            continue
+          }
+
+          const slug = filename.replace('.md', '')
+
+          const post: BlogPost = {
+            meta: {
+              title: meta['title'] as string,
+              description: (meta['description'] as string) || '',
+              date: meta['date'] as string,
+              author: (meta['author'] as string) || 'Unknown',
+              tags: meta['tags'] as string[],
+              featured: (meta['featured'] as boolean) || false,
+              slug: (meta['slug'] as string) || slug,
+            },
+            content: markdownContent,
+            slug: (meta['slug'] as string) || slug,
+            readingTime: calculateReadingTime(markdownContent),
+          }
+
+          posts.push(post)
+        } catch (error) {
+          console.log(`Error loading ${filename}:`, error)
+          // Continuamos con el siguiente archivo
+        }
+      }
+    } catch (error) {
+      console.error('Error in blog loading process:', error)
     }
 
-    console.log('🔍 Total posts found:', posts.length)
     // Ordenamos por fecha (más recientes primero)
     posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
