@@ -19,13 +19,8 @@ export function BlogError({ message, onRetry }: BlogErrorProps) {
 
   return (
     <div className="py-12 text-center">
-      <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-red-100 p-3 dark:bg-red-900">
-        <svg
-          className="h-6 w-6 text-red-600 dark:text-red-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+      <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-red-100 p-3">
+        <svg className="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -34,14 +29,12 @@ export function BlogError({ message, onRetry }: BlogErrorProps) {
           />
         </svg>
       </div>
-      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-        {t('blog.error.title')}
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300">{message}</p>
+      <h3 className="mb-2 text-lg font-semibold text-gray-900">{t('blog.error.title')}</h3>
+      <p className="text-gray-600">{message}</p>
       <button
         type="button"
         onClick={handleRetry}
-        className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
       >
         {t('blog.error.retry')}
       </button>
