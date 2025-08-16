@@ -5,7 +5,7 @@ date: "2025-02-15"
 tags: ["react-query", "zustand", "redux", "state-management", "react"]
 author: "Miguel Ángel de Dios"
 slug: "react-query-vs-redux"
-featured: true
+featured: false
 ---
 
 State management in React has evolved tremendously in recent years. After working with Redux on multiple projects, I decided to explore more modern alternatives for my portfolio. In this post, I'll share why I chose the **Zustand + React Query** combination over Redux and how this decision has simplified my development workflow.

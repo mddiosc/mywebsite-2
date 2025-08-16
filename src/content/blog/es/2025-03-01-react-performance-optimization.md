@@ -5,7 +5,7 @@ date: "2025-03-01"
 tags: ["performance", "optimización", "react", "métricas", "web-vitals"]
 author: "Miguel Ángel de Dios"
 slug: "react-performance-optimization"
-featured: true
+featured: false
 ---
 
 La performance no es solo una métrica técnica, es la diferencia entre un usuario que se queda o uno que abandona tu aplicación. En este post, compartiré las técnicas y herramientas que uso para medir y optimizar el rendimiento en React, con ejemplos prácticos de mi portfolio.

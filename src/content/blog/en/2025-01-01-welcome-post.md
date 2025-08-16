@@ -5,7 +5,7 @@ date: "2025-01-01"
 tags: ["personal", "blog", "introduction"]
 author: "Miguel Ángel de Dios"
 slug: "welcome-post"
-featured: true
+featured: false
 ---
 
 Hello! 👋 I'm excited to welcome you to my personal blog, a space where I'll share my thoughts, experiences, and knowledge about web development and technology.

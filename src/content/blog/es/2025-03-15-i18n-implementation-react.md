@@ -5,7 +5,7 @@ date: "2025-03-15"
 tags: ["i18n", "internacionalización", "react-i18next", "ux", "localization"]
 author: "Miguel Ángel de Dios"
 slug: "i18n-implementation-react"
-featured: true
+featured: false
 ---
 
 La internacionalización (i18n) no es solo traducir textos. Es crear una experiencia coherente que respete las convenciones culturales y lingüísticas de cada región. En este post, compartiré mi enfoque completo para implementar i18n en React, con ejemplos prácticos de mi portfolio bilingüe.
