@@ -221,6 +221,33 @@
     "author": "Author",
     "postNotFound": "Post not found",
     "backToBlog": "Back to blog",
+    "fullDescription": "Full description:",
+    "moreTags": "more",
+    "additionalTags": "Additional tags:",
+    "filters": {
+      "searchPlaceholder": "Search posts by title or content...",
+      "totalPosts": "{{count}} post total",
+      "totalPosts_plural": "{{count}} posts total",
+      "featuredCount": "{{count}} featured",
+      "featuredCount_plural": "{{count}} featured",
+      "clearAll": "Clear filters",
+      "advancedFilters": "Advanced filters",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "dateDesc": "Date (newest first)",
+        "dateAsc": "Date (oldest first)",
+        "readingTime": "Reading time",
+        "title": "Title (A-Z)"
+      },
+      "showFeatured": "Featured filters",
+      "featuredOnly": "Featured posts only",
+      "filterByTags": "Filter by tags",
+      "activeFilters": "Active filters",
+      "search": "Search",
+      "showingResults": "Showing {{count}} of {{total}} posts",
+      "noResults": "No posts found",
+      "noResultsDescription": "Try adjusting your filters or search terms to find what you're looking for."
+    },
     "error": {
       "title": "Error loading blog",
       "retry": "Retry"

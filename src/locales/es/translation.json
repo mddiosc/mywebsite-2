@@ -221,6 +221,33 @@
     "author": "Autor",
     "postNotFound": "Post no encontrado",
     "backToBlog": "Volver al blog",
+    "fullDescription": "Descripción completa:",
+    "moreTags": "más",
+    "additionalTags": "Etiquetas adicionales:",
+    "filters": {
+      "searchPlaceholder": "Buscar posts por título o contenido...",
+      "totalPosts": "{{count}} posts total",
+      "totalPosts_plural": "{{count}} posts en total",
+      "featuredCount": "{{count}} destacado",
+      "featuredCount_plural": "{{count}} destacados",
+      "clearAll": "Limpiar filtros",
+      "advancedFilters": "Filtros avanzados",
+      "sortBy": "Ordenar por",
+      "sortOptions": {
+        "dateDesc": "Fecha (más reciente)",
+        "dateAsc": "Fecha (más antiguo)",
+        "readingTime": "Tiempo de lectura",
+        "title": "Título (A-Z)"
+      },
+      "showFeatured": "Filtros destacados",
+      "featuredOnly": "Solo posts destacados",
+      "filterByTags": "Filtrar por etiquetas",
+      "activeFilters": "Filtros activos",
+      "search": "Búsqueda",
+      "showingResults": "Mostrando {{count}} de {{total}} posts",
+      "noResults": "No se encontraron posts",
+      "noResultsDescription": "Intenta ajustar tus filtros o términos de búsqueda para encontrar lo que buscas."
+    },
     "error": {
       "title": "Error al cargar el blog",
       "retry": "Reintentar"
