@@ -63,24 +63,21 @@ function parseFrontmatter(content: string): { meta: Record<string, unknown>; con
 
 async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
   try {
-    // Simulamos el delay para mostrar el loading state
     await new Promise((resolve) => setTimeout(resolve, 100))
 
     const posts: BlogPost[] = []
 
-    // Usamos import.meta.glob para cargar los archivos markdown
     const modules = import.meta.glob('/src/content/blog/**/*.md', {
       query: '?raw',
       import: 'default',
-      eager: false,
+      eager: true,
     })
 
-    for (const [filePath, moduleLoader] of Object.entries(modules)) {
-      // Verificamos si el archivo corresponde al idioma actual
+    for (const [filePath, module] of Object.entries(modules)) {
       if (!filePath.includes(`/blog/${language}/`)) continue
 
       try {
-        const content = await moduleLoader()
+        const content = module
 
         if (typeof content !== 'string') {
           console.warn(`Expected string content from ${filePath}, got ${typeof content}`)
@@ -116,7 +113,6 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
       }
     }
 
-    // Ordenamos por fecha (más recientes primero)
     posts.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 
     return posts
