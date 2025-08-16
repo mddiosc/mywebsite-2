@@ -3,7 +3,7 @@ title: "Framer Motion: Animations that improve UX without sacrificing performanc
 description: "I explore how to implement effective animations with Framer Motion that enhance user experience, optimize performance perception, and maintain accessibility."
 date: "2025-04-15"
 tags: ["framer-motion", "animations", "ux", "performance", "accessibility", "react"]
-author: "Miguel Ángel Durán"
+author: "Miguel Ángel de Dios"
 slug: "framer-motion-ux-animations"
 featured: false
 ---
