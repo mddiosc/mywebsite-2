@@ -1,5 +1,8 @@
 {
   "welcome": "Welcome",
+  "common": {
+    "loading": "Loading..."
+  },
   "navigation": {
     "home": "Home",
     "projects": "Projects",

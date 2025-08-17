@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
 
+import { OptimizedLogo } from '@/components'
 import { ANIMATION_CONFIG } from '@/constants/animations'
 import type { Technology } from '@/constants/technologies'
 import { commonTransition, slideIn } from '@/lib/animations'
@@ -33,9 +34,9 @@ const TechnologyGrid = ({ technologies, skills }: TechnologyGridProps) => {
       <div className="mx-auto mt-10 grid max-w-lg grid-cols-2 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-3 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
         {technologies.map((tech) => (
           <div key={tech.name} className="flex flex-col items-center">
-            <img
-              alt={tech.name}
+            <OptimizedLogo
               src={tech.logo}
+              alt={tech.name}
               width={80}
               height={80}
               className="max-h-16 w-full object-contain"

@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import { fadeIn, slideIn, commonTransition } from '../lib/animations'
 
-import { LanguageSwitcher } from '.'
+import { LanguageSwitcher, OptimizedImage } from '.'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -39,7 +39,12 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex lg:flex-1">
             <NavLink to={`/${i18n.language}/`} className="-m-1.5 p-1.5">
-              <img alt="" src="/logo_positive.svg" className="h-12 w-auto" />
+              <OptimizedImage
+                src="/logo_positive.svg"
+                alt="Logo"
+                className="h-12 w-auto"
+                priority
+              />
             </NavLink>
           </div>
           <div className="flex lg:hidden">
@@ -111,7 +116,12 @@ export default function Navbar() {
                     setMobileMenuOpen(false)
                   }}
                 >
-                  <img alt="" src="/logo_positive.svg" className="h-8 w-auto" />
+                  <OptimizedImage
+                    src="/logo_positive.svg"
+                    alt="Logo"
+                    className="h-8 w-auto"
+                    priority
+                  />
                 </NavLink>
                 <button
                   type="button"
