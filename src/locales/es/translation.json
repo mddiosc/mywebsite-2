@@ -259,5 +259,19 @@
   "footer": {
     "contact": "Contacto",
     "copyright": "Todos los derechos reservados."
+  },
+  "accessibility": {
+    "skipToMain": "Ir al contenido principal",
+    "skipToNavigation": "Ir a la navegación",
+    "skipToFooter": "Ir al pie de página",
+    "mainNavigation": "Navegación principal",
+    "homeLink": "Ir a la página de inicio",
+    "logoAlt": "Logo del sitio",
+    "openMenu": "Abrir menú principal",
+    "closeMenu": "Cerrar menú",
+    "languageSwitcher": "Selector de idioma",
+    "switchToSpanish": "Cambiar a español",
+    "switchToEnglish": "Cambiar a inglés",
+    "required": "requerido"
   }
 }
