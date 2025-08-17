@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router'
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -14,7 +14,11 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      role="group"
+      aria-label={t('accessibility.languageSwitcher', { defaultValue: 'Language switcher' })}
+    >
       <button
         type="button"
         onClick={() => {
@@ -25,6 +29,8 @@ export default function LanguageSwitcher() {
             ? 'bg-indigo-100 text-indigo-600'
             : 'text-gray-600 hover:text-indigo-600'
         }`}
+        aria-pressed={i18n.language === 'es'}
+        aria-label={t('accessibility.switchToSpanish', { defaultValue: 'Switch to Spanish' })}
       >
         ES
       </button>
@@ -38,6 +44,8 @@ export default function LanguageSwitcher() {
             ? 'bg-indigo-100 text-indigo-600'
             : 'text-gray-600 hover:text-indigo-600'
         }`}
+        aria-pressed={i18n.language === 'en'}
+        aria-label={t('accessibility.switchToEnglish', { defaultValue: 'Switch to English' })}
       >
         EN
       </button>
