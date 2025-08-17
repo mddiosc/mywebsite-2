@@ -125,7 +125,8 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           {/* Name Field */}
           <div>
             <label htmlFor="name" className="block text-sm/6 font-semibold text-gray-900">
-              {t('contact.name')}
+              {t('contact.name')}{' '}
+              <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>*</span>
             </label>
             <div className="mt-2.5">
               <input
@@ -135,9 +136,12 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 autoComplete="name"
                 className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 placeholder={t('contact.namePlaceholder')}
+                aria-required="true"
+                aria-invalid={errors.name ? 'true' : 'false'}
+                aria-describedby={errors.name ? 'name-error' : undefined}
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="name-error" className="mt-1 text-sm text-red-600" role="alert">
                   {translateError(errors.name.message ?? '')}
                 </p>
               )}
@@ -147,7 +151,8 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           {/* Email Field */}
           <div>
             <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">
-              {t('contact.email')}
+              {t('contact.email')}{' '}
+              <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>*</span>
             </label>
             <div className="mt-2.5">
               <input
@@ -157,9 +162,12 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 autoComplete="email"
                 className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 placeholder={t('contact.emailPlaceholder')}
+                aria-required="true"
+                aria-invalid={errors.email ? 'true' : 'false'}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="email-error" className="mt-1 text-sm text-red-600" role="alert">
                   {translateError(errors.email.message ?? '')}
                 </p>
               )}
@@ -215,7 +223,10 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           <div>
             <div className="flex justify-between text-sm/6">
               <label htmlFor="message" className="block font-semibold text-gray-900">
-                {t('contact.message')}
+                {t('contact.message')}{' '}
+                <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>
+                  *
+                </span>
               </label>
               <p className="text-gray-400">{t('contact.maxCharacters')}</p>
             </div>
@@ -226,9 +237,12 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 rows={4}
                 className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
                 placeholder={t('contact.messagePlaceholder')}
+                aria-required="true"
+                aria-invalid={errors.message ? 'true' : 'false'}
+                aria-describedby={errors.message ? 'message-error' : undefined}
               />
               {errors.message && (
-                <p className="mt-1 text-sm text-red-600">
+                <p id="message-error" className="mt-1 text-sm text-red-600" role="alert">
                   {translateError(errors.message.message ?? '')}
                 </p>
               )}

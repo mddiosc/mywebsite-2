@@ -34,14 +34,22 @@ export default function Navbar() {
   }
 
   return (
-    <header>
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <header role="banner">
+      <nav
+        id="navigation"
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+        aria-label={t('accessibility.mainNavigation', { defaultValue: 'Main navigation' })}
+      >
         <div className="flex h-16 items-center justify-between">
           <div className="flex lg:flex-1">
-            <NavLink to={`/${i18n.language}/`} className="-m-1.5 p-1.5">
+            <NavLink
+              to={`/${i18n.language}/`}
+              className="-m-1.5 p-1.5"
+              aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
+            >
               <OptimizedImage
                 src="/logo_positive.svg"
-                alt="Logo"
+                alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
                 className="h-12 w-auto"
                 priority
               />
@@ -54,8 +62,10 @@ export default function Navbar() {
                 setMobileMenuOpen(true)
               }}
               className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={t('accessibility.openMenu', { defaultValue: 'Open main menu' })}
             >
-              <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="size-6" />
             </button>
           </div>
@@ -73,7 +83,9 @@ export default function Navbar() {
                   }`
                 }
               >
-                {item.name}
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
+                )}
               </NavLink>
             ))}
           </div>
@@ -101,6 +113,7 @@ export default function Navbar() {
               }}
             />
             <motion.div
+              id="mobile-menu"
               className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
               initial="hidden"
               animate="visible"
@@ -115,10 +128,11 @@ export default function Navbar() {
                   onClick={() => {
                     setMobileMenuOpen(false)
                   }}
+                  aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
                 >
                   <OptimizedImage
                     src="/logo_positive.svg"
-                    alt="Logo"
+                    alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
                     className="h-8 w-auto"
                     priority
                   />
@@ -129,8 +143,8 @@ export default function Navbar() {
                     setMobileMenuOpen(false)
                   }}
                   className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                  aria-label={t('accessibility.closeMenu', { defaultValue: 'Close menu' })}
                 >
-                  <span className="sr-only">Close menu</span>
                   <XMarkIcon aria-hidden="true" className="size-6" />
                 </button>
               </div>
@@ -159,7 +173,9 @@ export default function Navbar() {
                             setMobileMenuOpen(false)
                           }}
                         >
-                          {item.name}
+                          {({ isActive }) => (
+                            <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
+                          )}
                         </NavLink>
                       </motion.div>
                     ))}
