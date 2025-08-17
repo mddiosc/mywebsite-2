@@ -13,6 +13,25 @@ export default defineConfig(() => ({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks for better caching
+          'react-vendor': ['react', 'react-dom'],
+          'router-vendor': ['react-router'],
+          'animation-vendor': ['framer-motion'],
+          'ui-vendor': ['@headlessui/react', '@heroicons/react'],
+          'query-vendor': ['@tanstack/react-query'],
+          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'i18n-vendor': ['react-i18next', 'i18next', 'i18next-browser-languagedetector'],
+          'markdown-vendor': ['react-markdown', 'rehype-highlight', 'remark-gfm'],
+        },
+      },
+    },
+    // Optimize chunk size warning threshold
+    chunkSizeWarningLimit: 600,
+  },
   test: {
     globals: true,
     environment: 'jsdom',
