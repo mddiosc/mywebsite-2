@@ -105,7 +105,18 @@
         "moreTopics": "más",
         "showFullDescription": "Ver descripción completa",
         "fullDescription": "Descripción completa:",
-        "additionalTopics": "Topics adicionales:"
+        "additionalTopics": "Topics adicionales:",
+        "accessibility": {
+          "viewOnGitHub": "Ver {{projectName}} en GitHub",
+          "viewDemo": "Ver demo de {{projectName}}",
+          "closeTooltip": "Cerrar tooltip",
+          "showMoreTopics": "Mostrar más topics para {{projectName}}",
+          "projectCard": "Tarjeta del proyecto {{projectName}}",
+          "languageDistribution": "Distribución de lenguajes de programación",
+          "projectTopics": "Topics y tecnologías del proyecto",
+          "starsCount": "{{count}} estrellas en GitHub",
+          "forksCount": "{{count}} forks en GitHub"
+        }
       },
       "githubInfo": "Mostrando {{count}} repositorios de GitHub",
       "error": {

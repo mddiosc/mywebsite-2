@@ -89,7 +89,54 @@ const calculateProjectStatistics = (projects: GitHubProject[] | undefined): Proj
 }
 
 /**
- * Fetches GitHub projects and their languages
+ * Batch size for concurrent API requests
+ */
+const API_BATCH_SIZE = 5
+
+/**
+ * Delay between batches to avoid rate limiting
+ */
+const BATCH_DELAY = 100
+
+/**
+ * Creates a delay promise
+ */
+const delay = async (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+
+/**
+ * Process projects in batches to avoid overwhelming the API
+ */
+const processBatch = async (
+  batch: GitHubProject[],
+  headers: Record<string, string>,
+  githubUsername: string,
+): Promise<GitHubProject[]> => {
+  return Promise.all(
+    batch.map(async (project) => {
+      try {
+        const languagesResponse = await axiosInstance.get<Languages>(
+          project.languages_url ||
+            `https://api.github.com/repos/${githubUsername}/${project.name}/languages`,
+          { headers },
+        )
+
+        return {
+          ...project,
+          languages: languagesResponse.data,
+        }
+      } catch {
+        // Silent error handling to avoid console spam
+        return {
+          ...project,
+          languages: {} as Languages,
+        }
+      }
+    }),
+  )
+}
+
+/**
+ * Fetches GitHub projects and their languages with optimized batching
  * @returns A promise that resolves to an array of GitHub projects with language data
  */
 const fetchProjects = async (): Promise<GitHubProject[]> => {
@@ -106,36 +153,29 @@ const fetchProjects = async (): Promise<GitHubProject[]> => {
     headers['Authorization'] = `token ${githubToken}`
   }
 
-  // Get repository list
+  // Get repository list with optimized parameters
   const { data } = await axiosInstance.get<GitHubProject[]>(
-    `https://api.github.com/users/${githubUsername}/repos`,
+    `https://api.github.com/users/${githubUsername}/repos?per_page=100&sort=updated&direction=desc`,
     { headers },
   )
 
-  const projectsWithLanguages = await Promise.all(
-    data.map(async (project) => {
-      try {
-        const languagesResponse = await axiosInstance.get<Languages>(
-          project.languages_url ||
-            `https://api.github.com/repos/${githubUsername}/${project.name}/languages`,
-          { headers },
-        )
+  // Process projects in batches to avoid rate limiting and improve performance
+  const batches: GitHubProject[][] = []
+  for (let i = 0; i < data.length; i += API_BATCH_SIZE) {
+    batches.push(data.slice(i, i + API_BATCH_SIZE))
+  }
 
-        // Add languages to the project object
-        return {
-          ...project,
-          languages: languagesResponse.data,
-        }
-      } catch (error) {
-        console.error(`Error fetching languages for ${project.name}:`, error)
-        // If request fails, return project without languages
-        return {
-          ...project,
-          languages: {} as Languages,
-        }
-      }
-    }),
-  )
+  const projectsWithLanguages: GitHubProject[] = []
+
+  for (const batch of batches) {
+    const batchResults = await processBatch(batch, headers, githubUsername)
+    projectsWithLanguages.push(...batchResults)
+
+    // Add delay between batches to be nice to the API
+    if (batch !== batches[batches.length - 1]) {
+      await delay(BATCH_DELAY)
+    }
+  }
 
   return projectsWithLanguages
 }
@@ -158,6 +198,10 @@ export const useProjects = (options?: UseQueryOptions<GitHubProject[]>): UseProj
           return dateB - dateA
         })
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 2,
+    refetchOnWindowFocus: false,
     ...options,
   })
 

@@ -344,7 +344,7 @@ describe('useProjects', () => {
       expect(result.current.isLoading).toBe(false)
     })
 
-    expect(mockGet).toHaveBeenCalledWith('https://api.github.com/users/testuser/repos', {
+    expect(mockGet).toHaveBeenCalledWith('https://api.github.com/users/testuser/repos?per_page=100&sort=updated&direction=desc', {
       headers: {
         Accept: 'application/vnd.github.v3+json',
         Authorization: 'token valid-token',

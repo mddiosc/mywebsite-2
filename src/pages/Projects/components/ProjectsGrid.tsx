@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-import ProjectCard from './ProjectCard'
+import LazyProjectCard from './LazyProjectCard'
 import ProjectSkeleton from './ProjectSkeleton'
 
 import { PROJECTS_CONSTANTS } from '../constants'
@@ -30,7 +30,7 @@ const ProjectsGrid = ({ projects, isLoading, error }: ProjectsGridProps) => {
       {!isLoading &&
         !error &&
         projects.map((project, index) => (
-          <ProjectCard
+          <LazyProjectCard
             key={project.id}
             project={project}
             delay={

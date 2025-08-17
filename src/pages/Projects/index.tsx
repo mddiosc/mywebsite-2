@@ -30,9 +30,11 @@ const ProjectsPage = () => {
   return (
     <>
       <DocumentHead
-        title={`${t('navigation.projects')} - Portfolio`}
-        description={t('pages.projects.description')}
-        keywords="projects, github, repositories, code, development, open source"
+        title={`${t('navigation.projects')} | ${t('pages.projects.title')} - Portfolio`}
+        description={`${t('pages.projects.description')} - ${statistics.totalProjects.toString()} proyectos, ${statistics.totalStars.toString()} estrellas, ${statistics.uniqueTechnologies.toString()} tecnologías`}
+        keywords="projects, github, repositories, code, development, open source, react, typescript, javascript, portfolio"
+        ogType="website"
+        robots="index, follow"
       />
 
       <motion.div

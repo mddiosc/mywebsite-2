@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -56,6 +56,56 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   const [isDescriptionTruncated, setIsDescriptionTruncated] = useState(false)
   const descriptionTextRef = useRef<HTMLParagraphElement>(null)
 
+  // Memoize expensive calculations
+  const formattedDates = useMemo(() => {
+    const currentLocale = i18n.language === 'es' ? 'es-ES' : 'en-US'
+    return {
+      updated: new Date(project.updated_at).toLocaleDateString(currentLocale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      created: new Date(project.created_at).toLocaleDateString(currentLocale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    }
+  }, [project.updated_at, project.created_at, i18n.language])
+
+  // Memoize language calculations
+  const languageData = useMemo(() => {
+    const languageColor =
+      project.language && languageColors[project.language]
+        ? languageColors[project.language]
+        : languageColors['default']
+
+    const hasMultipleLanguages = project.languages && Object.keys(project.languages).length > 0
+
+    const totalBytes = project.languages
+      ? Object.values(project.languages).reduce((sum, bytes) => sum + bytes, 0)
+      : 0
+
+    const sortedLanguages = project.languages
+      ? Object.entries(project.languages)
+          .sort(([, bytesA], [, bytesB]) => bytesB - bytesA)
+          .slice(0, 4)
+      : []
+
+    return {
+      languageColor,
+      hasMultipleLanguages,
+      totalBytes,
+      sortedLanguages,
+    }
+  }, [project.language, project.languages])
+
+  // Memoize description
+  const description = useMemo(
+    () => project.description ?? t('pages.projects.card.noDescription'),
+    [project.description, t],
+  )
+
   const {
     refs: topicsRefs,
     floatingStyles: topicsFloatingStyles,
@@ -99,45 +149,6 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
     getFloatingProps: getDescriptionFloatingProps,
   } = useInteractions([descriptionHover, descriptionFocus, descriptionDismiss, descriptionRole])
 
-  // Get current language from i18n
-  const currentLocale = i18n.language === 'es' ? 'es-ES' : 'en-US'
-
-  const formattedUpdatedDate = new Date(project.updated_at).toLocaleDateString(currentLocale, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-
-  const formattedCreatedDate = new Date(project.created_at).toLocaleDateString(currentLocale, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-
-  // Determine the color for the primary language
-  const languageColor =
-    project.language && languageColors[project.language]
-      ? languageColors[project.language]
-      : languageColors['default']
-
-  // Process languages if available
-  const hasMultipleLanguages = project.languages && Object.keys(project.languages).length > 0
-
-  // Calculate total bytes to determine percentages
-  const totalBytes = project.languages
-    ? Object.values(project.languages).reduce((sum, bytes) => sum + bytes, 0)
-    : 0
-
-  // Sort languages by byte count (descending) and limit to top 4
-  const sortedLanguages = project.languages
-    ? Object.entries(project.languages)
-        .sort(([, bytesA], [, bytesB]) => bytesB - bytesA)
-        .slice(0, 4)
-    : []
-
-  // Get description with fallback
-  const description = project.description ?? t('pages.projects.card.noDescription')
-
   // Effect to check if description is truncated by checking scroll height vs client height
   useEffect(() => {
     if (descriptionTextRef.current) {
@@ -149,20 +160,26 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   }, [description])
 
   // Handle mobile tap for description tooltip
-  const handleDescriptionClick = (e: React.MouseEvent) => {
-    if ('ontouchstart' in window && isDescriptionTruncated) {
-      e.stopPropagation()
-      setIsDescriptionOpen(!isDescriptionOpen)
-    }
-  }
+  const handleDescriptionClick = useCallback(
+    (e: React.MouseEvent) => {
+      if ('ontouchstart' in window && isDescriptionTruncated) {
+        e.stopPropagation()
+        setIsDescriptionOpen(!isDescriptionOpen)
+      }
+    },
+    [isDescriptionTruncated, isDescriptionOpen],
+  )
 
   // Handle mobile tap for topics tooltip
-  const handleTopicsClick = (e: React.MouseEvent) => {
-    if ('ontouchstart' in window) {
-      e.stopPropagation()
-      setIsTopicsOpen(!isTopicsOpen)
-    }
-  }
+  const handleTopicsClick = useCallback(
+    (e: React.MouseEvent) => {
+      if ('ontouchstart' in window) {
+        e.stopPropagation()
+        setIsTopicsOpen(!isTopicsOpen)
+      }
+    },
+    [isTopicsOpen],
+  )
 
   return (
     <motion.div
@@ -179,6 +196,8 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         }
       }}
       className="group relative flex h-full cursor-pointer flex-col rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+      role="article"
+      aria-label={t('pages.projects.card.accessibility.projectCard', { projectName: project.name })}
     >
       <div className="aspect-h-3 aspect-w-4 sm:aspect-none overflow-hidden bg-gray-200 group-hover:opacity-75 sm:h-40">
         <div className="h-full w-full bg-gradient-to-br from-indigo-50 to-indigo-100 object-cover object-center sm:h-full sm:w-full">
@@ -203,7 +222,14 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         {/* Header section - Fixed position */}
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900">
-            <a href={project.html_url} target="_blank" rel="noopener noreferrer">
+            <a
+              href={project.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('pages.projects.card.accessibility.viewOnGitHub', {
+                projectName: project.name,
+              })}
+            >
               {project.name}
             </a>
           </h3>
@@ -249,9 +275,14 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                           setIsDescriptionOpen(false)
                         }}
                         className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
-                        aria-label="Cerrar"
+                        aria-label={t('pages.projects.card.accessibility.closeTooltip')}
                       >
-                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <svg
+                          className="h-4 w-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          aria-hidden="true"
+                        >
                           <path
                             fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -270,16 +301,20 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         {/* Languages section - Fixed height */}
         <div className="mb-4 h-16">
           {/* Display multiple languages if available */}
-          {hasMultipleLanguages ? (
+          {languageData.hasMultipleLanguages ? (
             <div>
               <p className="mb-1 text-sm font-medium text-gray-500">
                 {t('pages.projects.card.languages')}
               </p>
               <div className="flex flex-wrap gap-1">
                 {/* Languages progress bar */}
-                <div className="flex h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                  {sortedLanguages.map(([lang, bytes]) => {
-                    const percentage = (bytes / totalBytes) * 100
+                <div
+                  className="flex h-2 w-full overflow-hidden rounded-full bg-gray-100"
+                  role="img"
+                  aria-label={t('pages.projects.card.accessibility.languageDistribution')}
+                >
+                  {languageData.sortedLanguages.map(([lang, bytes]) => {
+                    const percentage = (bytes / languageData.totalBytes) * 100
                     const langColor = languageColors[lang] ?? languageColors['default']
                     return (
                       <div
@@ -293,8 +328,8 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                 </div>
                 {/* Languages legend */}
                 <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
-                  {sortedLanguages.slice(0, 3).map(([lang, bytes]) => {
-                    const percentage = ((bytes / totalBytes) * 100).toFixed(1)
+                  {languageData.sortedLanguages.slice(0, 3).map(([lang, bytes]) => {
+                    const percentage = ((bytes / languageData.totalBytes) * 100).toFixed(1)
                     const langColor = languageColors[lang] ?? languageColors['default']
                     return (
                       <div key={lang} className="flex items-center gap-x-1">
@@ -311,7 +346,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           ) : (
             // Display only primary language if multiple languages not available
             <div className="flex items-center gap-x-2">
-              <div className={`h-3 w-3 rounded-full ${languageColor ?? ''}`} />
+              <div className={`h-3 w-3 rounded-full ${languageData.languageColor ?? ''}`} />
               <p className="text-sm text-gray-500">{project.language || 'No language specified'}</p>
             </div>
           )}
@@ -320,7 +355,11 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         {/* Topics section - Fixed height */}
         <div className="mb-4 h-16">
           {project.topics.length > 0 ? (
-            <div className="flex flex-wrap content-start gap-1">
+            <div
+              className="flex flex-wrap content-start gap-1"
+              role="region"
+              aria-label={t('pages.projects.card.accessibility.projectTopics')}
+            >
               {project.topics.slice(0, 4).map((topic) => (
                 <span
                   key={topic}
@@ -372,9 +411,14 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                                 setIsTopicsOpen(false)
                               }}
                               className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
-                              aria-label="Cerrar"
+                              aria-label={t('pages.projects.card.accessibility.closeTooltip')}
                             >
-                              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                              <svg
+                                className="h-4 w-4"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                aria-hidden="true"
+                              >
                                 <path
                                   fillRule="evenodd"
                                   d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -398,10 +442,10 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           {/* Fixed height container for dates */}
           <div className="mb-3 h-8 space-y-1">
             <p className="text-xs text-gray-500">
-              {t('pages.projects.card.createdOn')} {formattedCreatedDate}
+              {t('pages.projects.card.createdOn')} {formattedDates.created}
             </p>
             <p className="text-xs text-gray-500">
-              {t('pages.projects.card.updatedOn')} {formattedUpdatedDate}
+              {t('pages.projects.card.updatedOn')} {formattedDates.updated}
             </p>
           </div>
 
@@ -409,24 +453,36 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
           <div className="flex h-8 items-center justify-between">
             <div className="flex items-center gap-x-3">
               {/* Stars count */}
-              <div className="flex items-center gap-x-1">
+              <div
+                className="flex items-center gap-x-1"
+                aria-label={t('pages.projects.card.accessibility.starsCount', {
+                  count: project.stargazers_count,
+                })}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 text-gray-400"
                   viewBox="0 0 16 16"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z" />
                 </svg>
                 <span className="text-xs text-gray-500">{project.stargazers_count}</span>
               </div>
               {/* Forks count */}
-              <div className="flex items-center gap-x-1">
+              <div
+                className="flex items-center gap-x-1"
+                aria-label={t('pages.projects.card.accessibility.forksCount', {
+                  count: project.forks_count,
+                })}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-4 w-4 text-gray-400"
                   viewBox="0 0 16 16"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z" />
                 </svg>
@@ -442,12 +498,16 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-x-1 rounded-md bg-indigo-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  aria-label={t('pages.projects.card.accessibility.viewDemo', {
+                    projectName: project.name,
+                  })}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-3 w-3"
                     viewBox="0 0 16 16"
                     fill="currentColor"
+                    aria-hidden="true"
                   >
                     <path
                       fillRule="evenodd"
@@ -469,4 +529,4 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   )
 }
 
-export default ProjectCard
+export default memo(ProjectCard)

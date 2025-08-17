@@ -6,12 +6,12 @@ export const PROJECTS_CONSTANTS = {
   SKELETON_COUNT: 6,
   MAX_TOPICS_DISPLAY: 20,
   ANIMATION_DELAYS: {
-    HEADER: 0.2,
-    STATISTICS: 0.3,
-    GRID: 0.4,
-    TOPICS: 0.5,
-    CARD_BASE: 0.1,
-    CARD_INCREMENT: 0.05,
+    HEADER: 0.1,
+    STATISTICS: 0.15,
+    GRID: 0.2,
+    TOPICS: 0.25,
+    CARD_BASE: 0.05,
+    CARD_INCREMENT: 0.02,
   },
   GRID_RESPONSIVE: {
     BASE: 'grid-cols-1',

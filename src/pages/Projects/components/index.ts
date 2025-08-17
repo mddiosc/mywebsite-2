@@ -2,7 +2,7 @@
  * Export all Projects page components
  */
 
-export { default as ProjectCard } from './ProjectCard'
+export { default as LazyProjectCard } from './LazyProjectCard'
 export { default as ProjectSkeleton } from './ProjectSkeleton'
 export { default as ProjectStatistics } from './ProjectStatistics'
 export { default as ProjectsError } from './ProjectsError'
