@@ -55,7 +55,9 @@ export function DocumentHead({
         <meta property="article:published_time" content={articlePublishedTime} />
       )}
       {articleAuthor && <meta property="article:author" content={articleAuthor} />}
-      {articleTags?.map((tag) => <meta key={tag} property="article:tag" content={tag} />)}
+      {articleTags?.map((tag) => (
+        <meta key={tag} property="article:tag" content={tag} />
+      ))}
     </Helmet>
   )
 }
