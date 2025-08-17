@@ -35,6 +35,25 @@ vi.mock('dompurify', () => ({
   },
 }))
 
+// Mock security utilities
+vi.mock('../../../lib/security', () => ({
+  sanitizeHtml: vi.fn((input: string) => input),
+  sanitizeTextInput: vi.fn((input: string) => input),
+  checkRateLimit: vi.fn(() => ({ allowed: true, retryAfter: undefined })),
+}))
+
+// Mock security hooks
+vi.mock('../../../hooks/useSecurity', () => ({
+  useSecurity: vi.fn(() => ({
+    validateSecureInput: vi.fn(),
+    getSecurityHeaders: vi.fn(() => ({
+      'Content-Security-Policy': "default-src 'self'",
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+    })),
+  })),
+}))
+
 // Create test wrapper with QueryClient
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -111,13 +130,15 @@ describe('useContactForm', () => {
       expect(result.current.isSuccess).toBe(true)
       expect(result.current.isError).toBe(false)
 
-      // Verify fetch was called
+      // Verify fetch was called with security headers
       expect(global.fetch).toHaveBeenCalledWith(
         'https://getform.io/f/test-form-id',
         expect.objectContaining({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Cache-Control': 'no-cache',
           },
         }),
       )
@@ -165,6 +186,8 @@ describe('useContactForm', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Cache-Control': 'no-cache',
           },
           body: expect.stringContaining('test-recaptcha-token') as string,
         }),
