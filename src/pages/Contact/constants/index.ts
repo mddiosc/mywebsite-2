@@ -59,7 +59,7 @@ export const SUSPICIOUS_PATTERNS = [
  * Valid HTTP status codes for form submission
  *
  * HTTP status codes that are considered successful responses
- * from the form submission endpoint (Getform.io).
+ * from the form submission endpoint (Formspree.io).
  */
 export const VALID_HTTP_STATUS_CODES = [200, 201, 302] as const
 

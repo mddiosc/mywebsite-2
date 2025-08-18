@@ -35,7 +35,7 @@ vi.mock('../../../lib/security', () => ({
 }))
 
 // Mock environment variable
-vi.stubEnv('VITE_GETFORM_ID', 'test-form-id')
+vi.stubEnv('VITE_FORMSPREE_ID', 'test-formspree-id')
 
 // Now import the hook
 import { useContactForm } from './useContactForm'
@@ -114,7 +114,7 @@ describe('useContactForm', () => {
     expect(result.current.isPending).toBe(false)
 
     expect(mockPost).toHaveBeenCalledWith(
-      'https://getform.io/f/test-form-id',
+      'https://formspree.io/f/test-formspree-id',
       expect.objectContaining({
         name: 'John Doe',
         email: 'john@example.com',
@@ -205,7 +205,7 @@ describe('useContactForm', () => {
 
     // Should submit without reCAPTCHA token
     expect(mockPost).toHaveBeenCalledWith(
-      'https://getform.io/f/test-form-id',
+      'https://formspree.io/f/test-formspree-id',
       expect.objectContaining({
         name: 'John Doe',
         email: 'john@example.com',
