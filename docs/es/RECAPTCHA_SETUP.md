@@ -16,7 +16,7 @@ Para completar la configuración del formulario de contacto con protección anti
 
 3. **Obtén las claves**
    - **Clave del Sitio**: Esta es pública, se incluye en el frontend
-   - **Clave Secreta**: Esta es privada, se usa en el backend (Getform.io la manejará)
+   - **Clave Secreta**: Esta es privada, se usa en el backend (Formspree.io la manejará)
 
 4. **Configurar variables de entorno**
 
@@ -25,11 +25,11 @@ Para completar la configuración del formulario de contacto con protección anti
    VITE_RECAPTCHA_SITE_KEY=tu_site_key_aqui
    ```
 
-## Configuración en Getform.io
+## Configuración en Formspree.io
 
-Si usas Getform.io, también debes:
+Si usas Formspree.io, también debes:
 
-1. Ir a tu formulario en Getform.io
+1. Ir a tu formulario en Formspree.io
 2. En "Settings" → "Spam Protection"
 3. Habilitar "Google reCAPTCHA"
 4. Pegar tu **Clave Secreta** de reCAPTCHA

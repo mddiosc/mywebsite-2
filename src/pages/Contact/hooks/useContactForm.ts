@@ -45,7 +45,7 @@ const sanitizeData = (data: ContactFormData): ContactFormData => {
  * 2. Checks rate limiting to prevent spam
  * 3. Sanitizes all user inputs
  * 4. Includes reCAPTCHA token if available
- * 5. Submits to Getform.io endpoint with security headers
+ * 5. Submits to Formspree.io endpoint with security headers
  * 6. Handles various HTTP response statuses
  *
  * @param data - Contact form data to submit
@@ -82,9 +82,9 @@ const submitContactForm = async (
   const sanitizedData = sanitizeData(data)
 
   // 4. Verify environment configuration
-  const getformId = import.meta.env.VITE_GETFORM_ID
-  if (!getformId) {
-    throw new Error('VITE_GETFORM_ID environment variable is not configured')
+  const formspreeId = import.meta.env['VITE_FORMSPREE_ID'] as string
+  if (!formspreeId) {
+    throw new Error('VITE_FORMSPREE_ID environment variable is not configured')
   }
 
   // 5. Prepare form payload with optional reCAPTCHA
@@ -93,7 +93,7 @@ const submitContactForm = async (
     : sanitizedData
 
   // 6. Submit using axios for consistency with rest of app
-  const response = await axiosInstance.post(`https://getform.io/f/${getformId}`, formData, {
+  const response = await axiosInstance.post(`https://formspree.io/f/${formspreeId}`, formData, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -142,12 +142,6 @@ export const useContactForm = () => {
       }
 
       return submitContactForm(data, recaptchaToken)
-    },
-    onSuccess: (response) => {
-      console.log('Message sent successfully! Status:', response.status)
-      if (response.status === 302) {
-        console.log('Getform.io redirect response (expected behavior)')
-      }
     },
     onError: (error) => {
       console.error('Error sending message:', error)

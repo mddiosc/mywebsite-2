@@ -16,7 +16,7 @@ To complete the contact form setup with anti-spam protection, you need to obtain
 
 3. **Get the keys**
    - **Site Key**: This is public, included in the frontend
-   - **Secret Key**: This is private, used in the backend (Getform.io will handle it)
+   - **Secret Key**: This is private, used in the backend (Formspree.io will handle it)
 
 4. **Configure environment variables**
 
@@ -25,11 +25,11 @@ To complete the contact form setup with anti-spam protection, you need to obtain
    VITE_RECAPTCHA_SITE_KEY=your_site_key_here
    ```
 
-## Getform.io Configuration
+## Formspree.io Configuration
 
-If you use Getform.io, you should also:
+If you use Formspree.io, you should also:
 
-1. Go to your form in Getform.io
+1. Go to your form in Formspree.io
 2. In "Settings" → "Spam Protection"
 3. Enable "Google reCAPTCHA"
 4. Paste your reCAPTCHA **Secret Key**
