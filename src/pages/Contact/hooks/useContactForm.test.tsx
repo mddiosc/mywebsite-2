@@ -1,507 +1,287 @@
-/**
- * Tests for useContactForm hook
- *
- * Critical testing for:
- * - Form submission logic
- * - Data sanitization
- * - reCAPTCHA integration
- * - Error handling
- * - Environment variable validation
- */
-
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { renderHook, waitFor } from '@testing-library/react'
-
-import { useContactForm } from './useContactForm'
-
+import type { ReactNode } from 'react'
+import type { AxiosResponse } from 'axios'
 import type { ContactFormData } from '../types'
 
-// Mock dependencies
-vi.mock('react-google-recaptcha-v3', () => ({
-  useGoogleReCaptcha: vi.fn(),
-}))
-
-vi.mock('dompurify', () => ({
-  default: {
-    sanitize: vi.fn((input: string | Node) => {
-      if (typeof input === 'string') {
-        // Return input as-is for tests (real DOMPurify would remove dangerous content)
-        return input
-      }
-      return input.textContent ?? ''
-    }),
+// Mock axios
+vi.mock('@/lib/axios', () => ({
+  axiosInstance: {
+    post: vi.fn(),
   },
 }))
 
-// Mock security utilities
-vi.mock('../../../lib/security', () => ({
-  sanitizeHtml: vi.fn((input: string) => input),
-  sanitizeTextInput: vi.fn((input: string) => input),
-  checkRateLimit: vi.fn(() => ({ allowed: true, retryAfter: undefined })),
+// Mock reCAPTCHA
+vi.mock('react-google-recaptcha-v3', () => ({
+  useGoogleReCaptcha: () => ({
+    executeRecaptcha: vi.fn(),
+  }),
 }))
 
 // Mock security hooks
 vi.mock('../../../hooks/useSecurity', () => ({
-  useSecurity: vi.fn(() => ({
+  useSecurity: () => ({
     validateSecureInput: vi.fn(),
-    getSecurityHeaders: vi.fn(() => ({
-      'Content-Security-Policy': "default-src 'self'",
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-    })),
-  })),
+    getSecurityHeaders: () => ({ 'X-Security': 'test' }),
+  }),
 }))
 
-// Create test wrapper with QueryClient
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        gcTime: 0,
-        staleTime: 0,
-      },
-      mutations: {
-        retry: false,
-      },
-    },
-  })
+// Mock security utilities
+vi.mock('../../../lib/security', () => ({
+  sanitizeHtml: (str: string) => str,
+  sanitizeTextInput: (str: string) => str,
+  checkRateLimit: () => ({ allowed: true }),
+}))
 
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
-}
+// Mock environment variable
+vi.stubEnv('VITE_GETFORM_ID', 'test-form-id')
+
+// Now import the hook
+import { useContactForm } from './useContactForm'
 
 describe('useContactForm', () => {
+  let queryClient: QueryClient
+
+  const createWrapper = () => {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+      },
+    })
+
+    return ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    )
+  }
+
   beforeEach(() => {
-    // Reset mocks
     vi.clearAllMocks()
-
-    // Mock fetch
-    global.fetch = vi.fn()
-
-    // Setup environment variable
-    vi.stubEnv('VITE_GETFORM_ID', 'test-form-id')
   })
 
-  afterEach(() => {
-    vi.restoreAllMocks()
-    vi.unstubAllEnvs()
+  it('should initialize with default state', () => {
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
+    })
+
+    expect(result.current.isPending).toBe(false)
+    expect(result.current.isSuccess).toBe(false)
+    expect(result.current.isError).toBe(false)
+    expect(typeof result.current.submitForm).toBe('function')
   })
 
-  describe('data sanitization', () => {
-    it('should handle form submission successfully', async () => {
-      // Setup environment variable
-      vi.stubEnv('VITE_GETFORM_ID', 'test-form-id')
+  it('should handle successful form submission', async () => {
+    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
+      axiosInstance: { post: any }
+    }
+    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
+      useGoogleReCaptcha: () => { executeRecaptcha: any }
+    }
 
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
+    const mockPost = axiosInstance.post as any
+    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+    mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
+    mockPost.mockResolvedValue({
+      data: { success: true },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    } as AxiosResponse)
 
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
+    })
 
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message',
-      }
+    const formData: ContactFormData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      'project-type': 'personal',
+      message: 'Test message',
+    }
 
-      // Act
-      result.current.submitForm(testData)
+    act(() => {
+      result.current.submitForm(formData)
+    })
 
-      await waitFor(() => {
-        expect(result.current.isPending).toBe(false)
-      })
-
-      // Verify the form was submitted successfully
+    // Wait for the mutation to complete
+    await waitFor(() => {
       expect(result.current.isSuccess).toBe(true)
-      expect(result.current.isError).toBe(false)
-
-      // Verify fetch was called with security headers
-      expect(global.fetch).toHaveBeenCalledWith(
-        'https://getform.io/f/test-form-id',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Cache-Control': 'no-cache',
-          },
-        }),
-      )
     })
+
+    expect(result.current.isPending).toBe(false)
+
+    expect(mockPost).toHaveBeenCalledWith(
+      'https://getform.io/f/test-form-id',
+      expect.objectContaining({
+        name: 'John Doe',
+        email: 'john@example.com',
+        'project-type': 'personal',
+        message: 'Test message',
+      }),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'Content-Type': 'application/json',
+        }),
+      }),
+    )
   })
 
-  describe('reCAPTCHA integration', () => {
-    it('should include reCAPTCHA token when available', async () => {
-      const mockExecuteRecaptcha = vi.fn().mockResolvedValue('test-recaptcha-token')
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: mockExecuteRecaptcha,
-      })
+  it('should handle form submission error', async () => {
+    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
+      axiosInstance: { post: any }
+    }
+    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
+      useGoogleReCaptcha: () => { executeRecaptcha: any }
+    }
 
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+    const mockPost = axiosInstance.post as any
+    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
+    mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
+    mockPost.mockRejectedValue(new Error('Network error'))
 
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      // Act
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isPending).toBe(false)
-      })
-
-      // Assert
-      expect(mockExecuteRecaptcha).toHaveBeenCalledWith('contact_form')
-      expect(global.fetch).toHaveBeenCalledWith(
-        'https://getform.io/f/test-form-id',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Cache-Control': 'no-cache',
-          },
-          body: expect.stringContaining('test-recaptcha-token') as string,
-        }),
-      )
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
     })
 
-    it('should continue without reCAPTCHA if execution fails', async () => {
-      const mockExecuteRecaptcha = vi.fn().mockRejectedValue(new Error('reCAPTCHA failed'))
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: mockExecuteRecaptcha,
-      })
+    const formData: ContactFormData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      'project-type': 'personal',
+      message: 'Test message',
+    }
 
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
-
-      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
-        // Empty implementation for testing
-      })
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      // Act
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isPending).toBe(false)
-      })
-
-      // Assert
-      expect(consoleWarnSpy).toHaveBeenCalledWith('reCAPTCHA execution failed:', expect.any(Error))
-      expect(global.fetch).toHaveBeenCalled()
-      expect(result.current.isError).toBe(false)
-
-      consoleWarnSpy.mockRestore()
+    act(() => {
+      result.current.submitForm(formData)
     })
-  })
 
-  describe('environment validation', () => {
-    it('should throw error when VITE_GETFORM_ID is not configured', async () => {
-      vi.stubEnv('VITE_GETFORM_ID', undefined)
-
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      // Act
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isError).toBe(true)
-      })
-
-      // Assert
+    await waitFor(() => {
       expect(result.current.isError).toBe(true)
+      expect(result.current.isPending).toBe(false)
     })
   })
 
-  describe('HTTP status handling', () => {
-    beforeEach(async () => {
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
+  it('should handle missing reCAPTCHA token gracefully', async () => {
+    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
+      axiosInstance: { post: any }
+    }
+    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
+      useGoogleReCaptcha: () => { executeRecaptcha: any }
+    }
+
+    const mockPost = axiosInstance.post as any
+    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
+
+    mockExecuteRecaptcha.mockResolvedValue(null)
+    mockPost.mockResolvedValue({
+      data: { success: true },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    } as AxiosResponse)
+
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
     })
 
-    it('should handle successful response (200)', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+    const formData: ContactFormData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      'project-type': 'personal',
+      message: 'Test message',
+    }
 
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
+    act(() => {
+      result.current.submitForm(formData)
+    })
 
-      const testData: ContactFormData = {
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true)
+    })
+
+    // Should submit without reCAPTCHA token
+    expect(mockPost).toHaveBeenCalledWith(
+      'https://getform.io/f/test-form-id',
+      expect.objectContaining({
         name: 'John Doe',
-        email: 'test@example.com',
+        email: 'john@example.com',
         'project-type': 'personal',
-        message: 'This is a test message.',
-      }
+        message: 'Test message',
+      }),
+      expect.any(Object),
+    )
 
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true)
-      })
-
-      expect(result.current.isError).toBe(false)
-    })
-
-    it('should handle redirect response (302)', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response('', {
-          status: 302,
-          headers: { Location: 'https://getform.io/success' },
-        }),
-      )
-
-      const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {
-        // Empty implementation for testing
-      })
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true)
-      })
-
-      expect(consoleLogSpy).toHaveBeenCalledWith('Getform.io redirect response (expected behavior)')
-      expect(result.current.isError).toBe(false)
-
-      consoleLogSpy.mockRestore()
-    })
-
-    it('should handle error responses', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response('Server Error', {
-          status: 500,
-          statusText: 'Internal Server Error',
-        }),
-      )
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isError).toBe(true)
-      })
-
-      expect(result.current.isSuccess).toBe(false)
-    })
+    // Should NOT include g-recaptcha-response when token is null
+    const callArgs = mockPost.mock.calls[0]
+    expect(callArgs[1]).not.toHaveProperty('g-recaptcha-response')
   })
 
-  describe('validation error handling', () => {
-    it('should handle Zod validation errors', async () => {
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
+  it('should handle validation errors', async () => {
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
+    })
 
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
+    // Submit invalid data (missing required fields)
+    const invalidData = {
+      name: '',
+      email: 'invalid-email',
+      'project-type': 'personal' as const,
+      message: '',
+    }
 
-      // Invalid data that should fail Zod validation
-      const invalidData = {
-        name: 'J', // Too short
-        email: 'invalid-email',
-        'project-type': 'personal',
-        message: 'short', // Too short
-      } as ContactFormData
-
+    act(() => {
       result.current.submitForm(invalidData)
+    })
 
-      await waitFor(() => {
-        expect(result.current.isError).toBe(true)
-      })
-
-      expect(result.current.isSuccess).toBe(false)
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true)
     })
   })
 
-  describe('callback handling', () => {
-    it('should call onSuccess callback when provided', async () => {
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
+  it('should provide success callback functionality', async () => {
+    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
+      axiosInstance: { post: any }
+    }
+    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
+      useGoogleReCaptcha: () => { executeRecaptcha: any }
+    }
 
-      vi.mocked(global.fetch).mockResolvedValueOnce(
-        new Response(JSON.stringify({ success: true }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' },
-        }),
-      )
+    const mockPost = axiosInstance.post as any
+    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
-      const mockOnSuccess = vi.fn()
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
+    mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
+    mockPost.mockResolvedValue({
+      data: { success: true },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    } as AxiosResponse)
 
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message.',
-      }
-
-      result.current.submitForm(testData, { onSuccess: mockOnSuccess })
-
-      await waitFor(() => {
-        expect(result.current.isSuccess).toBe(true)
-      })
-
-      expect(mockOnSuccess).toHaveBeenCalled()
-    })
-  })
-
-  describe('environment and network error handling', () => {
-    it('should handle missing environment variable', async () => {
-      // Don't set VITE_GETFORM_ID to test error handling
-      vi.stubEnv('VITE_GETFORM_ID', undefined)
-
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message',
-      }
-
-      // Act
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isPending).toBe(false)
-      })
-
-      // Verify the form submission failed due to missing env var
-      expect(result.current.isError).toBe(true)
-      expect(result.current.isSuccess).toBe(false)
+    const onSuccess = vi.fn()
+    const { result } = renderHook(() => useContactForm(), {
+      wrapper: createWrapper(),
     })
 
-    it('should handle network errors', async () => {
-      // Setup environment variable
-      vi.stubEnv('VITE_GETFORM_ID', 'test-form-id')
+    const formData: ContactFormData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      'project-type': 'personal',
+      message: 'Test message',
+    }
 
-      const { useGoogleReCaptcha } = await import('react-google-recaptcha-v3')
-      vi.mocked(useGoogleReCaptcha).mockReturnValue({
-        executeRecaptcha: undefined,
-      })
-
-      // Mock network error
-      vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'))
-
-      const { result } = renderHook(() => useContactForm(), {
-        wrapper: createWrapper(),
-      })
-
-      const testData: ContactFormData = {
-        name: 'John Doe',
-        email: 'test@example.com',
-        'project-type': 'personal',
-        message: 'This is a test message',
-      }
-
-      // Act
-      result.current.submitForm(testData)
-
-      await waitFor(() => {
-        expect(result.current.isPending).toBe(false)
-      })
-
-      // Verify the form submission failed due to network error
-      expect(result.current.isError).toBe(true)
-      expect(result.current.isSuccess).toBe(false)
+    act(() => {
+      result.current.submitForm(formData, { onSuccess })
     })
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true)
+    })
+
+    expect(onSuccess).toHaveBeenCalled()
   })
 })

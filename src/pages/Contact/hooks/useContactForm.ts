@@ -9,11 +9,14 @@
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import { useMutation } from '@tanstack/react-query'
+import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 
 import { useSecurity } from '../../../hooks/useSecurity'
 import { sanitizeHtml, sanitizeTextInput, checkRateLimit } from '../../../lib/security'
 import { ContactFormSchema, type ContactFormData, type SubmitFormOptions } from '../types'
+
+import { axiosInstance } from '@/lib/axios'
 
 /**
  * Sanitizes contact form data using enhanced security utilities
@@ -53,7 +56,7 @@ const sanitizeData = (data: ContactFormData): ContactFormData => {
 const submitContactForm = async (
   data: ContactFormData,
   recaptchaToken?: string,
-): Promise<Response> => {
+): Promise<AxiosResponse> => {
   // 1. Validate form data structure
   try {
     ContactFormSchema.parse(data)
@@ -89,21 +92,14 @@ const submitContactForm = async (
     ? { ...sanitizedData, 'g-recaptcha-response': recaptchaToken }
     : sanitizedData
 
-  // 6. Submit with security headers
-  const response = await fetch(`https://getform.io/f/${getformId}`, {
-    method: 'POST',
+  // 6. Submit using axios for consistency with rest of app
+  const response = await axiosInstance.post(`https://getform.io/f/${getformId}`, formData, {
     headers: {
       'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest', // CSRF protection
-      'Cache-Control': 'no-cache',
     },
-    body: JSON.stringify(formData),
   })
 
-  if (!response.ok && ![200, 201, 302].includes(response.status)) {
-    throw new Error(`Failed to send message: ${String(response.status)} ${response.statusText}`)
-  }
-
+  // Axios throws on error status codes automatically, so if we get here, it was successful
   return response
 }
 
