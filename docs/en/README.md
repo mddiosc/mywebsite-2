@@ -168,17 +168,3 @@ For detailed information about specific aspects of the project, please refer to 
 ## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for details.
-
-## 🆘 Support
-
-If you need help or have questions:
-
-1. Check the documentation in this folder
-2. Look at existing [Issues](https://github.com/mddiosc/mywebsite-2/issues)
-3. Create a new issue with detailed information
-4. Contact the maintainer: [contact@migueldedios.dev](mailto:contact@migueldedios.dev)
-
----
-
-**Last Updated**: December 2024
-**Documentation Version**: 1.0

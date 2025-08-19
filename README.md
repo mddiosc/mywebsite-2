@@ -12,7 +12,7 @@
 
 This is a modern, multilingual personal portfolio website showcasing projects, skills, and experience. Built with performance, accessibility, and user experience in mind, featuring smooth animations, responsive design, and internationalization support.
 
-**Live Demo:** [migueldedios.dev](https://migueldedioscalles.dev)
+**Live Demo:** [migueldedioscalles.dev](https://migueldedioscalles.dev)
 
 ## 🌍 Languages | Idiomas
 

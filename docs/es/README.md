@@ -12,7 +12,7 @@
 
 Este es un sitio web de portafolio personal moderno y multiidioma que muestra proyectos, habilidades y experiencia. Construido pensando en el rendimiento, la accesibilidad y la experiencia del usuario, con animaciones suaves, diseño responsivo y soporte de internacionalización.
 
-**Demo en Vivo:** [migueldedios.dev](https://migueldedios.dev)
+**Demo en Vivo:** [migueldedioscalles.dev](https://migueldedioscalles.dev)
 
 ## 🌍 Idiomas | Languages
 
@@ -145,9 +145,8 @@ Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICEN
 
 Miguel Ángel de Dios Calles
 
-- 🌐 Sitio Web: [migueldedios.dev](https://migueldedios.dev)
-- 💼 LinkedIn: [Miguel Ángel de Dios](https://linkedin.com/in/miguelangeldedios)
-- 📧 Email: [contact@migueldedios.dev](mailto:contact@migueldedios.dev)
+- 🌐 Sitio Web: [migueldedioscalles.dev](https://migueldedioscalles.dev)
+- 💼 LinkedIn: [Miguel Ángel de Dios](https://linkedin.com/in/mddiosc)
 - 🐙 GitHub: [@mddiosc](https://github.com/mddiosc)
 
 ---
