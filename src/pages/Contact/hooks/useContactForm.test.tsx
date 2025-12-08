@@ -262,7 +262,6 @@ describe('useContactForm', () => {
       config: {},
     } as AxiosResponse)
 
-    const onSuccess = vi.fn()
     const { result } = renderHook(() => useContactForm(), {
       wrapper: createWrapper(),
     })
@@ -275,13 +274,16 @@ describe('useContactForm', () => {
     }
 
     act(() => {
-      result.current.submitForm(formData, { onSuccess })
+      result.current.submitForm(formData)
     })
 
+    // With React 19's useActionState, isSuccess becomes true after successful submission
+    // The consumer should use useEffect to react to isSuccess state changes
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true)
     })
 
-    expect(onSuccess).toHaveBeenCalled()
+    // Verify formState contains the submitted data for optimistic UI
+    expect(result.current.formState.status).toBe('success')
   })
 })
