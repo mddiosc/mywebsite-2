@@ -6,4 +6,5 @@
  */
 
 export { useContactForm } from './useContactForm'
+export type { FormState } from './useContactForm'
 export type { ContactFormData, SubmitFormOptions } from '../types'

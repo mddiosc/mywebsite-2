@@ -8,8 +8,10 @@
  * - Smooth animations using Framer Motion
  * - Accessible form controls and error handling
  * - Responsive design optimized for mobile and desktop
+ * - React 19's useActionState for optimistic updates
  */
 
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -58,7 +60,26 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     resolver: zodResolver(ContactFormSchema),
   })
 
-  const { submitForm, isPending, isError } = useContactForm()
+  const { submitForm, isPending, isError, isSuccess, errorMessage } = useContactForm()
+
+  // Track if we've already called onSuccess to prevent multiple calls
+  const hasCalledOnSuccess = useRef(false)
+
+  // Handle success state changes from React 19's useActionState
+  useEffect(() => {
+    if (isSuccess && !hasCalledOnSuccess.current) {
+      hasCalledOnSuccess.current = true
+      reset()
+      onSuccess()
+    }
+  }, [isSuccess, reset, onSuccess])
+
+  // Reset the success flag when form becomes active again
+  useEffect(() => {
+    if (!isSuccess) {
+      hasCalledOnSuccess.current = false
+    }
+  }, [isSuccess])
 
   /**
    * Translates Zod validation error messages to localized text
@@ -84,20 +105,15 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
   }
 
   /**
-   * Handles form submission with success callback integration
+   * Handles form submission with React 19's optimistic updates
    *
-   * Processes validated form data, resets the form on successful submission,
-   * and triggers the parent component's success handler for UI state updates.
+   * Processes validated form data through the useActionState-powered hook
+   * which provides immediate UI feedback via useOptimistic.
    *
    * @param data - Validated contact form data
    */
   const handleFormSubmit = (data: ContactFormData): void => {
-    submitForm(data, {
-      onSuccess: () => {
-        reset()
-        onSuccess()
-      },
-    })
+    submitForm(data)
   }
 
   return (
@@ -264,7 +280,11 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800">{t('contact.errorTitle')}</h3>
-                  <p className="mt-2 text-sm text-red-700">{t('contact.errorMessage')}</p>
+                  <p className="mt-2 text-sm text-red-700">
+                    {errorMessage?.includes('Rate limit')
+                      ? t('contact.rateLimitError', { defaultValue: errorMessage })
+                      : t('contact.errorMessage')}
+                  </p>
                 </div>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 
 interface OptimizedImageProps {
   src: string
@@ -10,6 +10,12 @@ interface OptimizedImageProps {
   placeholder?: string
 }
 
+/**
+ * Optimized image component with lazy loading using React 19 ref callbacks
+ *
+ * Uses ref callback with cleanup function (React 19 feature) for IntersectionObserver,
+ * eliminating the need for useEffect and useRef for this pattern.
+ */
 export function OptimizedImage({
   src,
   alt,
@@ -22,33 +28,43 @@ export function OptimizedImage({
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(priority)
-  const imgRef = useRef<HTMLImageElement>(null)
 
-  useEffect(() => {
-    if (priority || isInView) return
+  /**
+   * React 19 ref callback with cleanup function
+   *
+   * This pattern replaces the useRef + useEffect combination for IntersectionObserver.
+   * The returned cleanup function is automatically called when:
+   * - The element is removed from the DOM
+   * - The ref callback is replaced
+   * - The component unmounts
+   */
+  const observerRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      if (!element || priority || isInView) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0]
-        if (entry?.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px',
-      },
-    )
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          if (entry?.isIntersecting) {
+            setIsInView(true)
+            observer.disconnect()
+          }
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '50px',
+        },
+      )
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
-    }
+      observer.observe(element)
 
-    return () => {
-      observer.disconnect()
-    }
-  }, [priority, isInView])
+      // React 19: Return cleanup function from ref callback
+      return () => {
+        observer.disconnect()
+      }
+    },
+    [priority, isInView],
+  )
 
   const handleLoad = () => {
     setIsLoaded(true)
@@ -83,7 +99,7 @@ export function OptimizedImage({
   }
 
   return (
-    <div className="relative overflow-hidden">
+    <div ref={observerRef} className="relative overflow-hidden">
       {/* Placeholder */}
       {!isLoaded && (
         <img
@@ -97,7 +113,6 @@ export function OptimizedImage({
       {/* Main image */}
       {isInView && (
         <img
-          ref={imgRef}
           src={src}
           alt={alt}
           width={width}

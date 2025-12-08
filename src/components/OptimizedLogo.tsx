@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 
 interface OptimizedLogoProps {
   src: string
@@ -11,7 +11,9 @@ interface OptimizedLogoProps {
 
 /**
  * Optimized component specifically for logos and SVG icons
- * Simpler than OptimizedImage, focused on logos that don't need placeholders
+ *
+ * Simpler than OptimizedImage, focused on logos that don't need placeholders.
+ * Uses React 19 ref callback with cleanup for IntersectionObserver.
  */
 export function OptimizedLogo({
   src,
@@ -23,33 +25,41 @@ export function OptimizedLogo({
 }: OptimizedLogoProps) {
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(priority)
-  const imgRef = useRef<HTMLImageElement>(null)
 
-  useEffect(() => {
-    if (priority || isInView) return
+  /**
+   * React 19 ref callback with cleanup function
+   *
+   * Replaces useRef + useEffect pattern for IntersectionObserver.
+   * The cleanup function is called automatically when the element
+   * is removed or the ref changes.
+   */
+  const observerRef = useCallback(
+    (element: HTMLImageElement | null) => {
+      if (!element || priority || isInView) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0]
-        if (entry?.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px',
-      },
-    )
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0]
+          if (entry?.isIntersecting) {
+            setIsInView(true)
+            observer.disconnect()
+          }
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '50px',
+        },
+      )
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
-    }
+      observer.observe(element)
 
-    return () => {
-      observer.disconnect()
-    }
-  }, [priority, isInView])
+      // React 19: Return cleanup function from ref callback
+      return () => {
+        observer.disconnect()
+      }
+    },
+    [priority, isInView],
+  )
 
   const handleError = () => {
     setHasError(true)
@@ -80,7 +90,7 @@ export function OptimizedLogo({
 
   return (
     <img
-      ref={imgRef}
+      ref={observerRef}
       src={isInView ? src : undefined}
       alt={alt}
       width={width}

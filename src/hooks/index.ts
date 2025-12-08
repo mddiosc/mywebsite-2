@@ -1,3 +1,7 @@
 export { useBlogPosts, useBlogPost } from './useBlog'
 export { useHtmlLang } from './useHtmlLang'
+export { useNavigationProgress } from './useNavigationProgress'
+export type { NavigationProgressContextValue } from './useNavigationProgress'
+export { useNavigationTransition } from './useNavigationTransition'
+export type { UseNavigationTransitionResult } from './useNavigationTransition'
 export { useReducedMotion } from './useReducedMotion'
