@@ -3,9 +3,9 @@ title: "E2E Testing con Playwright: De cero a CI/CD"
 description: "Guía completa para implementar testing end-to-end con Playwright en proyectos React: setup, patrones, visual regression y automatización."
 date: "2025-08-12"
 tags: ["testing", "playwright", "e2e", "ci-cd", "react", "automation"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "e2e-testing-playwright"
-featured: true
+featured: false
 ---
 
 En mi post sobre testing con Vitest cubrí estrategias para tests unitarios y de integración. Pero hay una capa que no podemos ignorar: los tests end-to-end. Hoy quiero compartir mi experiencia implementando Playwright en proyectos React.

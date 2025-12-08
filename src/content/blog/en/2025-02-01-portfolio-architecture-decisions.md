@@ -5,7 +5,7 @@ date: "2025-02-01"
 tags: ["architecture", "vite", "portfolio", "technical-decisions", "react"]
 author: "Miguel Ángel de Dios"
 slug: "portfolio-architecture-decisions"
-featured: true
+featured: false
 ---
 
 After years working with complex systems in the tourism industry, building my personal portfolio was a unique opportunity to apply everything I learned without the constraints of legacy systems. In this post, I'll share the technical decisions I made and the reasoning behind each one.

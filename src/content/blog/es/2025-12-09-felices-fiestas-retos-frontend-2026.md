@@ -3,9 +3,9 @@ title: "¡Felices Fiestas! Retos y Tendencias Frontend para 2026"
 description: "Un mensaje de celebración navideña junto con un análisis de los retos que nos esperan como frontend developers en 2026: React 19+, nuevas APIs de JavaScript, y el ecosistema en evolución."
 date: "2025-12-09"
 tags: ["frontend", "react", "javascript", "tendencias", "2026", "navidad"]
-author: "Marco Di Domenico"
+author: "Miguel Ángel de Dios"
 slug: "felices-fiestas-retos-frontend-2026"
-featured: true
+featured: false
 ---
 
 ## 🎄 ¡Felices Fiestas

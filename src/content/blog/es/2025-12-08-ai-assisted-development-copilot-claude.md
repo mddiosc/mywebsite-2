@@ -3,7 +3,7 @@ title: "Desarrollo con IA: Cómo GitHub Copilot y Claude Transformaron mi Workfl
 description: "Mi experiencia real usando GitHub Copilot, Claude y otras herramientas de IA para desarrollo. Patrones, prompts efectivos y cómo maximizar la productividad sin perder calidad."
 date: "2025-12-08"
 tags: ["ai", "github-copilot", "claude", "developer-tools", "productivity", "vibe-coding"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "ai-assisted-development-copilot-claude"
 featured: true
 ---

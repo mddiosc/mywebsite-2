@@ -5,7 +5,7 @@ date: "2025-07-01"
 tags: ["typescript", "react", "types", "generics", "frontend", "advanced"]
 author: "Miguel Ángel de Dios"
 slug: "advanced-typescript-react-developers"
-featured: true
+featured: false
 ---
 
 TypeScript y React son una combinación poderosa, pero la mayoría de developers apenas rasca la superficie. Después de años trabajando con ambas tecnologías, he recopilado los patrones avanzados que realmente marcan la diferencia entre código "tipado" y código **verdaderamente type-safe**.

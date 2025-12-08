@@ -5,7 +5,7 @@ date: "2025-04-01"
 tags: ["testing", "vitest", "react", "pragmatic", "quality-assurance"]
 author: "Miguel Ángel de Dios"
 slug: "testing-strategies-vitest"
-featured: true
+featured: false
 ---
 
 Testing no es sobre alcanzar 100% de coverage. Es sobre **confianza** - confianza en que tu código funciona, en que los cambios no rompen funcionalidad existente, y en que puedes refactorizar sin miedo. En este post, compartiré mi enfoque pragmático para testing en React con Vitest.

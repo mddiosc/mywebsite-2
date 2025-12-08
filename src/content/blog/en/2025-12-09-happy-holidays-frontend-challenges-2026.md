@@ -3,9 +3,9 @@ title: "Happy Holidays! Frontend Challenges and Trends for 2026"
 description: "A holiday celebration message along with an analysis of the challenges awaiting frontend developers in 2026: React 19+, new JavaScript APIs, and the evolving ecosystem."
 date: "2025-12-09"
 tags: ["frontend", "react", "javascript", "trends", "2026", "holidays"]
-author: "Marco Di Domenico"
+author: "Miguel Ángel de Dios"
 slug: "happy-holidays-frontend-challenges-2026"
-featured: true
+featured: false
 ---
 
 ## 🎄 Happy Holidays

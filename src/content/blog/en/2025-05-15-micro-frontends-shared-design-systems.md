@@ -5,7 +5,7 @@ date: "2025-05-15"
 tags: ["micro-frontends", "design-systems", "module-federation", "monorepo", "architecture", "enterprise"]
 author: "Miguel Ángel de Dios"
 slug: "micro-frontends-shared-design-systems"
-featured: true
+featured: false
 ---
 
 As I promised in my previous post about design systems, today we'll tackle one of the most complex challenges I've faced in enterprise architectures: **maintaining visual consistency when your application is composed of multiple micro-frontends developed by independent teams**.

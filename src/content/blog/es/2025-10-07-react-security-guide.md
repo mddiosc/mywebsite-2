@@ -3,7 +3,7 @@ title: "Seguridad en Aplicaciones React: Guía Práctica"
 description: "Aprende a proteger tus aplicaciones React: prevención de XSS, CSP, sanitización, autenticación segura, y mejores prácticas de seguridad frontend."
 date: "2025-10-07"
 tags: ["react", "security", "xss", "csp", "authentication", "best-practices"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "seguridad-aplicaciones-react"
 featured: true
 ---

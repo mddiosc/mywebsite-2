@@ -3,7 +3,7 @@ title: "AI-Assisted Development: How GitHub Copilot and Claude Transformed My Wo
 description: "My real experience using GitHub Copilot, Claude, and other AI tools for development. Patterns, effective prompts, and how to maximize productivity without sacrificing quality."
 date: "2025-12-08"
 tags: ["ai", "github-copilot", "claude", "developer-tools", "productivity", "vibe-coding"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "ai-assisted-development-copilot-claude"
 featured: true
 ---

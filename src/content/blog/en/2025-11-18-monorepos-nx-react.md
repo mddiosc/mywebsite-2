@@ -3,9 +3,9 @@ title: "Monorepos with Nx: Scaling React Projects"
 description: "Complete guide to implementing monorepos with Nx in React projects: setup, structure, caching, generators, and CI/CD strategies."
 date: "2025-11-18"
 tags: ["nx", "monorepo", "react", "architecture", "ci-cd", "scalability"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "monorepos-nx-react"
-featured: true
+featured: false
 ---
 
 After discussing micro-frontends and design systems, the natural next step is to talk about how to organize everything in a monorepo. Nx has become my favorite tool for this. Today I'm sharing my experience scaling React projects with Nx.

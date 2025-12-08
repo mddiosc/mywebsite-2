@@ -3,7 +3,7 @@ title: "React Server Components in Depth: When, How, and Why"
 description: "Complete guide to React Server Components: architecture, composition patterns, streaming, use cases, and how to integrate them into your application."
 date: "2025-09-23"
 tags: ["react", "server-components", "rsc", "nextjs", "performance", "architecture"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "react-server-components-depth"
 featured: true
 ---

@@ -3,9 +3,9 @@ title: "Advanced TypeScript for React Developers: Patterns That Will Transform Y
 description: "Master advanced TypeScript patterns specifically for React: generic components, discriminated unions, template literal types, and more."
 date: "2025-07-01"
 tags: ["typescript", "react", "advanced", "patterns", "types", "generics"]
-author: "Marco Di Dionisio"
+author: "Miguel Ángel de Dios"
 slug: "advanced-typescript-react-developers"
-featured: true
+featured: false
 ---
 
 TypeScript and React make an excellent combination, but many developers only scratch the surface of what TypeScript can offer. Today I want to share the advanced patterns that have taken my code quality to another level.
