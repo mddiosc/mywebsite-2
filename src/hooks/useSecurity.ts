@@ -17,9 +17,10 @@ export const useSecurity = () => {
    * Check if user can perform an action (rate limiting)
    */
   const checkActionAllowed = useCallback(
-    (action = 'form-submit'): { allowed: boolean; retryAfter?: number } => {
+    (action?: string): { allowed: boolean; retryAfter?: number } => {
+      const actionName = action ?? 'form-submit'
       const rateLimitId = generateRateLimitId()
-      const identifier = `${rateLimitId}-${action}`
+      const identifier = `${rateLimitId}-${actionName}`
 
       return checkRateLimit(identifier)
     },
