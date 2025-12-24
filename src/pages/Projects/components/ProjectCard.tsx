@@ -181,7 +181,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
       className="group relative flex h-full cursor-pointer flex-col rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
     >
       <div className="aspect-h-3 aspect-w-4 sm:aspect-none overflow-hidden bg-gray-200 group-hover:opacity-75 sm:h-40">
-        <div className="h-full w-full bg-gradient-to-br from-indigo-50 to-indigo-100 object-cover object-center sm:h-full sm:w-full">
+        <div className="h-full w-full bg-linear-to-br from-indigo-50 to-indigo-100 object-cover object-center sm:h-full sm:w-full">
           <div className="flex h-full items-center justify-center">
             {/* Project icon/illustration */}
             <svg
@@ -248,7 +248,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                           e.stopPropagation()
                           setIsDescriptionOpen(false)
                         }}
-                        className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                        className="ml-2 shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
                         aria-label="Cerrar"
                       >
                         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -371,7 +371,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                                 e.stopPropagation()
                                 setIsTopicsOpen(false)
                               }}
-                              className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                              className="ml-2 shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
                               aria-label="Cerrar"
                             >
                               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">

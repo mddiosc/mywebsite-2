@@ -19,7 +19,7 @@ export function BlogLoading() {
           >
             {/* Header skeleton with gradient background */}
             <div className="aspect-h-3 aspect-w-4 sm:aspect-none overflow-hidden bg-gray-200 sm:h-40">
-              <div className="h-full w-full bg-gradient-to-br from-gray-100 to-gray-200">
+              <div className="h-full w-full bg-linear-to-br from-gray-100 to-gray-200">
                 <div className="flex h-full items-center justify-center">
                   <div className="h-14 w-14 rounded bg-gray-300" />
                 </div>
@@ -39,7 +39,7 @@ export function BlogLoading() {
 
               {/* Description section skeleton - Fixed height */}
               <div className="mb-4 h-20">
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <div className="h-4 w-full rounded bg-gray-200" />
                   <div className="h-4 w-5/6 rounded bg-gray-200" />
                   <div className="h-4 w-4/6 rounded bg-gray-200" />
@@ -58,7 +58,7 @@ export function BlogLoading() {
               {/* Bottom section skeleton */}
               <div className="mt-auto">
                 {/* Author section skeleton */}
-                <div className="mb-3 flex items-center space-x-2">
+                <div className="mb-3 flex items-center gap-2">
                   <div className="h-8 w-8 rounded-full bg-gray-200" />
                   <div className="h-4 w-20 rounded bg-gray-200" />
                 </div>

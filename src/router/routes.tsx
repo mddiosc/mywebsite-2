@@ -22,7 +22,7 @@ const PageLoader = () => {
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2">
         <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent"></div>
         <span className="text-sm text-gray-600">{t('common.loading')}</span>
       </div>

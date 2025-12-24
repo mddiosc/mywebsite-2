@@ -3,18 +3,18 @@ const ProjectSkeleton = () => {
     <div className="group relative flex h-full animate-pulse flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
       {/* Image skeleton */}
       <div className="aspect-h-4 aspect-w-3 sm:aspect-none bg-gray-200 sm:h-48">
-        <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+        <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-gray-100 to-gray-200">
           <div className="h-16 w-16 rounded bg-gray-300"></div>
         </div>
       </div>
 
       {/* Content skeleton */}
       <div className="flex flex-1 flex-col p-4">
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col gap-2">
           {/* Title skeleton */}
           <div className="h-6 w-3/4 rounded bg-gray-300"></div>
           {/* Description skeleton - fixed height to match actual card */}
-          <div className="min-h-[4.5rem] space-y-2">
+          <div className="flex min-h-18 flex-col gap-2">
             <div className="h-4 w-full rounded bg-gray-300"></div>
             <div className="h-4 w-5/6 rounded bg-gray-300"></div>
             <div className="h-4 w-4/5 rounded bg-gray-300"></div>
@@ -22,9 +22,9 @@ const ProjectSkeleton = () => {
         </div>
 
         <div className="mt-4 flex flex-1 flex-col justify-between">
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             {/* Languages skeleton */}
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <div className="h-3 w-20 rounded bg-gray-300"></div>
               <div className="h-2 w-full rounded bg-gray-300"></div>
               <div className="flex gap-2">
@@ -50,7 +50,7 @@ const ProjectSkeleton = () => {
           </div>
 
           {/* Bottom section skeleton */}
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             {/* Date skeleton */}
             <div className="h-4 w-32 rounded bg-gray-300"></div>
             {/* Footer skeleton */}
