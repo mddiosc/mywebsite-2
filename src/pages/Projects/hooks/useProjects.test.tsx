@@ -6,16 +6,18 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook, waitFor } from '@testing-library/react'
 
+import type { GitHubProject } from '@/types'
+
+// Mock axios before importing
 vi.mock('@/lib/axios', () => ({
   axiosInstance: {
     get: vi.fn(),
   },
 }))
 
-import { useProjects } from './useProjects'
-
+// Import after mock
 import { axiosInstance } from '@/lib/axios'
-import type { GitHubProject } from '@/types'
+import { useProjects } from './useProjects'
 
 const mockGet = vi.mocked(axiosInstance).get as ReturnType<typeof vi.fn>
 
@@ -25,8 +27,16 @@ const createTestQueryClient = () =>
       queries: {
         retry: false,
         staleTime: 0,
+        gcTime: 0, // Previously cacheTime in v4
         refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
       },
+    },
+    logger: {
+      log: () => {},
+      warn: () => {},
+      error: () => {},
     },
   })
 
@@ -265,9 +275,12 @@ describe('useProjects', () => {
     expect(result.current.isLoading).toBe(true)
     expect(result.current.data).toBeUndefined()
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     expect(result.current.data).toHaveLength(1)
     const project = result.current.data?.[0]
@@ -303,9 +316,12 @@ describe('useProjects', () => {
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     expect(result.current.data).toHaveLength(2)
     expect(result.current.data?.[0]?.languages).toBeDefined()
@@ -323,9 +339,12 @@ describe('useProjects', () => {
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     expect(result.current.data).toBeUndefined()
     expect(result.current.error).toBeTruthy()
@@ -340,9 +359,12 @@ describe('useProjects', () => {
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     expect(mockGet).toHaveBeenCalledWith('https://api.github.com/users/testuser/repos', {
       headers: {
@@ -361,9 +383,12 @@ describe('useProjects', () => {
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     const callArgs = mockGet.mock.calls[0]
     expect(callArgs?.[1]).toBeDefined()
@@ -384,9 +409,12 @@ describe('useProjects', () => {
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
-    await waitFor(() => {
-      expect(result.current.isLoading).toBe(false)
-    })
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
 
     expect(result.current.data).toEqual([])
     expect(result.current.error).toBeNull()

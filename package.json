@@ -16,7 +16,9 @@
     "quality": "pnpm lint && pnpm docs:lint && pnpm format:check && pnpm type-check",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
+    "test:coverage:ui": "vitest --ui --coverage",
     "prepare": "husky install",
     "lint-staged": "lint-staged",
     "type-check": "tsc -b --noEmit"
@@ -61,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
     "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitest/coverage-v8": "^4.0.16",
     "@vitest/eslint-plugin": "^1.6.4",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
@@ -73,7 +76,7 @@
     "eslint-plugin-testing-library": "^7.15.3",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^15.15.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^15.5.2",
     "markdownlint-cli": "^0.47.0",
@@ -81,8 +84,8 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.50.1",
-    "vite": "^6.4.1",
-    "vitest": "^3.2.4"
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

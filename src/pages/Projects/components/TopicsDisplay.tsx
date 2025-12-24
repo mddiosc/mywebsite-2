@@ -21,6 +21,9 @@ const TopicsDisplay = ({
     return null
   }
 
+  // Remove duplicates and limit to maxTopics
+  const uniqueTopics = Array.from(new Set(topics)).slice(0, maxTopics)
+
   return (
     <motion.div
       className="mx-auto mt-16 max-w-4xl sm:mt-20 lg:mt-24"
@@ -38,7 +41,7 @@ const TopicsDisplay = ({
         </p>
       </div>
       <div className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-3">
-        {topics.slice(0, maxTopics).map((topic) => (
+        {uniqueTopics.map((topic) => (
           <span
             key={topic}
             className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800 transition-colors hover:bg-indigo-200 sm:px-4 sm:py-2 sm:text-sm"

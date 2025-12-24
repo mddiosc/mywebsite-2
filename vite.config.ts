@@ -38,5 +38,28 @@ export default defineConfig(() => ({
     setupFiles: './src/test/setup.ts',
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
     exclude: [...configDefaults.exclude, 'e2e/*'],
+    // Coverage configuration for Vitest 4
+    coverage: {
+      provider: 'v8' as const,
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        ...(configDefaults.coverage.exclude ?? []),
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
+        'src/vite-env.d.ts',
+        'src/main.tsx',
+        'src/i18n/**',
+        'src/constants/**',
+      ],
+      thresholds: {
+        lines: 25,
+        functions: 15,
+        branches: 15,
+        statements: 25,
+      },
+    },
   },
 }))
