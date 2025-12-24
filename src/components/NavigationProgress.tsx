@@ -82,7 +82,7 @@ export function NavigationProgressBar() {
       className="fixed top-0 right-0 left-0 z-50 h-1"
     >
       <div
-        className="h-full animate-pulse bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"
+        className="h-full animate-pulse bg-linear-to-r from-indigo-500 via-purple-500 to-indigo-500"
         style={{
           animation: 'progress 1.5s ease-in-out infinite',
         }}

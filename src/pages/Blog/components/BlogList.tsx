@@ -76,7 +76,7 @@ export function BlogList({ posts }: BlogListProps) {
       ) : (
         /* No results */
         <div className="py-16 text-center">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 ring-1 ring-gray-100">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-indigo-50 to-purple-50 ring-1 ring-gray-100">
             <svg
               className="h-8 w-8 text-indigo-400"
               fill="none"
@@ -107,7 +107,7 @@ export function BlogList({ posts }: BlogListProps) {
                 showFeatured: false,
               })
             }}
-            className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
+            className="rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
           >
             {t('blog.filters.clearAll')}
           </button>
@@ -216,7 +216,7 @@ function BlogCard({ post, index }: BlogCardProps) {
     >
       {/* Header section with gradient background */}
       <div className="aspect-h-3 aspect-w-4 sm:aspect-none overflow-hidden bg-gray-200 group-hover:opacity-75 sm:h-40">
-        <div className="h-full w-full bg-gradient-to-br from-blue-50 to-purple-100 object-cover object-center sm:h-full sm:w-full">
+        <div className="h-full w-full bg-linear-to-br from-blue-50 to-purple-100 object-cover object-center sm:h-full sm:w-full">
           <div className="flex h-full items-center justify-center">
             {/* Blog icon */}
             <svg
@@ -308,7 +308,7 @@ function BlogCard({ post, index }: BlogCardProps) {
                           e.stopPropagation()
                           setIsDescriptionOpen(false)
                         }}
-                        className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                        className="ml-2 shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
                         aria-label="Cerrar"
                       >
                         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -381,7 +381,7 @@ function BlogCard({ post, index }: BlogCardProps) {
                                 e.stopPropagation()
                                 setIsTagsOpen(false)
                               }}
-                              className="ml-2 flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
+                              className="ml-2 shrink-0 rounded-full p-1 text-gray-400 hover:text-gray-600"
                               aria-label="Cerrar"
                             >
                               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -407,7 +407,7 @@ function BlogCard({ post, index }: BlogCardProps) {
         <div className="mt-auto">
           {/* Author section - Fixed height */}
           <div className="mb-3 h-8">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-full bg-gray-300" />
               <span className="text-sm text-gray-600">{post.meta.author}</span>
             </div>

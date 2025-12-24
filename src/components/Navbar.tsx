@@ -75,6 +75,7 @@ export default function Navbar() {
                 key={item.to}
                 to={item.to}
                 end={item.exact}
+                viewTransition
                 className={({ isActive }) =>
                   `text-sm/6 font-semibold ${
                     isActive
@@ -150,7 +151,7 @@ export default function Navbar() {
               </div>
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
+                  <div className="flex flex-col gap-2 py-6">
                     {navigation.map((item, index) => (
                       <motion.div
                         key={item.to}
@@ -162,6 +163,7 @@ export default function Navbar() {
                         <NavLink
                           to={item.to}
                           end={item.exact}
+                          viewTransition
                           className={({ isActive }) =>
                             `-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold ${
                               isActive

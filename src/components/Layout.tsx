@@ -38,7 +38,7 @@ const BackgroundDecoration = ({
         clipPath,
         WebkitClipPath: clipPath,
       }}
-      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-[1155/678] ${rotate ? 'w-[36.125rem]' : 'w-[36.125rem]'} -translate-x-1/2 ${rotate ? 'rotate-[30deg]' : ''} bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]' : 'sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]'}`}
+      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-1155/678 ${rotate ? 'w-144.5' : 'w-144.5'} -translate-x-1/2 ${rotate ? 'rotate-30' : ''} bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-288.75' : 'sm:left-[calc(50%+36rem)] sm:w-288.75'}`}
     />
   </motion.div>
 )
@@ -53,7 +53,7 @@ const Layout = () => {
       <Navbar />
       <main id="main-content" className="relative isolate flex min-h-[60vh] w-full flex-1">
         <BackgroundDecoration position="-top-40 sm:-top-80" rotate />
-        <div className="mx-auto w-full max-w-7xl flex-grow px-4 py-4 sm:px-6 sm:py-6 md:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-7xl grow px-4 py-4 sm:px-6 sm:py-6 md:px-8 lg:px-10">
           <Outlet />
         </div>
         <BackgroundDecoration

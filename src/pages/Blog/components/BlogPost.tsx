@@ -120,7 +120,7 @@ export function BlogPost() {
               </div>
             )}
 
-            <div className="flex items-center space-x-3 border-b border-gray-200 pb-6">
+            <div className="flex items-center gap-3 border-b border-gray-200 pb-6">
               <div className="h-10 w-10 rounded-full bg-gray-300" />
               <div>
                 <p className="font-medium text-gray-900">{post.meta.author}</p>

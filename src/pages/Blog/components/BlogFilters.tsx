@@ -75,7 +75,7 @@ export function BlogFilters({ posts, filters, onFiltersChange }: BlogFiltersProp
   return (
     <div className="mb-8 overflow-hidden rounded-xl border border-gray-200/60 bg-white/80 backdrop-blur-sm">
       {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-pink-50/50" />
+      <div className="absolute inset-0 bg-linear-to-r from-indigo-50/50 via-purple-50/30 to-pink-50/50" />
 
       <div className="relative p-6">
         {/* Header with search and expand toggle */}
@@ -249,7 +249,7 @@ export function BlogFilters({ posts, filters, onFiltersChange }: BlogFiltersProp
                           type="checkbox"
                           checked={filters.showFeatured}
                           onChange={handleFeaturedToggle}
-                          className="h-5 w-5 rounded-md border-2 border-white/50 bg-white/20 text-indigo-500 shadow-sm backdrop-blur-sm transition-all duration-200 checked:border-indigo-500 checked:bg-gradient-to-r checked:from-indigo-500 checked:to-purple-500 focus:ring-2 focus:ring-indigo-200 focus:ring-offset-0 focus:outline-none"
+                          className="h-5 w-5 rounded-md border-2 border-white/50 bg-white/20 text-indigo-500 shadow-sm backdrop-blur-sm transition-all duration-200 checked:border-indigo-500 checked:bg-linear-to-r checked:from-indigo-500 checked:to-purple-500 focus:ring-2 focus:ring-indigo-200 focus:ring-offset-0 focus:outline-none"
                         />
                       </div>
                       <span className="ml-3 text-sm font-medium text-gray-700">
@@ -276,7 +276,7 @@ export function BlogFilters({ posts, filters, onFiltersChange }: BlogFiltersProp
                               }}
                               className={`inline-flex items-center rounded-full px-3 py-1.5 text-xs font-medium backdrop-blur-sm transition-all duration-200 ${
                                 isSelected
-                                  ? 'scale-105 bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg ring-2 ring-indigo-200'
+                                  ? 'scale-105 bg-linear-to-r from-indigo-500 to-purple-500 text-white shadow-lg ring-2 ring-indigo-200'
                                   : 'border border-white/50 bg-white/70 text-gray-700 hover:scale-105 hover:border-white/70 hover:bg-white/90 hover:text-gray-800'
                               }`}
                             >
@@ -304,7 +304,7 @@ export function BlogFilters({ posts, filters, onFiltersChange }: BlogFiltersProp
 
                 {/* Selected filters summary */}
                 {hasActiveFilters && (
-                  <div className="mt-6 rounded-lg bg-gradient-to-r from-indigo-50/50 to-purple-50/50 p-4">
+                  <div className="mt-6 rounded-lg bg-linear-to-r from-indigo-50/50 to-purple-50/50 p-4">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-sm font-semibold text-gray-700">
                         {t('blog.filters.activeFilters')}:

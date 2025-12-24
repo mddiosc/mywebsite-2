@@ -158,6 +158,8 @@ export const useProjects = (options?: UseQueryOptions<GitHubProject[]>): UseProj
           return dateB - dateA
         })
     },
+    // Keep previous data while refetching for smoother UX
+    placeholderData: (previousData) => previousData,
     ...options,
   })
 

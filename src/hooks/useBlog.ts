@@ -135,6 +135,8 @@ export function useBlogPosts() {
     queryFn: async () => loadBlogPosts(language),
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
+    // Keep previous data while fetching new language posts for smoother transitions
+    placeholderData: (previousData) => previousData,
   })
 }
 
