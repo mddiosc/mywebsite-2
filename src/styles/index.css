@@ -1,14 +1,77 @@
 @import 'tailwindcss';
 
+/* Dark mode configuration - class-based toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  color-scheme: light only;
+  color-scheme: light dark;
 }
 
 @theme {
   --font-sans: InterVariable, sans-serif;
-  --color-primary: #1d4ed8;
-  --color-secondary: #9333ea;
+
+  /* Modern 2026 Color Palette */
+  /* Primary - Electric Blue */
+  --color-primary: #0066FF;
+  --color-primary-light: #3385FF;
+  --color-primary-dark: #0052CC;
+
+  /* Accent - Cyan/Teal */
+  --color-accent: #00D4AA;
+  --color-accent-light: #33DDBB;
+  --color-accent-dark: #00AA88;
+
+  /* Highlight - Purple */
+  --color-highlight: #8B5CF6;
+  --color-highlight-light: #A78BFA;
+  --color-highlight-dark: #7C3AED;
+
+  /* Neutral colors for light mode */
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #F9FAFB;
+  --color-surface-card: #FFFFFF;
+
+  /* Text colors for light mode */
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
+  --color-text-tertiary: #6B7280;
+
+  /* Border colors */
+  --color-border: #E5E7EB;
+
   --border-radius-xl: 1rem;
+  --border-radius-2xl: 1.5rem;
+
+  /* Glow shadows */
+  --shadow-glow-primary: 0 0 20px rgba(0, 102, 255, 0.3);
+  --shadow-glow-accent: 0 0 20px rgba(0, 212, 170, 0.3);
+}
+
+/* Dark mode CSS variables */
+.dark {
+  --color-surface: #0A0A0F;
+  --color-surface-elevated: #141419;
+  --color-surface-card: #1A1A22;
+
+  --color-text-primary: #F9FAFB;
+  --color-text-secondary: #D1D5DB;
+  --color-text-tertiary: #9CA3AF;
+
+  --color-border: #27272A;
+
+  --shadow-glow-primary: 0 0 30px rgba(0, 102, 255, 0.4);
+  --shadow-glow-accent: 0 0 30px rgba(0, 212, 170, 0.4);
+}
+
+/* Smooth theme transition */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Base body styles for theme */
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
 }
 
 /* Custom mobile optimizations */

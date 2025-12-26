@@ -6,13 +6,15 @@ import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
+import { useThemeContext } from '../context'
 import { fadeIn, slideIn, commonTransition } from '../lib/animations'
 
-import { LanguageSwitcher, OptimizedImage } from '.'
+import { LanguageSwitcher, OptimizedImage, ThemeToggle } from '.'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { t, i18n } = useTranslation()
+  const { isDark } = useThemeContext()
   const location = useLocation()
 
   useEffect(() => {
@@ -48,20 +50,21 @@ export default function Navbar() {
               aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
             >
               <OptimizedImage
-                src="/logo_positive.svg"
+                src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                 alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
                 className="h-12 w-auto"
                 priority
               />
             </NavLink>
           </div>
-          <div className="flex lg:hidden">
+          <div className="flex items-center gap-2 lg:hidden">
+            <ThemeToggle />
             <button
               type="button"
               onClick={() => {
                 setMobileMenuOpen(true)
               }}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label={t('accessibility.openMenu', { defaultValue: 'Open main menu' })}
@@ -77,10 +80,10 @@ export default function Navbar() {
                 end={item.exact}
                 viewTransition
                 className={({ isActive }) =>
-                  `text-sm/6 font-semibold ${
+                  `text-sm/6 font-semibold transition-colors ${
                     isActive
-                      ? 'border-b-2 border-indigo-600 text-indigo-600'
-                      : 'text-gray-900 hover:text-indigo-500'
+                      ? 'border-b-2 border-primary text-primary'
+                      : 'text-gray-900 hover:text-primary dark:text-gray-100 dark:hover:text-primary-light'
                   }`
                 }
               >
@@ -90,7 +93,8 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-4">
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </div>
@@ -115,7 +119,7 @@ export default function Navbar() {
             />
             <motion.div
               id="mobile-menu"
-              className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+              className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-[#141419] dark:sm:ring-gray-700/20"
               initial="hidden"
               animate="visible"
               exit="exit"
@@ -132,7 +136,7 @@ export default function Navbar() {
                   aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
                 >
                   <OptimizedImage
-                    src="/logo_positive.svg"
+                    src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                     alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
                     className="h-8 w-auto"
                     priority
@@ -143,14 +147,14 @@ export default function Navbar() {
                   onClick={() => {
                     setMobileMenuOpen(false)
                   }}
-                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                  className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200"
                   aria-label={t('accessibility.closeMenu', { defaultValue: 'Close menu' })}
                 >
                   <XMarkIcon aria-hidden="true" className="size-6" />
                 </button>
               </div>
               <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10">
+                <div className="-my-6 divide-y divide-gray-500/10 dark:divide-gray-700/30">
                   <div className="flex flex-col gap-2 py-6">
                     {navigation.map((item, index) => (
                       <motion.div
@@ -165,10 +169,10 @@ export default function Navbar() {
                           end={item.exact}
                           viewTransition
                           className={({ isActive }) =>
-                            `-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold ${
+                            `-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold transition-colors ${
                               isActive
-                                ? 'bg-indigo-50 text-indigo-600'
-                                : 'text-gray-900 hover:bg-gray-50'
+                                ? 'bg-primary/10 text-primary dark:bg-primary/20'
+                                : 'text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800'
                             }`
                           }
                           onClick={() => {
