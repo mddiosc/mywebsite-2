@@ -27,14 +27,11 @@ export const ContactHeader = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-      <div className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-        <h2 className="text-base/7 font-semibold text-primary">{t('pages.projects.portfolio')}</h2>
-        <p className="mt-2 text-4xl font-black tracking-tight text-pretty sm:text-5xl">
-          <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-            {t('contact.letsWorkTogether')}
-          </span>
-        </p>
-      </div>
+      <h1 className="text-4xl font-black tracking-tight text-pretty sm:text-5xl">
+        <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
+          {t('contact.letsWorkTogether')}
+        </span>
+      </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg/8 text-gray-600 lg:max-w-none dark:text-gray-300">
         {t('contact.description')}
       </p>
