@@ -4,7 +4,7 @@ description: "Un mensaje de celebración navideña junto con un análisis de los
 date: "2025-12-09"
 tags: ["frontend", "react", "javascript", "tendencias", "2026", "navidad"]
 author: "Miguel Ángel de Dios"
-slug: "felices-fiestas-retos-frontend-2026"
+slug: "happy-holidays-frontend-challenges-2026"
 featured: false
 ---
 
