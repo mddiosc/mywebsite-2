@@ -350,7 +350,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         </div>
 
         {/* Languages section - Fixed height */}
-        <div className="mb-4 h-16">
+        <div className="mb-6 min-h-16">
           {/* Display multiple languages if available */}
           {hasMultipleLanguages ? (
             <div>
@@ -406,7 +406,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         </div>
 
         {/* Topics section - Fixed height */}
-        <div className="mb-4 h-16">
+        <div className="mb-4 min-h-16">
           {project.topics.length > 0 ? (
             <div className="flex flex-wrap content-start gap-1">
               {project.topics.slice(0, 4).map((topic) => (

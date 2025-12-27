@@ -14,7 +14,7 @@ const ProjectsError = ({ error }: ProjectsErrorProps) => {
   }
 
   return (
-    <div className="mt-12 rounded-md bg-red-50 p-4">
+    <div className="mt-12 rounded-xl bg-red-50 p-4 dark:bg-red-900/20">
       <div className="flex">
         <div className="shrink-0">
           <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -26,8 +26,10 @@ const ProjectsError = ({ error }: ProjectsErrorProps) => {
           </svg>
         </div>
         <div className="ml-3">
-          <h3 className="text-sm font-medium text-red-800">{t(TRANSLATION_KEYS.ERROR.TITLE)}</h3>
-          <div className="mt-2 text-sm text-red-700">
+          <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
+            {t(TRANSLATION_KEYS.ERROR.TITLE)}
+          </h3>
+          <div className="mt-2 text-sm text-red-700 dark:text-red-400">
             <p>{t(TRANSLATION_KEYS.ERROR.MESSAGE)}</p>
           </div>
         </div>
