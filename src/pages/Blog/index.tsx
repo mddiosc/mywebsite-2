@@ -33,10 +33,14 @@ export default function Blog() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="mb-8 text-center sm:mb-12"
           >
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              {t('blog.title')}
+            <h1 className="mb-4 text-4xl font-black tracking-tight sm:text-5xl">
+              <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
+                {t('blog.title')}
+              </span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-gray-600">{t('blog.description')}</p>
+            <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+              {t('blog.description')}
+            </p>
           </motion.div>
 
           <motion.div
