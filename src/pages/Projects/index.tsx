@@ -36,7 +36,7 @@ const ProjectsPage = () => {
       />
 
       <motion.div
-        className="py-12 sm:py-24 lg:py-32"
+        className="pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
