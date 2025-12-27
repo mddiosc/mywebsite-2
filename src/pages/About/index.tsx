@@ -30,7 +30,7 @@ const AboutPage = () => {
         variants={fadeIn}
         transition={smoothTransition}
       >
-        <AboutHero biographyParagraphs={biographyParagraphs} />
+        <AboutHero />
         <AboutContent biographyParagraphs={biographyParagraphs} stats={stats} />
         <TechnologyGrid technologies={technologies} skills={skills} />
         <AboutContact />

@@ -6,20 +6,23 @@ import {
   ScrollToTop,
   SmartRoutePreloader,
 } from './components'
+import { ThemeProvider } from './context'
 import { AppRoutes } from './router/routes'
 import './i18n/i18n'
 import './styles/App.css'
 
 function App() {
   return (
-    <Router>
-      <NavigationProgressProvider>
-        <NavigationProgressBar />
-        <ScrollToTop />
-        <AppRoutes />
-        <SmartRoutePreloader />
-      </NavigationProgressProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <NavigationProgressProvider>
+          <NavigationProgressBar />
+          <ScrollToTop />
+          <AppRoutes />
+          <SmartRoutePreloader />
+        </NavigationProgressProvider>
+      </Router>
+    </ThemeProvider>
   )
 }
 

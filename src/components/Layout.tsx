@@ -38,7 +38,7 @@ const BackgroundDecoration = ({
         clipPath,
         WebkitClipPath: clipPath,
       }}
-      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-1155/678 ${rotate ? 'w-144.5' : 'w-144.5'} -translate-x-1/2 ${rotate ? 'rotate-30' : ''} bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-288.75' : 'sm:left-[calc(50%+36rem)] sm:w-288.75'}`}
+      className={`relative ${rotate ? 'left-[calc(50%-11rem)]' : 'left-[calc(50%+3rem)]'} aspect-1155/678 ${rotate ? 'w-144.5' : 'w-144.5'} -translate-x-1/2 ${rotate ? 'rotate-30' : ''} bg-linear-to-tr from-primary via-highlight to-accent opacity-20 dark:opacity-30 ${rotate ? 'sm:left-[calc(50%-30rem)] sm:w-288.75' : 'sm:left-[calc(50%+36rem)] sm:w-288.75'}`}
     />
   </motion.div>
 )
@@ -48,7 +48,7 @@ const Layout = () => {
   useHtmlLang()
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-white transition-colors duration-300 dark:bg-[#0A0A0F]">
       <SkipLinks />
       <Navbar />
       <main id="main-content" className="relative isolate flex min-h-[60vh] w-full flex-1">

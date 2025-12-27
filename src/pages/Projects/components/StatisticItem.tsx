@@ -16,8 +16,12 @@ const StatisticItem = ({ value, label, delay = 0 }: StatisticItemProps) => {
       variants={fadeIn}
       transition={{ ...smoothTransition, delay: delay }}
     >
-      <div className="text-3xl font-bold text-indigo-600 sm:text-4xl">{value}</div>
-      <div className="mt-2 text-sm font-medium text-gray-600 sm:text-base">{label}</div>
+      <div className="bg-linear-to-r from-primary to-highlight bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
+        {value}
+      </div>
+      <div className="mt-2 text-sm font-medium text-gray-600 sm:text-base dark:text-gray-400">
+        {label}
+      </div>
     </motion.div>
   )
 }

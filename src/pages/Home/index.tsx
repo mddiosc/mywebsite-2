@@ -19,7 +19,7 @@ const Home = () => {
       />
 
       <motion.div
-        className="flex min-h-[calc(100vh-12rem)] flex-col items-center justify-center sm:min-h-[calc(100vh-8rem)]"
+        className="flex min-h-[calc(100vh-12rem)] flex-col items-center justify-center pb-16 sm:min-h-[calc(100vh-8rem)] sm:pb-20 lg:pb-24"
         initial="hidden"
         animate="visible"
         variants={fadeIn}

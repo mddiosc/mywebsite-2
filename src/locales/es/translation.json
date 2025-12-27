@@ -20,80 +20,62 @@
     },
     "about": {
       "title": "Sobre Mí",
-      "name": "Miguel Ángel de Dios Calles",
+      "name": "Miguel Ángel de Dios",
       "hero": {
-        "subtitle": "Desarrollador Frontend Senior especializado en el ecosistema React con más de 5 años construyendo aplicaciones web modernas y 14 años de experiencia empresarial."
+        "subtitle": "Frontend Developer con pasión por crear experiencias web excepcionales."
       },
       "biography": {
-        "title": "Biografía",
-        "content": "Soy desarrollador Front-End especializado en la creación de aplicaciones web modernas y funcionales. Con sólida formación en desarrollo web, busco constantemente nuevos desafíos que me permitan evolucionar profesionalmente. Mi experiencia se centra en React, Next.js, TypeScript y el ecosistema de herramientas modernas como Vite, Tailwind CSS y React Query.\n\nMi experiencia combina más de 14 años en la industria del turismo, especializado en sistemas GDS Amadeus, con más de 5 años en desarrollo front-end. Esta perspectiva única me permite aportar soluciones tecnológicas que entienden tanto las necesidades del negocio como los estándares técnicos modernos, utilizando React, TypeScript, y herramientas de monitorización como Grafana Faro para crear aplicaciones robustas y escalables.\n\nTe invito a que veas mis proyectos en la sección \"Proyectos\" o pulsando en el siguiente botón. Si quieres saber más de mi, puedes contactarme en la sección \"Contacto\".",
-        "buttonText": "Ver Proyectos"
+        "title": "Mi Trayectoria",
+        "content": "Soy desarrollador Frontend especializado en React, TypeScript y el ecosistema moderno de JavaScript. Me apasiona construir aplicaciones web que combinan rendimiento, accesibilidad y una excelente experiencia de usuario.\n\nMi perfil único combina 5+ años en desarrollo frontend con 14 años de experiencia empresarial en sistemas críticos (Amadeus GDS). Esta combinación me permite entender tanto los requisitos técnicos como las necesidades del negocio, creando soluciones que aportan valor real.",
+        "buttonText": "Ver Portfolio"
       },
       "skills": {
         "title": "Habilidades",
-        "description": "Mi especialización se centra en JavaScript/TypeScript y el ecosistema React. Trabajo con tecnologías modernas como Next.js, Zustand para gestión de estado, React Query para manejo de datos, y herramientas como Vite, Tailwind CSS y Framer Motion para crear experiencias de usuario excepcionales.",
+        "description": "Stack tecnológico con el que trabajo día a día para crear aplicaciones modernas y escalables.",
         "items": [
-          "JavaScript/TypeScript",
-          "React y Next.js",
-          "Node.js y Express",
-          "Gestión de estado con Redux/Zustand/Context API",
-          "HTML5/CSS3 y frameworks de CSS como Tailwind",
-          "Styled Components y CSS-in-JS",
-          "Emotion y sistemas de estilos",
-          "Sass/SCSS y CSS Modules",
-          "React Query/TanStack Query para manejo de datos",
-          "React Hook Form para gestión de formularios",
-          "Framer Motion para animaciones",
-          "React Router para enrutamiento",
-          "Vite y herramientas de build modernas",
-          "APIs REST y GraphQL",
-          "Bases de datos MongoDB/PostgreSQL",
-          "Autenticación (JWT, OAuth)",
-          "Monitorización con Grafana Faro y Sentry",
-          "Analytics y seguimiento de rendimiento",
-          "Tracking de errores y logging",
-          "Git y control de versiones",
-          "Testing (Jest, React Testing Library, Vitest)",
-          "Patrones avanzados de TypeScript",
-          "Optimización de rendimiento",
-          "Diseño responsivo y mobile-first",
-          "SEO y accesibilidad (a11y)",
-          "CI/CD y despliegue (Vercel, Netlify)",
-          "Docker y containerización",
-          "Metodologías ágiles y Scrum"
+          "React & Next.js",
+          "TypeScript",
+          "State Management (Zustand, Context)",
+          "React Query & Data Fetching",
+          "Tailwind CSS & Styled Components",
+          "Testing (Vitest, RTL)",
+          "CI/CD & DevOps",
+          "Performance & Web Vitals",
+          "Accesibilidad (a11y)",
+          "Monitorización (Sentry, Grafana)"
         ]
       },
       "projects": {
         "title": "Proyectos",
-        "content": "He desarrollado aplicaciones web diversas, desde plataformas de e-commerce con React y TypeScript hasta herramientas empresariales con Next.js y bases de datos MongoDB/PostgreSQL. Implemento testing con Jest y React Testing Library, despliego en Vercel/Netlify, y utilizo Docker para containerización. Cada proyecto incorpora monitorización con Sentry y Grafana Faro para garantizar la calidad en producción."
+        "content": "Desarrollo aplicaciones web modernas con React, TypeScript y Next.js, siguiendo las mejores prácticas de la industria."
       },
       "contact": {
-        "title": "Contacto",
-        "content": "¿Tienes un proyecto en mente o quieres colaborar? Me encantaría conocer más sobre tu idea. Puedes conectar conmigo en LinkedIn para una charla rápida o utilizar el formulario de contacto para enviarme un mensaje detallado.",
-        "emailButton": "Ver en LinkedIn",
-        "contactFormLink": "Formulario de contacto"
+        "title": "¿Trabajamos juntos?",
+        "content": "¿Tienes un proyecto en mente? Me encantaría conocer tu idea y explorar cómo puedo ayudarte.",
+        "emailButton": "LinkedIn",
+        "contactFormLink": "Enviar mensaje"
       },
       "stats": {
-        "frontendYears": "Años especializándome en React/TypeScript",
-        "tourismExperience": "Años con sistemas Amadeus GDS",
-        "completedProjects": "Proyectos con tecnologías modernas"
+        "frontendYears": "Años en Frontend",
+        "tourismExperience": "Años en Enterprise",
+        "completedProjects": "Proyectos"
       }
     },
     "projects": {
-      "title": "Mis Proyectos",
-      "description": "Aquí encontrarás una selección de proyectos que demuestran mi experiencia con tecnologías modernas del ecosistema React. Cada proyecto utiliza herramientas como Next.js, TypeScript, Tailwind CSS y React Query, siguiendo las mejores prácticas de desarrollo.",
-      "portfolio": "Portfolio",
+      "title": "Proyectos",
+      "description": "Proyectos open source que demuestran mi trabajo con el ecosistema React.",
+      "portfolio": "GitHub",
       "statistics": {
-        "featuredProjects": "Proyectos Destacados",
-        "githubStars": "GitHub Stars",
+        "featuredProjects": "Destacados",
+        "githubStars": "Stars",
         "technologies": "Tecnologías",
-        "totalForks": "Total Forks",
-        "liveDemos": "Demos en Vivo"
+        "totalForks": "Forks",
+        "liveDemos": "Demos"
       },
       "topics": {
-        "title": "Tecnologías y Temas Populares",
-        "description": "Topics y etiquetas que uso frecuentemente en mis proyectos",
-        "additionalTopics": "Topics adicionales:"
+        "title": "Tecnologías",
+        "description": "Stack tecnológico de mis proyectos",
+        "additionalTopics": "Más:"
       },
       "card": {
         "createdOn": "Creado el",
@@ -121,37 +103,37 @@
   "components": {
     "hero": {
       "title": "Miguel Ángel de Dios",
-      "subtitle": "Desarrollador Frontend Senior especializado en el ecosistema React. Combino 5+ años desarrollando aplicaciones web modernas con 14 años de experiencia empresarial en sistemas críticos. Experto en TypeScript, Next.js, y arquitecturas escalables.",
-      "ctaPrimary": "Ver Proyectos",
+      "subtitle": "Senior Frontend Developer especializado en React & TypeScript. Creo aplicaciones web escalables que combinan excelencia técnica con visión de negocio.",
+      "ctaPrimary": "Ver Portfolio",
       "ctaPrimaryLink": "projects",
-      "ctaSecondary": "Sobre Mí",
+      "ctaSecondary": "Conóceme",
       "ctaSecondaryLink": "about",
       "announcement": "🚀 Disponible para proyectos enterprise con React/TypeScript",
       "readMore": "Contactar"
     },
     "homeFeatures": {
-      "title": "Especialización técnica",
-      "subtitle": "Experiencia con tecnologías modernas del ecosistema React",
-      "description": "Desarrollo aplicaciones web escalables utilizando las mejores prácticas de la industria. Mi enfoque combina experiencia empresarial con conocimiento profundo de tecnologías frontend modernas, desde arquitectura de componentes hasta optimización de rendimiento.",
+      "title": "Stack Tecnológico",
+      "subtitle": "Mi Especialización",
+      "description": "Desarrollo aplicaciones web modernas con las mejores prácticas de la industria, combinando experiencia empresarial con tecnologías frontend de vanguardia.",
       "features": [
         {
           "title": "React & TypeScript",
-          "description": "Desarrollo de aplicaciones robustas con React 18+ y TypeScript. Experiencia en hooks avanzados, context patterns, error boundaries y optimización de rendimiento con profiling tools.",
+          "description": "Aplicaciones robustas con React 18+, hooks avanzados, context patterns y optimización de rendimiento.",
           "icon": "⚛️"
         },
         {
-          "title": "Next.js & Performance",
-          "description": "Implementación de aplicaciones full-stack con SSR, SSG, ISR y App Router. Optimización con Web Vitals, image optimization, dynamic imports y estrategias de caching avanzadas.",
+          "title": "Next.js & SSR",
+          "description": "Full-stack con SSR, SSG, ISR y App Router. Optimización de Web Vitals y estrategias de caching.",
           "icon": "🚀"
         },
         {
-          "title": "State Management & APIs",
-          "description": "Gestión de estado compleja con Zustand y Context API. Integración de APIs con React Query/TanStack Query, manejo de cache, invalidación y sincronización de datos en tiempo real.",
+          "title": "Data & State",
+          "description": "Gestión de estado con Zustand/Context. APIs con React Query, cache y sincronización en tiempo real.",
           "icon": "🏗️"
         }
       ],
-      "ctaPrimary": "Ver Proyectos",
-      "ctaSecondary": "Mi Experiencia"
+      "ctaPrimary": "Ver Portfolio",
+      "ctaSecondary": "Conóceme"
     }
   },
   "contact": {

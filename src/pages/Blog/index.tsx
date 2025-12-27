@@ -26,17 +26,21 @@ export default function Blog() {
         variants={fadeIn}
         transition={smoothTransition}
       >
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4 pt-8 pb-16 sm:px-6 sm:pt-12 sm:pb-20 lg:px-8 lg:pt-16 lg:pb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="mb-8 text-center sm:mb-12"
           >
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              {t('blog.title')}
+            <h1 className="mb-4 text-4xl font-black tracking-tight sm:text-5xl">
+              <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
+                {t('blog.title')}
+              </span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-gray-600">{t('blog.description')}</p>
+            <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
+              {t('blog.description')}
+            </p>
           </motion.div>
 
           <motion.div

@@ -121,9 +121,11 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
       {/* Form separator */}
       <div className="mx-auto mt-16 max-w-xl text-center">
         <div className="flex items-center">
-          <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-4 text-sm text-gray-500">{t('contact.orUseForm')}</span>
-          <div className="flex-1 border-t border-gray-300"></div>
+          <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
+          <span className="px-4 text-sm text-gray-500 dark:text-gray-400">
+            {t('contact.orUseForm')}
+          </span>
+          <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
         </div>
       </div>
 
@@ -135,12 +137,15 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
         transition={{ ...commonTransition, delay: 0.3 }}
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="mx-auto mt-8 max-w-xl sm:mt-12"
+        className="mx-auto mt-8 max-w-xl rounded-2xl border border-gray-200/50 bg-white/80 p-6 shadow-xl shadow-gray-900/5 backdrop-blur-sm sm:mt-12 sm:p-8 dark:border-gray-700/50 dark:bg-gray-900/80 dark:shadow-gray-900/20"
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6">
           {/* Name Field */}
           <div>
-            <label htmlFor="name" className="block text-sm/6 font-semibold text-gray-900">
+            <label
+              htmlFor="name"
+              className="block text-sm/6 font-semibold text-gray-900 dark:text-gray-100"
+            >
               {t('contact.name')}{' '}
               <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>*</span>
             </label>
@@ -150,7 +155,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 id="name"
                 type="text"
                 autoComplete="name"
-                className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                className="block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 transition-all placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light"
                 placeholder={t('contact.namePlaceholder')}
                 aria-required="true"
                 aria-invalid={errors.name ? 'true' : 'false'}
@@ -166,7 +171,10 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-semibold text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-semibold text-gray-900 dark:text-gray-100"
+            >
               {t('contact.email')}{' '}
               <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>*</span>
             </label>
@@ -176,7 +184,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                className="block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 transition-all placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light"
                 placeholder={t('contact.emailPlaceholder')}
                 aria-required="true"
                 aria-invalid={errors.email ? 'true' : 'false'}
@@ -192,7 +200,10 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
           {/* Project Type Field */}
           <div>
-            <label htmlFor="project-type" className="block text-sm/6 font-semibold text-gray-900">
+            <label
+              htmlFor="project-type"
+              className="block text-sm/6 font-semibold text-gray-900 dark:text-gray-100"
+            >
               {t('contact.projectType')}
             </label>
             <div className="mt-2.5">
@@ -200,7 +211,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 <select
                   {...register('project-type')}
                   id="project-type"
-                  className="block w-full appearance-none rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                  className="block w-full appearance-none rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-primary-light"
                 >
                   <option value="" className="text-gray-400">
                     {t('contact.projectTypePlaceholder')}
@@ -212,7 +223,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                   ))}
                 </select>
                 {/* Custom dropdown arrow */}
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
                   <svg
                     className="h-5 w-5 text-gray-400"
                     viewBox="0 0 20 20"
@@ -238,20 +249,23 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           {/* Message Field */}
           <div>
             <div className="flex justify-between text-sm/6">
-              <label htmlFor="message" className="block font-semibold text-gray-900">
+              <label
+                htmlFor="message"
+                className="block font-semibold text-gray-900 dark:text-gray-100"
+              >
                 {t('contact.message')}{' '}
                 <span aria-label={t('accessibility.required', { defaultValue: 'required' })}>
                   *
                 </span>
               </label>
-              <p className="text-gray-400">{t('contact.maxCharacters')}</p>
+              <p className="text-gray-400 dark:text-gray-500">{t('contact.maxCharacters')}</p>
             </div>
             <div className="mt-2.5">
               <textarea
                 {...register('message')}
                 id="message"
                 rows={4}
-                className="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                className="block w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-base text-gray-900 transition-all placeholder:text-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 dark:focus:border-primary-light"
                 placeholder={t('contact.messagePlaceholder')}
                 aria-required="true"
                 aria-invalid={errors.message ? 'true' : 'false'}
@@ -275,12 +289,14 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           className="mt-10"
         >
           {isError && (
-            <div className="mb-4 rounded-md bg-red-50 p-4">
+            <div className="mb-4 rounded-xl bg-red-50 p-4 dark:bg-red-900/20">
               <div className="flex">
                 <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">{t('contact.errorTitle')}</h3>
-                  <p className="mt-2 text-sm text-red-700">
+                  <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
+                    {t('contact.errorTitle')}
+                  </h3>
+                  <p className="mt-2 text-sm text-red-700 dark:text-red-400">
                     {errorMessage?.includes('Rate limit')
                       ? t('contact.rateLimitError', { defaultValue: errorMessage })
                       : t('contact.errorMessage')}
@@ -293,9 +309,13 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           <button
             type="submit"
             disabled={isPending}
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-50"
+            className="group relative block w-full overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isPending ? t('contact.sending') : t('contact.sendMessage')}
+            {/* Shine effect */}
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            <span className="relative">
+              {isPending ? t('contact.sending') : t('contact.sendMessage')}
+            </span>
           </button>
         </motion.div>
       </motion.form>

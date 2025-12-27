@@ -33,10 +33,10 @@ const TopicsDisplay = ({
       transition={{ ...smoothTransition, delay: delay }}
     >
       <div className="text-center">
-        <h3 className="text-lg font-semibold text-gray-900 sm:text-xl">
+        <h3 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-white">
           {t(TRANSLATION_KEYS.TOPICS.TITLE)}
         </h3>
-        <p className="mt-2 text-sm text-gray-600 sm:text-base">
+        <p className="mt-2 text-sm text-gray-600 sm:text-base dark:text-gray-400">
           {t(TRANSLATION_KEYS.TOPICS.DESCRIPTION)}
         </p>
       </div>
@@ -44,7 +44,7 @@ const TopicsDisplay = ({
         {uniqueTopics.map((topic) => (
           <span
             key={topic}
-            className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-800 transition-colors hover:bg-indigo-200 sm:px-4 sm:py-2 sm:text-sm"
+            className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary ring-1 ring-primary/20 transition-colors ring-inset hover:bg-primary/20 sm:px-4 sm:py-2 sm:text-sm dark:bg-gray-800 dark:text-gray-100 dark:ring-gray-700 dark:hover:bg-gray-700"
           >
             #{topic}
           </span>
