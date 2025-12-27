@@ -42,17 +42,26 @@ export const ContactSuccess = ({ onSendAnother }: ContactSuccessProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-auto max-w-2xl"
+          className="mx-auto max-w-2xl rounded-2xl border border-gray-200/50 bg-white/80 p-8 shadow-xl shadow-gray-900/5 backdrop-blur-sm dark:border-gray-700/50 dark:bg-gray-900/80 dark:shadow-gray-900/20"
         >
-          <CheckCircleIcon className="mx-auto h-16 w-16 text-green-600" />
-          <h2 className="mt-6 text-3xl font-semibold text-gray-900">{t('contact.successTitle')}</h2>
-          <p className="mt-2 text-lg text-gray-600">{t('contact.successMessage')}</p>
+          {/* Success icon with gradient background */}
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-r from-accent to-primary">
+            <CheckCircleIcon className="h-10 w-10 text-white" />
+          </div>
+          <h2 className="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+            {t('contact.successTitle')}
+          </h2>
+          <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
+            {t('contact.successMessage')}
+          </p>
           <button
             type="button"
             onClick={onSendAnother}
-            className="mt-6 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+            className="group relative mt-8 inline-flex items-center overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
           >
-            {t('contact.sendAnotherMessage')}
+            {/* Shine effect */}
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            <span className="relative">{t('contact.sendAnotherMessage')}</span>
           </button>
         </motion.div>
       </div>
