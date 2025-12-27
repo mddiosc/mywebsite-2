@@ -3,11 +3,18 @@ import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation } from 'react-router'
 
 import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  Bars3Icon,
+  XMarkIcon,
+  HomeIcon,
+  UserIcon,
+  FolderIcon,
+  NewspaperIcon,
+  EnvelopeIcon,
+} from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { useThemeContext } from '../context'
-import { fadeIn, slideIn, commonTransition } from '../lib/animations'
 
 import { LanguageSwitcher, OptimizedImage, ThemeToggle } from '.'
 
@@ -22,6 +29,18 @@ export default function Navbar() {
     setMobileMenuOpen(false)
   }, [location.pathname])
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
+
   // Track scroll position for glassmorphism effect
   useEffect(() => {
     const handleScroll = () => {
@@ -34,17 +53,68 @@ export default function Navbar() {
   }, [])
 
   const navigation = [
-    { name: t('navigation.home'), to: `/${i18n.language}/`, exact: true },
-    { name: t('navigation.about'), to: `/${i18n.language}/about`, exact: false },
-    { name: t('navigation.projects'), to: `/${i18n.language}/projects`, exact: false },
-    { name: t('navigation.blog'), to: `/${i18n.language}/blog`, exact: false },
-    { name: t('navigation.contact'), to: `/${i18n.language}/contact`, exact: false },
+    { name: t('navigation.home'), to: `/${i18n.language}/`, exact: true, icon: HomeIcon },
+    { name: t('navigation.about'), to: `/${i18n.language}/about`, exact: false, icon: UserIcon },
+    {
+      name: t('navigation.projects'),
+      to: `/${i18n.language}/projects`,
+      exact: false,
+      icon: FolderIcon,
+    },
+    { name: t('navigation.blog'), to: `/${i18n.language}/blog`, exact: false, icon: NewspaperIcon },
+    {
+      name: t('navigation.contact'),
+      to: `/${i18n.language}/contact`,
+      exact: false,
+      icon: EnvelopeIcon,
+    },
   ]
 
-  const slideInPanel = {
-    hidden: { x: '100%', opacity: 0 },
-    visible: { x: 0, opacity: 1 },
-    exit: { x: '100%', opacity: 0 },
+  // Staggered animation variants for menu items
+  const menuItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.1 + i * 0.08,
+        duration: 0.4,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    }),
+    exit: (i: number) => ({
+      opacity: 0,
+      y: -10,
+      transition: {
+        delay: i * 0.03,
+        duration: 0.2,
+      },
+    }),
+  }
+
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 },
+  }
+
+  const containerVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.3,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+      },
+    },
   }
 
   return (
@@ -80,8 +150,7 @@ export default function Navbar() {
               />
             </NavLink>
           </div>
-          <div className="flex items-center gap-2 lg:hidden">
-            <ThemeToggle />
+          <div className="flex items-center lg:hidden">
             <motion.button
               type="button"
               onClick={() => {
@@ -139,26 +208,51 @@ export default function Navbar() {
             onClose={setMobileMenuOpen}
             className="relative z-50 lg:hidden"
           >
+            {/* Full-screen glassmorphism overlay */}
             <motion.div
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={fadeIn}
-              transition={{ ...commonTransition, duration: 0.2 }}
-              onClick={() => {
-                setMobileMenuOpen(false)
-              }}
-            />
-            <motion.div
-              id="mobile-menu"
-              className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 dark:bg-[#141419] dark:sm:ring-gray-700/20"
+              className="fixed inset-0 bg-white/80 backdrop-blur-xl dark:bg-gray-900/90"
               initial="hidden"
               animate="visible"
               exit="exit"
-              variants={slideInPanel}
-              transition={{ ...commonTransition, type: 'spring', stiffness: 400, damping: 40 }}
+              variants={overlayVariants}
+              transition={{ duration: 0.3 }}
+            />
+
+            {/* Decorative gradient orbs */}
+            <div className="pointer-events-none fixed inset-0 overflow-hidden">
+              <motion.div
+                className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.5 }}
+              />
+              <motion.div
+                className="absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              />
+              <motion.div
+                className="absolute top-1/2 left-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-highlight/10 blur-3xl"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              />
+            </div>
+
+            {/* Menu content */}
+            <motion.div
+              id="mobile-menu"
+              className="fixed inset-0 z-10 flex flex-col px-6 py-6"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={containerVariants}
             >
+              {/* Header with logo and close button */}
               <div className="flex items-center justify-between">
                 <NavLink
                   to={`/${i18n.language}/`}
@@ -171,7 +265,7 @@ export default function Navbar() {
                   <OptimizedImage
                     src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                     alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
-                    className="h-8 w-auto"
+                    className="h-10 w-auto"
                     priority
                   />
                 </NavLink>
@@ -180,52 +274,71 @@ export default function Navbar() {
                   onClick={() => {
                     setMobileMenuOpen(false)
                   }}
-                  className="-m-2.5 rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+                  className="relative rounded-full bg-gray-100/80 p-3 text-gray-700 backdrop-blur-sm transition-colors hover:bg-gray-200/80 dark:bg-gray-800/80 dark:text-gray-200 dark:hover:bg-gray-700/80"
                   aria-label={t('accessibility.closeMenu', { defaultValue: 'Close menu' })}
-                  whileHover={{ scale: 1.05, rotate: 90 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9, rotate: 90 }}
                 >
                   <XMarkIcon aria-hidden="true" className="size-6" />
                 </motion.button>
               </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10 dark:divide-gray-700/30">
-                  <div className="flex flex-col gap-2 py-6">
-                    {navigation.map((item, index) => (
-                      <motion.div
-                        key={item.to}
-                        initial="hidden"
-                        animate="visible"
-                        variants={slideIn}
-                        transition={{ ...commonTransition, delay: 0.1 * index }}
+
+              {/* Navigation links - centered */}
+              <nav className="flex flex-1 flex-col items-center justify-center gap-2">
+                {navigation.map((item, index) => {
+                  const Icon = item.icon
+                  return (
+                    <motion.div
+                      key={item.to}
+                      custom={index}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      variants={menuItemVariants}
+                      className="w-full max-w-xs"
+                    >
+                      <NavLink
+                        to={item.to}
+                        end={item.exact}
+                        viewTransition
+                        className={({ isActive }) =>
+                          `group flex items-center justify-center gap-3 rounded-2xl px-6 py-4 text-xl font-semibold transition-all duration-300 ${
+                            isActive
+                              ? 'bg-linear-to-r from-primary to-highlight text-white shadow-lg shadow-primary/25'
+                              : 'bg-gray-100/60 text-gray-700 hover:bg-gray-200/80 hover:text-primary dark:bg-gray-800/60 dark:text-gray-200 dark:hover:bg-gray-700/80 dark:hover:text-primary-light'
+                          }`
+                        }
+                        onClick={() => {
+                          setMobileMenuOpen(false)
+                        }}
                       >
-                        <NavLink
-                          to={item.to}
-                          end={item.exact}
-                          viewTransition
-                          className={({ isActive }) =>
-                            `-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold transition-colors ${
-                              isActive
-                                ? 'bg-primary/10 text-primary dark:bg-primary/20'
-                                : 'text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800'
-                            }`
-                          }
-                          onClick={() => {
-                            setMobileMenuOpen(false)
-                          }}
-                        >
-                          {({ isActive }) => (
+                        {({ isActive }) => (
+                          <>
+                            <Icon
+                              className={`size-6 transition-transform duration-300 group-hover:scale-110 ${
+                                isActive ? 'text-white' : ''
+                              }`}
+                            />
                             <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
-                          )}
-                        </NavLink>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="py-6">
-                    <LanguageSwitcher />
-                  </div>
-                </div>
-              </div>
+                          </>
+                        )}
+                      </NavLink>
+                    </motion.div>
+                  )
+                })}
+              </nav>
+
+              {/* Bottom section with language switcher and theme toggle */}
+              <motion.div
+                className="flex items-center justify-center gap-3 pt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+              >
+                <ThemeToggle />
+                <LanguageSwitcher />
+              </motion.div>
             </motion.div>
           </Dialog>
         )}
