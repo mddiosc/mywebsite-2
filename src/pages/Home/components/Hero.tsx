@@ -78,22 +78,22 @@ function StatusBadge({
 }) {
   return (
     <motion.div
-      className="mb-8 flex justify-center sm:mb-10 lg:mb-12"
+      className="mb-8 flex justify-center px-4 sm:mb-10 sm:px-0 lg:mb-12"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       <Link
         to={`/${language}/contact`}
-        className="group relative inline-flex items-center gap-2 rounded-full bg-linear-to-r from-primary/10 to-accent/10 px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-primary/20 transition-all hover:shadow-lg hover:shadow-primary/10 hover:ring-primary/40 dark:from-primary/20 dark:to-accent/20 dark:text-gray-200 dark:ring-primary/30"
+        className="group relative inline-flex flex-wrap items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-primary/10 to-accent/10 px-3 py-2 text-center text-xs font-medium text-gray-700 ring-1 ring-primary/20 transition-all hover:shadow-lg hover:shadow-primary/10 hover:ring-primary/40 sm:flex-nowrap sm:gap-2 sm:px-4 sm:text-sm dark:from-primary/20 dark:to-accent/20 dark:text-gray-200 dark:ring-primary/30"
       >
         {/* Animated pulse dot */}
-        <span className="relative flex h-2 w-2">
+        <span className="relative flex h-2 w-2 shrink-0">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
           <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
         </span>
 
-        <span>{announcement}</span>
+        <span className="leading-tight">{announcement}</span>
 
         <span className="font-semibold text-primary transition-colors group-hover:text-primary-dark dark:text-primary-light">
           {readMore}
