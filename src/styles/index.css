@@ -61,6 +61,14 @@
 
   --shadow-glow-primary: 0 0 30px rgba(0, 102, 255, 0.4);
   --shadow-glow-accent: 0 0 30px rgba(0, 212, 170, 0.4);
+
+  /* Brighter colors for dark mode */
+  --color-primary: #4D9FFF;
+  --color-primary-light: #80BFFF;
+  --color-accent: #33E6C4;
+  --color-accent-light: #66EDDA;
+  --color-highlight: #A78BFA;
+  --color-highlight-light: #C4B5FD;
 }
 
 /* Smooth theme transition */

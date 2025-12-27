@@ -39,7 +39,7 @@ function AnimatedTitle({ text }: { text: string }) {
 
   return (
     <motion.h1
-      className="text-5xl font-black tracking-tight text-balance sm:text-7xl lg:text-8xl xl:text-9xl"
+      className="text-5xl leading-tight font-black tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

@@ -6,11 +6,7 @@ import { motion } from 'framer-motion'
 import { ANIMATION_CONFIG } from '@/constants/animations'
 import { commonTransition, slideIn } from '@/lib/animations'
 
-interface AboutHeroProps {
-  biographyParagraphs: string[]
-}
-
-const AboutHero = ({ biographyParagraphs }: AboutHeroProps) => {
+const AboutHero = () => {
   const { t, i18n } = useTranslation()
 
   return (
@@ -56,7 +52,7 @@ const AboutHero = ({ biographyParagraphs }: AboutHeroProps) => {
                 </span>
               </h1>
               <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
-                {biographyParagraphs[0]}
+                {t('pages.about.hero.subtitle')}
               </p>
               <div className="mt-8">
                 <Link
