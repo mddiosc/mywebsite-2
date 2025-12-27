@@ -13,6 +13,7 @@ import { LanguageSwitcher, OptimizedImage, ThemeToggle } from '.'
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const { t, i18n } = useTranslation()
   const { isDark } = useThemeContext()
   const location = useLocation()
@@ -20,6 +21,17 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false)
   }, [location.pathname])
+
+  // Track scroll position for glassmorphism effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const navigation = [
     { name: t('navigation.home'), to: `/${i18n.language}/`, exact: true },
@@ -36,13 +48,24 @@ export default function Navbar() {
   }
 
   return (
-    <header role="banner">
+    <header
+      role="banner"
+      className={`sticky top-0 z-40 transition-all duration-500 ${isScrolled ? 'py-2' : 'py-0'}`}
+    >
       <nav
         id="navigation"
-        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+        className={`mx-auto transition-all duration-500 ${
+          isScrolled
+            ? 'max-w-4xl rounded-full border border-gray-200/50 bg-white/80 px-6 shadow-lg shadow-gray-900/5 backdrop-blur-md dark:border-gray-700/50 dark:bg-gray-900/80 dark:shadow-gray-900/20'
+            : 'max-w-7xl bg-transparent px-4 sm:px-6 lg:px-8'
+        }`}
         aria-label={t('accessibility.mainNavigation', { defaultValue: 'Main navigation' })}
       >
-        <div className="flex h-16 items-center justify-between">
+        <div
+          className={`flex items-center justify-between transition-all duration-500 ${
+            isScrolled ? 'h-12' : 'h-16'
+          }`}
+        >
           <div className="flex lg:flex-1">
             <NavLink
               to={`/${i18n.language}/`}
@@ -52,27 +75,29 @@ export default function Navbar() {
               <OptimizedImage
                 src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                 alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
-                className="h-12 w-auto"
+                className={`w-auto transition-all duration-500 ${isScrolled ? 'h-8' : 'h-12'}`}
                 priority
               />
             </NavLink>
           </div>
           <div className="flex items-center gap-2 lg:hidden">
             <ThemeToggle />
-            <button
+            <motion.button
               type="button"
               onClick={() => {
                 setMobileMenuOpen(true)
               }}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200"
+              className="-m-2.5 inline-flex items-center justify-center rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
               aria-label={t('accessibility.openMenu', { defaultValue: 'Open main menu' })}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Bars3Icon aria-hidden="true" className="size-6" />
-            </button>
+            </motion.button>
           </div>
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className="hidden lg:flex lg:gap-x-10">
             {navigation.map((item) => (
               <NavLink
                 key={item.to}
@@ -80,15 +105,23 @@ export default function Navbar() {
                 end={item.exact}
                 viewTransition
                 className={({ isActive }) =>
-                  `text-sm/6 font-semibold transition-colors ${
+                  `group relative py-1 text-sm/6 font-semibold transition-colors ${
                     isActive
-                      ? 'border-b-2 border-primary text-primary'
+                      ? 'text-primary'
                       : 'text-gray-900 hover:text-primary dark:text-gray-100 dark:hover:text-primary-light'
                   }`
                 }
               >
                 {({ isActive }) => (
-                  <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
+                  <>
+                    <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
+                    {/* Animated underline */}
+                    <span
+                      className={`absolute -bottom-0.5 left-0 h-0.5 bg-linear-to-r from-primary to-accent transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}
+                    />
+                  </>
                 )}
               </NavLink>
             ))}
@@ -142,16 +175,18 @@ export default function Navbar() {
                     priority
                   />
                 </NavLink>
-                <button
+                <motion.button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false)
                   }}
-                  className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-gray-200"
+                  className="-m-2.5 rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
                   aria-label={t('accessibility.closeMenu', { defaultValue: 'Close menu' })}
+                  whileHover={{ scale: 1.05, rotate: 90 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <XMarkIcon aria-hidden="true" className="size-6" />
-                </button>
+                </motion.button>
               </div>
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/10 dark:divide-gray-700/30">
