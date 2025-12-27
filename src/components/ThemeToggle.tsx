@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline'
 import { motion, AnimatePresence } from 'framer-motion'
 
-import { useThemeContext } from '../context/ThemeContext'
+import { useThemeContext } from '../context'
 
 interface ThemeToggleProps {
   className?: string
