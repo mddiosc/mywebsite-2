@@ -42,10 +42,35 @@ export default function Navbar() {
   }, [mobileMenuOpen])
 
   // Track scroll position for glassmorphism effect
+  // Optimized for smooth behavior on iOS/Safari
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+    let ticking = false
+    let lastScrollY = window.scrollY
+
+    const updateScrollState = () => {
+      const scrollY = window.scrollY
+      // Prevent updates during iOS rubber-band effect (negative scroll or bounce)
+      if (scrollY < 0) {
+        ticking = false
+        return
+      }
+      // Only update if crossing the threshold to avoid unnecessary re-renders
+      const shouldBeScrolled = scrollY > 20
+      const wasScrolled = lastScrollY > 20
+      if (shouldBeScrolled !== wasScrolled) {
+        setIsScrolled(shouldBeScrolled)
+      }
+      lastScrollY = scrollY
+      ticking = false
     }
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollState)
+        ticking = true
+      }
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', handleScroll)
@@ -118,89 +143,93 @@ export default function Navbar() {
   }
 
   return (
-    <header
-      role="banner"
-      className={`sticky top-0 z-40 transition-all duration-500 ${isScrolled ? 'py-2' : 'py-0'}`}
-    >
-      <nav
-        id="navigation"
-        className={`mx-auto transition-all duration-500 ${
-          isScrolled
-            ? 'max-w-4xl rounded-full border border-gray-200/50 bg-white/80 px-6 shadow-lg shadow-gray-900/5 backdrop-blur-md dark:border-gray-700/50 dark:bg-gray-900/80 dark:shadow-gray-900/20'
-            : 'max-w-7xl bg-transparent px-4 sm:px-6 lg:px-8'
-        }`}
-        aria-label={t('accessibility.mainNavigation', { defaultValue: 'Main navigation' })}
-      >
+    <header role="banner" className="sticky top-0 z-40 py-3">
+      {/* Container with fixed max-width - no transitions on layout properties */}
+      <div className="relative mx-auto max-w-4xl px-4">
+        {/* Pill background - uses only transform and opacity for iOS performance */}
         <div
-          className={`flex items-center justify-between transition-all duration-500 ${
-            isScrolled ? 'h-12' : 'h-16'
+          className={`pointer-events-none absolute inset-0 rounded-full border bg-white/80 shadow-lg shadow-gray-900/5 backdrop-blur-md dark:bg-gray-900/80 dark:shadow-gray-900/20 ${
+            isScrolled ? 'border-gray-200/50 dark:border-gray-700/50' : 'border-transparent'
           }`}
+          style={{
+            opacity: isScrolled ? 1 : 0,
+            transform: isScrolled ? 'scale(1)' : 'scale(0.98)',
+            transition: 'opacity 250ms ease-out, transform 250ms ease-out',
+            willChange: 'opacity, transform',
+          }}
+        />
+        <nav
+          id="navigation"
+          className="relative"
+          aria-label={t('accessibility.mainNavigation', { defaultValue: 'Main navigation' })}
         >
-          <div className="flex lg:flex-1">
-            <NavLink
-              to={`/${i18n.language}/`}
-              className="-m-1.5 p-1.5"
-              aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
-            >
-              <OptimizedImage
-                src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
-                alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
-                className={`w-auto transition-all duration-500 ${isScrolled ? 'h-8' : 'h-12'}`}
-                priority
-              />
-            </NavLink>
-          </div>
-          <div className="flex items-center lg:hidden">
-            <motion.button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(true)
-              }}
-              className="-m-2.5 inline-flex items-center justify-center rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label={t('accessibility.openMenu', { defaultValue: 'Open main menu' })}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Bars3Icon aria-hidden="true" className="size-6" />
-            </motion.button>
-          </div>
-          <div className="hidden lg:flex lg:gap-x-10">
-            {navigation.map((item) => (
+          <div className="flex h-12 items-center justify-between">
+            <div className="flex lg:flex-1">
               <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.exact}
-                viewTransition
-                className={({ isActive }) =>
-                  `group relative py-1 text-sm/6 font-semibold transition-colors ${
-                    isActive
-                      ? 'text-primary'
-                      : 'text-gray-900 hover:text-primary dark:text-gray-100 dark:hover:text-primary-light'
-                  }`
-                }
+                to={`/${i18n.language}/`}
+                className="-m-1.5 p-1.5"
+                aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
               >
-                {({ isActive }) => (
-                  <>
-                    <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
-                    {/* Animated underline */}
-                    <span
-                      className={`absolute -bottom-0.5 left-0 h-0.5 bg-linear-to-r from-primary to-accent transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`}
-                    />
-                  </>
-                )}
+                <OptimizedImage
+                  src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
+                  alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
+                  className="h-9 w-auto"
+                  priority
+                />
               </NavLink>
-            ))}
+            </div>
+            <div className="flex items-center lg:hidden">
+              <motion.button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(true)
+                }}
+                className="-m-2.5 inline-flex items-center justify-center rounded-xl p-2.5 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label={t('accessibility.openMenu', { defaultValue: 'Open main menu' })}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bars3Icon aria-hidden="true" className="size-6" />
+              </motion.button>
+            </div>
+            <div className="hidden lg:flex lg:gap-x-10">
+              {navigation.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.exact}
+                  viewTransition
+                  className={({ isActive }) =>
+                    `group relative py-1 text-sm/6 font-semibold transition-colors ${
+                      isActive
+                        ? 'text-primary'
+                        : 'text-gray-900 hover:text-primary dark:text-gray-100 dark:hover:text-primary-light'
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span aria-current={isActive ? 'page' : undefined}>{item.name}</span>
+                      {/* Animated underline */}
+                      <span
+                        className={`absolute -bottom-0.5 left-0 h-0.5 bg-linear-to-r from-primary to-accent transition-all duration-300 ${
+                          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </div>
+            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-4">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-4">
-            <ThemeToggle />
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
       <AnimatePresence>
         {mobileMenuOpen && (
           <Dialog

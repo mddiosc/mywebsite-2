@@ -45,8 +45,7 @@ const AboutHero = () => {
               variants={slideIn}
               transition={{ ...commonTransition, ...ANIMATION_CONFIG.hero }}
             >
-              <h2 className="text-base/7 font-semibold text-primary">{t('pages.about.title')}</h2>
-              <h1 className="mt-3 text-5xl font-black tracking-tight text-pretty sm:text-6xl">
+              <h1 className="text-5xl font-black tracking-tight text-pretty sm:text-6xl">
                 <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
                   {t('pages.about.name')}
                 </span>

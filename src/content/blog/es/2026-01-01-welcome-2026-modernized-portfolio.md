@@ -4,7 +4,7 @@ description: "Celebrando la llegada de 2026 con un portfolio completamente renov
 date: "2026-01-01"
 tags: ["portfolio", "react", "design", "dark-mode", "glassmorphism", "ui-ux", "2026"]
 author: "Miguel Ángel de Dios"
-slug: "bienvenido-2026-portfolio-modernizado"
+slug: "welcome-2026-modernized-portfolio"
 featured: true
 ---
 
