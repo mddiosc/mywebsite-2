@@ -3,7 +3,6 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { SpeedInsights } from '@vercel/speed-insights/react'
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
@@ -30,7 +29,6 @@ if (root) {
           <App />
         )}
         <ReactQueryDevtools initialIsOpen={false} />
-        <SpeedInsights />
       </QueryClientProvider>
     </StrictMode>,
   )

@@ -5,9 +5,19 @@ import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import { configDefaults } from 'vitest/config'
 
+// Plugin to replace Umami analytics placeholder in index.html with env variable
+function htmlEnvPlugin() {
+  return {
+    name: 'html-transform',
+    transformIndexHtml(html: string) {
+      return html.replace('%VITE_UMAMI_WEBSITE_ID%', process.env.VITE_UMAMI_WEBSITE_ID ?? '')
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(() => ({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), htmlEnvPlugin()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
