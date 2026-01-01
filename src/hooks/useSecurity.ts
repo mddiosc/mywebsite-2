@@ -60,11 +60,11 @@ export const useSecurity = () => {
     return {
       'Content-Security-Policy':
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' https://vercel.live; " +
+        "script-src 'self' 'unsafe-inline' https://mywebsite-umami.mddiosc.cloud; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
         "font-src 'self' https://fonts.gstatic.com; " +
         "img-src 'self' data: https:; " +
-        "connect-src 'self' https://vercel.live;",
+        "connect-src 'self' https://mywebsite-umami.mddiosc.cloud;",
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
       'X-XSS-Protection': '1; mode=block',

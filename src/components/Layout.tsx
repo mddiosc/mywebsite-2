@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router'
 
-import { Analytics } from '@vercel/analytics/react'
 import { motion } from 'framer-motion'
 
 import { useHtmlLang } from '../hooks/useHtmlLang'
@@ -62,7 +61,6 @@ const Layout = () => {
         />
       </main>
       <Footer />
-      <Analytics />
     </div>
   )
 }

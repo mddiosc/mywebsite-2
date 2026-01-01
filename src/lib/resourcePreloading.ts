@@ -41,8 +41,8 @@ export function preconnectToOrigins() {
   preconnect('https://www.google.com')
   preconnect('https://www.gstatic.com')
 
-  // Vercel Analytics
-  preconnect('https://vitals.vercel-insights.com')
+  // Umami Analytics
+  preconnect('https://mywebsite-umami.mddiosc.cloud')
 }
 
 /**
