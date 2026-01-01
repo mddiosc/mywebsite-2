@@ -8,4 +8,4 @@ cmds = ["pnpm install --frozen-lockfile"]
 cmds = ["pnpm build"]
 
 [start]
-cmd = "pnpm preview --host 0.0.0.0 --port $PORT"
+cmd = "caddy file-server --root dist --listen :$PORT"
