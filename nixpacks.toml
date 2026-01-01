@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_22", "pnpm"]
+nixPkgs = ["nodejs_22", "pnpm-9_x"]
 
 [phases.install]
-cmds = ["pnpm install --frozen-lockfile"]
+cmds = ["pnpm i --frozen-lockfile"]
 
 [phases.build]
-cmds = ["pnpm build"]
+cmds = ["pnpm run build"]
 
 [start]
-cmd = "caddy file-server --root dist --listen :$PORT"
+cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
