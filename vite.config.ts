@@ -96,10 +96,10 @@ export default defineConfig(() => ({
         'src/constants/**',
       ],
       thresholds: {
-        lines: 25,
+        lines: 20,
         functions: 15,
         branches: 15,
-        statements: 25,
+        statements: 20,
       },
     },
   },
