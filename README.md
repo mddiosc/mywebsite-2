@@ -1,5 +1,6 @@
 # Miguel Ángel de Dios - Personal Portfolio 🚀
 
+[![CI](https://github.com/mddiosc/mywebsite-2/actions/workflows/ci.yml/badge.svg)](https://github.com/mddiosc/mywebsite-2/actions/workflows/ci.yml)
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646CFF.svg)](https://vitejs.dev/)
