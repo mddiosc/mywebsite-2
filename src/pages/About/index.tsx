@@ -13,7 +13,7 @@ import { fadeIn, smoothTransition } from '@/lib/animations'
  * Displays information about the developer including biography, stats, technologies, and contact information
  */
 const AboutPage = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { skills, stats, technologies, biographyParagraphs } = useAboutData()
 
   return (
@@ -22,6 +22,7 @@ const AboutPage = () => {
         title={`${t('navigation.about')} - Portfolio`}
         description={t('about.hero.subtitle')}
         keywords="about, developer, skills, technologies, experience, biography"
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/about`}
       />
 
       <motion.div

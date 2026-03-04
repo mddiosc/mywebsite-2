@@ -23,7 +23,7 @@ import { DocumentHead } from '../../components'
  * @returns JSX element containing the complete contact page experience
  */
 const Contact = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [showSuccess, setShowSuccess] = useState(false)
 
   /**
@@ -52,6 +52,7 @@ const Contact = () => {
         title={`${t('navigation.contact')} - Portfolio`}
         description={t('contact.header.subtitle')}
         keywords="contact, email, message, communication, get in touch"
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/contact`}
       />
 
       <div className="pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24">

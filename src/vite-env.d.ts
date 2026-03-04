@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_GETFORM_ID?: string
   readonly VITE_RECAPTCHA_SITE_KEY?: string
   readonly VITE_LINKEDIN_USERNAME?: string
+  readonly VITE_SITE_URL: string
 }
 
 interface ImportMeta {

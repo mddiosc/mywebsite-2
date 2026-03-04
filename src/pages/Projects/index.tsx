@@ -20,7 +20,7 @@ import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
  * Displays a showcase of GitHub projects with statistics, topics, and grid layout
  */
 const ProjectsPage = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data: projects, isLoading, error, statistics } = useProjects()
 
   const hasProjects = !isLoading && !error && projects && projects.length > 0
@@ -33,6 +33,7 @@ const ProjectsPage = () => {
         title={`${t('navigation.projects')} - Portfolio`}
         description={t('pages.projects.description')}
         keywords="projects, github, repositories, code, development, open source"
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/projects`}
       />
 
       <motion.div
