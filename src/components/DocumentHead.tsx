@@ -12,12 +12,17 @@
  * - Cleaner component code
  */
 
+const SITE_URL = import.meta.env.VITE_SITE_URL
+const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.png`
+
 interface DocumentHeadProps {
   title: string
   description: string
   keywords?: string
   ogType?: string
   robots?: string
+  // Open Graph image (defaults to og-image.png)
+  ogImage?: string
   // Article-specific meta tags
   articlePublishedTime?: string
   articleAuthor?: string
@@ -38,6 +43,7 @@ export function DocumentHead({
   keywords,
   ogType = 'website',
   robots,
+  ogImage = DEFAULT_OG_IMAGE,
   articlePublishedTime,
   articleAuthor,
   articleTags,
@@ -57,6 +63,17 @@ export function DocumentHead({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={title} />
+      {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+
+      {/* Twitter / X Card meta tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
 
       {/* Article-specific meta tags */}
       {articlePublishedTime && (

@@ -59,6 +59,7 @@ export function BlogPost() {
         articlePublishedTime={post.meta.date}
         articleAuthor={post.meta.author}
         articleTags={post.meta.tags}
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/blog/${slug}`}
       />
 
       <motion.div

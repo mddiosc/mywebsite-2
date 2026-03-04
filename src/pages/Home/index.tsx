@@ -8,7 +8,7 @@ import { DocumentHead } from '../../components'
 import { fadeIn, smoothTransition } from '../../lib/animations'
 
 const Home = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   return (
     <>
@@ -16,6 +16,7 @@ const Home = () => {
         title={`${t('navigation.home')} - Portfolio`}
         description={t('components.hero.subtitle')}
         keywords="portfolio, developer, frontend, react, typescript"
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/`}
       />
 
       <motion.div

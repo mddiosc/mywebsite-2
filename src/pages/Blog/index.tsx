@@ -9,7 +9,7 @@ import { useBlogPosts } from '../../hooks/useBlog'
 import { fadeIn, smoothTransition } from '../../lib/animations'
 
 export default function Blog() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data: posts, isLoading: loading, error, refetch } = useBlogPosts()
 
   return (
@@ -18,6 +18,7 @@ export default function Blog() {
         title={`${t('blog.title')} - Portfolio`}
         description={t('blog.description')}
         ogType="website"
+        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/blog`}
       />
 
       <motion.div
