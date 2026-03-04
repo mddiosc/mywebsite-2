@@ -1,9 +1,31 @@
+import { readdirSync } from 'fs'
 import path from 'path'
+import { join } from 'path'
 
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
+import sitemap from 'vite-plugin-sitemap'
 import { configDefaults } from 'vitest/config'
+
+// Generate all routes for the sitemap (static + dynamic blog routes)
+function getSitemapRoutes(): string[] {
+  const langs = ['es', 'en']
+  const staticRoutes = langs.flatMap((lang) => [
+    `/${lang}/`,
+    `/${lang}/about`,
+    `/${lang}/projects`,
+    `/${lang}/contact`,
+    `/${lang}/blog`,
+  ])
+  const blogRoutes = langs.flatMap((lang) => {
+    const dir = join(__dirname, `src/content/blog/${lang}`)
+    return readdirSync(dir)
+      .filter((f) => f.endsWith('.md'))
+      .map((f) => `/${lang}/blog/${f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace('.md', '')}`)
+  })
+  return [...staticRoutes, ...blogRoutes]
+}
 
 // Plugin to replace Umami analytics placeholder in index.html with env variable
 function htmlEnvPlugin() {
@@ -17,7 +39,16 @@ function htmlEnvPlugin() {
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
-  plugins: [react(), tailwindcss(), htmlEnvPlugin()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    htmlEnvPlugin(),
+    sitemap({
+      hostname: process.env.VITE_SITE_URL ?? 'https://migueldedioscalles.com',
+      dynamicRoutes: getSitemapRoutes(),
+      outDir: 'dist',
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
