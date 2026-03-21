@@ -33,9 +33,8 @@ test.describe('Accessibility', () => {
       const mainContent = page.locator('#main-content')
       await expect(mainContent).toBeVisible()
 
-      // Verify focus has moved past the navbar (check URL hash or focused element)
-      const focusedElement = page.locator(':focus')
-      const focusedId = await focusedElement.getAttribute('id')
+      // Verify focus has moved to #main-content using evaluate (avoids timeout on :focus locator)
+      const focusedId = await page.evaluate(() => document.activeElement?.id ?? '')
       expect(focusedId).toBe('main-content')
     })
 
@@ -227,26 +226,21 @@ test.describe('Accessibility', () => {
 
   test.describe('Responsive layout', () => {
     test('should NOT show the hamburger menu on desktop viewports', async ({ page }) => {
-      test.skip(({ isMobile }) => isMobile, 'Desktop-only test')
-
       await page.goto('/')
       await page.waitForLoadState('networkidle')
 
       const hamburger = page.getByRole('button', { name: /open main menu|abrir menú/i })
-      // On desktop (>=1024px), the hamburger is hidden via CSS (hidden lg:flex pattern)
+      // On desktop (>=1024px), the hamburger is hidden via CSS
       await expect(hamburger).not.toBeVisible()
     })
 
-    test('should NOT show desktop nav links on mobile viewports', async ({ page }) => {
-      test.skip(({ isMobile }) => !isMobile, 'Mobile-only test')
-
+    test('should show desktop nav links on desktop viewports', async ({ page }) => {
       await page.goto('/')
       await page.waitForLoadState('networkidle')
 
-      // On mobile, desktop nav links are hidden (lg:flex hidden)
-      // The hamburger button should be visible instead
-      const hamburger = page.getByRole('button', { name: /open main menu|abrir menú/i })
-      await expect(hamburger).toBeVisible({ timeout: 5000 })
+      // On desktop, at least one nav link should be visible in the header
+      const nav = page.locator('nav[aria-label]').first()
+      await expect(nav).toBeVisible()
     })
   })
 

@@ -58,6 +58,11 @@ test.describe('Contact page', () => {
     test('should show email validation error for invalid email', async ({ page }) => {
       await page.getByRole('textbox', { name: /name|nombre/i }).fill('Test User')
       await page.getByRole('textbox', { name: /email|correo/i }).fill('not-an-email')
+      // Disable HTML5 native validation so RHF/Zod validation runs
+      await page.evaluate(() => {
+        const form = document.querySelector('form')
+        if (form) form.noValidate = true
+      })
       await page.getByRole('button', { name: /send|enviar/i }).click()
 
       const emailError = page.locator('#email-error')
@@ -147,6 +152,11 @@ test.describe('Contact page', () => {
       await page
         .getByRole('textbox', { name: /message|mensaje/i })
         .fill('Test message with sufficient length for the validation to pass.')
+      // Disable HTML5 native validation so RHF can control submit
+      await page.evaluate(() => {
+        const form = document.querySelector('form')
+        if (form) form.noValidate = true
+      })
 
       const submitButton = page.getByRole('button', { name: /send|enviar/i })
       await submitButton.click()

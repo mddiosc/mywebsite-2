@@ -141,7 +141,7 @@ export const test = base.extend<PortfolioFixtures>({
   enableDarkMode: async ({ page }, use) => {
     await use(async () => {
       await page.addInitScript(() => {
-        localStorage.setItem('theme', 'dark')
+        localStorage.setItem('theme-preference', 'dark')
       })
     })
   },
@@ -149,7 +149,7 @@ export const test = base.extend<PortfolioFixtures>({
   enableLightMode: async ({ page }, use) => {
     await use(async () => {
       await page.addInitScript(() => {
-        localStorage.setItem('theme', 'light')
+        localStorage.setItem('theme-preference', 'light')
       })
     })
   },

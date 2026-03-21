@@ -39,7 +39,7 @@ test.describe('About page', () => {
   test.describe('Technology grid', () => {
     test('should render the technologies section heading', async ({ page }) => {
       // The TechnologyGrid renders an h2 with the section title
-      const techHeading = page.getByRole('heading', { name: /skills|tecnolog/i })
+      const techHeading = page.getByRole('heading', { name: /skills|habilidades|tecnolog/i })
       await expect(techHeading.first()).toBeVisible({ timeout: 5000 })
     })
 

@@ -144,7 +144,9 @@ test.describe('Projects page', () => {
       await page.waitForLoadState('networkidle')
 
       // ProjectsEmptyState renders a message about no projects found
-      const emptyContent = page.getByText(/no projects|no hay proyectos|empty|vacío/i).first()
+      const emptyContent = page
+        .getByText(/no projects|no hay proyectos|no se encontraron|empty|vacío/i)
+        .first()
       await expect(emptyContent).toBeVisible({ timeout: 10000 })
     })
   })
