@@ -50,7 +50,11 @@ const Layout = () => {
     <div className="flex min-h-screen flex-col bg-white transition-colors duration-300 dark:bg-[#0A0A0F]">
       <SkipLinks />
       <Navbar />
-      <main id="main-content" className="relative isolate flex min-h-[60vh] w-full flex-1">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="relative isolate flex min-h-[60vh] w-full flex-1 focus:outline-none"
+      >
         <BackgroundDecoration position="-top-40 sm:-top-80" rotate />
         <div className="mx-auto w-full max-w-7xl grow px-4 py-4 sm:px-6 sm:py-6 md:px-8 lg:px-10">
           <Outlet />

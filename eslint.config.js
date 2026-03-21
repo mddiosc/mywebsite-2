@@ -12,7 +12,18 @@ import reactDom from 'eslint-plugin-react-dom'
 import vitestPlugin from '@vitest/eslint-plugin'
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage', '**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx', 'src/test/**/*'] },
+  {
+    ignores: [
+      'dist',
+      'coverage',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+      'src/test/**/*',
+      'e2e/**',
+    ],
+  },
   {
     extends: [
       js.configs.recommended,
