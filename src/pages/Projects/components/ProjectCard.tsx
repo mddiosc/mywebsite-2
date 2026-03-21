@@ -331,7 +331,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                           setIsDescriptionOpen(false)
                         }}
                         className="ml-2 shrink-0 rounded-full p-1 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                        aria-label="Cerrar"
+                        aria-label={t('accessibility.closeMenu')}
                       >
                         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                           <path
@@ -460,7 +460,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                                 setIsTopicsOpen(false)
                               }}
                               className="ml-2 shrink-0 rounded-full p-1 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-                              aria-label="Cerrar"
+                              aria-label={t('accessibility.closeMenu')}
                             >
                               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path

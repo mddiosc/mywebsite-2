@@ -288,6 +288,12 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           transition={{ ...commonTransition, delay: 0.5 }}
           className="mt-10"
         >
+          {/* Live region for screen readers to announce form state changes */}
+          <div aria-live="polite" aria-atomic="true" className="sr-only">
+            {isPending && t('contact.sending')}
+            {isError && t('contact.errorTitle')}
+          </div>
+
           {isError && (
             <div className="mb-4 rounded-xl bg-red-50 p-4 dark:bg-red-900/20">
               <div className="flex">
@@ -309,6 +315,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           <button
             type="submit"
             disabled={isPending}
+            aria-busy={isPending}
             className="group relative block w-full overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             {/* Shine effect */}
@@ -317,6 +324,14 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
               {isPending ? t('contact.sending') : t('contact.sendMessage')}
             </span>
           </button>
+
+          {/* reCAPTCHA v3 disclosure — required by Google Terms of Service */}
+          <p className="mt-4 text-center text-xs text-gray-400 dark:text-gray-500">
+            {t('contact.recaptchaDisclosure', {
+              defaultValue:
+                'This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.',
+            })}
+          </p>
         </motion.div>
       </motion.form>
     </>

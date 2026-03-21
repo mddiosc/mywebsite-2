@@ -160,7 +160,8 @@ export default function Navbar() {
         />
         <nav
           id="navigation"
-          className="relative"
+          tabIndex={-1}
+          className="relative focus:outline-none"
           aria-label={t('accessibility.mainNavigation', { defaultValue: 'Main navigation' })}
         >
           <div className="flex h-12 items-center justify-between">

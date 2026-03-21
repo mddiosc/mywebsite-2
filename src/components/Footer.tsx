@@ -27,17 +27,21 @@ export default function Footer() {
   const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME ?? ''
 
   const socialLinks = [
-    {
+    githubUsername && {
       name: 'GitHub',
       href: `https://github.com/${githubUsername}`,
       icon: GitHubIcon,
     },
-    {
+    linkedinUsername && {
       name: 'LinkedIn',
       href: `https://www.linkedin.com/in/${linkedinUsername}/`,
       icon: LinkedInIcon,
     },
-  ]
+  ].filter(Boolean) as {
+    name: string
+    href: string
+    icon: React.ComponentType<React.ComponentProps<'svg'>>
+  }[]
 
   const siteLinks = [
     { name: t('navigation.home'), href: `/${i18n.language}/` },
@@ -48,7 +52,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer id="footer" className="relative mt-auto">
+    <footer id="footer" tabIndex={-1} className="relative mt-auto focus:outline-none">
       {/* Gradient divider */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 

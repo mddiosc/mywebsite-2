@@ -43,9 +43,10 @@ function AnimatedTitle({ text }: { text: string }) {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      aria-label={text}
     >
       {words.map((word, wordIndex) => (
-        <span key={`word-${word}-${String(wordIndex)}`} className="inline-block">
+        <span key={`word-${word}-${String(wordIndex)}`} className="inline-block" aria-hidden="true">
           {word.split('').map((char, charIndex) => (
             <motion.span
               key={`char-${word}-${char}-${String(charIndex)}`}
