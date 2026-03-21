@@ -16,28 +16,35 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
-  projects: [
-    {
-      name: 'Desktop Chrome',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'Desktop Firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'Desktop Safari',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 14'] },
-    },
-  ],
+  projects: process.env.CI
+    ? [
+        {
+          name: 'Desktop Chrome',
+          use: { ...devices['Desktop Chrome'] },
+        },
+      ]
+    : [
+        {
+          name: 'Desktop Chrome',
+          use: { ...devices['Desktop Chrome'] },
+        },
+        {
+          name: 'Desktop Firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'Desktop Safari',
+          use: { ...devices['Desktop Safari'] },
+        },
+        {
+          name: 'Mobile Chrome',
+          use: { ...devices['Pixel 5'] },
+        },
+        {
+          name: 'Mobile Safari',
+          use: { ...devices['iPhone 14'] },
+        },
+      ],
   webServer: {
     command: process.env.CI ? 'pnpm preview' : 'pnpm dev',
     url: BASE_URL,
