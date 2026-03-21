@@ -44,6 +44,8 @@ jobs:
           VITE_GITHUB_USERNAME: ${{ vars.VITE_GITHUB_USERNAME }}
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
           VITE_LINKEDIN_USERNAME: ${{ vars.VITE_LINKEDIN_USERNAME }}
+          VITE_FORMSPREE_ID: ${{ secrets.VITE_FORMSPREE_ID }}
+          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -53,7 +55,7 @@ jobs:
           retention-days: 1
 
   e2e:
-    name: E2E tests (Playwright)
+    name: E2E tests (Playwright – Chromium)
     needs: quality
     runs-on: ubuntu-latest
 
@@ -86,6 +88,8 @@ jobs:
           VITE_GITHUB_USERNAME: ${{ vars.VITE_GITHUB_USERNAME }}
           VITE_GITHUB_TOKEN: ${{ secrets.VITE_GITHUB_TOKEN }}
           VITE_LINKEDIN_USERNAME: ${{ vars.VITE_LINKEDIN_USERNAME }}
+          VITE_FORMSPREE_ID: ${{ secrets.VITE_FORMSPREE_ID }}
+          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
