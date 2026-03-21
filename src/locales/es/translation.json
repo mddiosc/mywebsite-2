@@ -164,6 +164,7 @@
     "errorMessage": "Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo.",
     "connectLinkedIn": "Conectar en LinkedIn",
     "orUseForm": "o usa el formulario",
+    "recaptchaDisclosure": "Este sitio está protegido por reCAPTCHA y se aplican la Política de Privacidad y los Términos de Servicio de Google.",
     "name": "Nombre",
     "namePlaceholder": "Tu nombre completo",
     "emailPlaceholder": "tu.email@ejemplo.com",
@@ -254,6 +255,15 @@
     "languageSwitcher": "Selector de idioma",
     "switchToSpanish": "Cambiar a español",
     "switchToEnglish": "Cambiar a inglés",
+    "switchToLight": "Cambiar a modo claro",
+    "switchToDark": "Cambiar a modo oscuro",
     "required": "requerido"
+  },
+  "footer": {
+    "contact": "Contacto",
+    "copyright": "Todos los derechos reservados.",
+    "tagline": "Construyendo experiencias digitales",
+    "madeWith": "Hecho con",
+    "and": "y"
   }
 }

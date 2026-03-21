@@ -12,32 +12,32 @@
 
   /* Modern 2026 Color Palette */
   /* Primary - Electric Blue */
-  --color-primary: #0066FF;
-  --color-primary-light: #3385FF;
-  --color-primary-dark: #0052CC;
+  --color-primary: #0066ff;
+  --color-primary-light: #3385ff;
+  --color-primary-dark: #0052cc;
 
   /* Accent - Cyan/Teal */
-  --color-accent: #00D4AA;
-  --color-accent-light: #33DDBB;
-  --color-accent-dark: #00AA88;
+  --color-accent: #00d4aa;
+  --color-accent-light: #33ddbb;
+  --color-accent-dark: #00aa88;
 
   /* Highlight - Purple */
-  --color-highlight: #8B5CF6;
-  --color-highlight-light: #A78BFA;
-  --color-highlight-dark: #7C3AED;
+  --color-highlight: #8b5cf6;
+  --color-highlight-light: #a78bfa;
+  --color-highlight-dark: #7c3aed;
 
   /* Neutral colors for light mode */
-  --color-surface: #FFFFFF;
-  --color-surface-elevated: #F9FAFB;
-  --color-surface-card: #FFFFFF;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f9fafb;
+  --color-surface-card: #ffffff;
 
   /* Text colors for light mode */
   --color-text-primary: #111827;
-  --color-text-secondary: #4B5563;
-  --color-text-tertiary: #6B7280;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #6b7280;
 
   /* Border colors */
-  --color-border: #E5E7EB;
+  --color-border: #e5e7eb;
 
   --border-radius-xl: 1rem;
   --border-radius-2xl: 1.5rem;
@@ -49,31 +49,35 @@
 
 /* Dark mode CSS variables */
 .dark {
-  --color-surface: #0A0A0F;
+  color-scheme: dark;
+
+  --color-surface: #0a0a0f;
   --color-surface-elevated: #141419;
-  --color-surface-card: #1A1A22;
+  --color-surface-card: #1a1a22;
 
-  --color-text-primary: #F9FAFB;
-  --color-text-secondary: #D1D5DB;
-  --color-text-tertiary: #9CA3AF;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-tertiary: #9ca3af;
 
-  --color-border: #27272A;
+  --color-border: #27272a;
 
   --shadow-glow-primary: 0 0 30px rgba(0, 102, 255, 0.4);
   --shadow-glow-accent: 0 0 30px rgba(0, 212, 170, 0.4);
 
   /* Brighter colors for dark mode */
-  --color-primary: #4D9FFF;
-  --color-primary-light: #80BFFF;
-  --color-accent: #33E6C4;
-  --color-accent-light: #66EDDA;
-  --color-highlight: #A78BFA;
-  --color-highlight-light: #C4B5FD;
+  --color-primary: #4d9fff;
+  --color-primary-light: #80bfff;
+  --color-accent: #33e6c4;
+  --color-accent-light: #66edda;
+  --color-highlight: #a78bfa;
+  --color-highlight-light: #c4b5fd;
 }
 
 /* Smooth theme transition */
 html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* Base body styles for theme */
@@ -91,12 +95,18 @@ body {
   }
 
   /* Ensure text doesn't get too cramped */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     line-height: 1.2;
   }
 
   /* Optimize touch targets for mobile */
-  button, a[role="button"] {
+  button,
+  a[role='button'] {
     min-height: 44px;
     min-width: 44px;
   }

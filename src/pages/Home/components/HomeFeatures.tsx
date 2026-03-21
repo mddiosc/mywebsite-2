@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import { fadeIn, smoothTransition } from '@/lib/animations'
+import { ABOUT_CONSTANTS } from '@/pages/About/constants/constants'
 
 // Bento card component with glassmorphism and hover effects
 interface BentoCardProps {
@@ -116,11 +117,17 @@ const HomeFeatures = () => {
     icon: string
   }[]
 
-  // Stats data
+  // Stats data — values shared with About page via ABOUT_CONSTANTS
   const stats = [
-    { value: '5+', label: t('pages.about.stats.frontendYears') },
-    { value: '14', label: t('pages.about.stats.tourismExperience') },
-    { value: '20+', label: t('pages.about.stats.completedProjects') },
+    { value: ABOUT_CONSTANTS.STATS.FRONTEND_YEARS, label: t('pages.about.stats.frontendYears') },
+    {
+      value: ABOUT_CONSTANTS.STATS.TOURISM_EXPERIENCE,
+      label: t('pages.about.stats.tourismExperience'),
+    },
+    {
+      value: ABOUT_CONSTANTS.STATS.COMPLETED_PROJECTS,
+      label: t('pages.about.stats.completedProjects'),
+    },
   ]
 
   // Gradient variations for cards
@@ -176,7 +183,7 @@ const HomeFeatures = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="mx-auto mt-8 grid max-w-3xl grid-cols-3 gap-4 sm:mt-12 sm:gap-6">
+      <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-3 sm:gap-6">
         {stats.map((stat, index) => (
           <StatsCard key={stat.label} value={stat.value} label={stat.label} index={index} />
         ))}
