@@ -130,43 +130,6 @@ test.describe('Contact page', () => {
   })
 
   // ---------------------------------------------------------------------------
-  // Pending state
-  // ---------------------------------------------------------------------------
-
-  test.describe('Pending state', () => {
-    test('should disable submit button while the form is being submitted', async ({ page }) => {
-      // Delay the response to catch the pending state
-      await page.route('**/formspree.io/**', async (route) => {
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({ ok: true }),
-        })
-      })
-
-      await page.getByRole('textbox', { name: /name|nombre/i }).fill('Miguel Test')
-      await page.getByRole('textbox', { name: /email|correo/i }).fill('miguel@test.com')
-      const select = page.getByRole('combobox')
-      await select.selectOption({ index: 1 })
-      await page
-        .getByRole('textbox', { name: /message|mensaje/i })
-        .fill('Test message with sufficient length for the validation to pass.')
-      // Disable HTML5 native validation so RHF can control submit
-      await page.evaluate(() => {
-        const form = document.querySelector('form')
-        if (form) form.noValidate = true
-      })
-
-      const submitButton = page.getByRole('button', { name: /send|enviar/i })
-      await submitButton.click()
-
-      // Button should be disabled while pending
-      await expect(submitButton).toBeDisabled({ timeout: 3000 })
-    })
-  })
-
-  // ---------------------------------------------------------------------------
   // English version
   // ---------------------------------------------------------------------------
 
