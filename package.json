@@ -7,13 +7,12 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "build:vercel": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx}\"",
-    "docs:lint": "markdownlint docs/ *.md --ignore .vercelignore",
-    "docs:lint:fix": "markdownlint docs/ *.md --fix --ignore .vercelignore",
+    "docs:lint": "markdownlint docs/ *.md",
+    "docs:lint:fix": "markdownlint docs/ *.md --fix",
     "quality": "pnpm lint && pnpm docs:lint && pnpm format:check && pnpm type-check",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -105,8 +104,7 @@
       "esbuild"
     ],
     "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "@vercel/speed-insights"
+      "@tailwindcss/oxide"
     ],
     "overrides": {
       "mdast-util-to-hast": ">=13.2.1"
