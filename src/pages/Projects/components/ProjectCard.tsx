@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
 
 import {
   autoUpdate,
@@ -101,6 +102,8 @@ const languageBarColors: Record<string, string> = {
 interface ProjectCardProps {
   project: GitHubProject
   delay: number
+  hasCaseStudy?: boolean
+  caseStudySlug?: string
 }
 
 /**
@@ -109,9 +112,12 @@ interface ProjectCardProps {
  *
  * @param project - The GitHub project to display
  * @param delay - Animation delay for the card entrance
+ * @param hasCaseStudy - Whether this project has an associated case study
+ * @param caseStudySlug - The slug for navigating to the case study detail page
  */
-const ProjectCard = ({ project, delay }: ProjectCardProps) => {
+const ProjectCard = ({ project, delay, hasCaseStudy, caseStudySlug }: ProjectCardProps) => {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
   const [isTopicsOpen, setIsTopicsOpen] = useState(false)
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
   const [isDescriptionTruncated, setIsDescriptionTruncated] = useState(false)
@@ -227,7 +233,11 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   }
 
   const openProject = () => {
-    globalThis.open(project.html_url, '_blank', 'noopener,noreferrer')
+    if (hasCaseStudy && caseStudySlug) {
+      void navigate(`/${i18n.language}/projects/${caseStudySlug}`)
+    } else {
+      globalThis.open(project.html_url, '_blank', 'noopener,noreferrer')
+    }
   }
 
   const shouldIgnoreCardActivation = (target: EventTarget | null) => {

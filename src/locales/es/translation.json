@@ -1,7 +1,13 @@
 {
   "welcome": "Bienvenido",
   "common": {
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "backTo": "Volver a {{page}}",
+    "minutesRead": "{{minutes}} min de lectura",
+    "projects": "Proyectos",
+    "published": "Publicado",
+    "readingTime": "Tiempo de lectura",
+    "visit": "Visitar"
   },
   "navigation": {
     "home": "Inicio",
@@ -65,6 +71,14 @@
       "title": "Proyectos",
       "description": "Proyectos open source que demuestran mi trabajo con el ecosistema React.",
       "portfolio": "GitHub",
+      "caseStudyNotFound": "Estudio de caso no encontrado",
+      "role": "Rol",
+      "status": "Estado",
+      "projectDetails": "Detalles del Proyecto",
+      "repository": "Repositorio",
+      "mainLanguage": "Lenguaje Principal",
+      "stars": "Estrellas",
+      "demo": "Demo",
       "statistics": {
         "featuredProjects": "Destacados",
         "githubStars": "Stars",
@@ -238,10 +252,6 @@
       "title": "Error al cargar el blog",
       "retry": "Reintentar"
     }
-  },
-  "footer": {
-    "contact": "Contacto",
-    "copyright": "Todos los derechos reservados."
   },
   "accessibility": {
     "skipToMain": "Ir al contenido principal",

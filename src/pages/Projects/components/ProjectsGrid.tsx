@@ -29,10 +29,12 @@ const ProjectsGrid = ({ projects, isLoading, error }: ProjectsGridProps) => {
       {/* Projects loaded */}
       {!isLoading &&
         !error &&
-        projects.map((project, index) => (
+        projects.map((projectWithCaseStudy, index) => (
           <ProjectCard
-            key={project.id}
-            project={project}
+            key={projectWithCaseStudy.project.id}
+            project={projectWithCaseStudy.project}
+            hasCaseStudy={projectWithCaseStudy.hasCaseStudy}
+            caseStudySlug={projectWithCaseStudy.caseStudy?.slug}
             delay={
               PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_BASE +
               index * PROJECTS_CONSTANTS.ANIMATION_DELAYS.CARD_INCREMENT

@@ -10,9 +10,9 @@ import {
   TopicsDisplay,
 } from './components'
 import { PROJECTS_CONSTANTS, TRANSLATION_KEYS } from './constants'
-import { useProjects } from './hooks'
 
 import { DocumentHead } from '@/components'
+import { useProjectsWithCaseStudies } from '@/hooks/useProjectsWithCaseStudies'
 import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
 
 /**
@@ -21,7 +21,7 @@ import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
  */
 const ProjectsPage = () => {
   const { t, i18n } = useTranslation()
-  const { data: projects, isLoading, error, statistics } = useProjects()
+  const { data: projects, isLoading, error, statistics } = useProjectsWithCaseStudies()
 
   const hasProjects = !isLoading && !error && projects && projects.length > 0
   const hasTopics = hasProjects && statistics.allTopics.length > 0
