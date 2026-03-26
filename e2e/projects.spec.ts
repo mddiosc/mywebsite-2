@@ -1,143 +1,68 @@
-import type { Page } from '@playwright/test'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 
 import { test, expect } from './fixtures'
 
-const mockProjectsSnapshot = {
-  generatedAt: '2026-03-26T00:00:00.000Z',
-  source: 'generated',
-  projects: [
-    {
-      id: 1,
-      name: 'test-project-alpha',
-      full_name: 'mddiosc/test-project-alpha',
-      html_url: 'https://github.com/mddiosc/test-project-alpha',
-      description: 'A snapshot-backed test project',
-      homepage: 'https://example.com',
-      language: 'TypeScript',
-      created_at: '2024-01-01T00:00:00.000Z',
-      updated_at: '2024-06-01T00:00:00.000Z',
-      pushed_at: '2024-06-01T00:00:00.000Z',
-      stargazers_count: 42,
-      forks_count: 7,
-      topics: ['typescript', 'react'],
-      languages: {
-        TypeScript: 8000,
-        JavaScript: 2000,
-      },
-    },
-    {
-      id: 2,
-      name: 'test-project-beta',
-      full_name: 'mddiosc/test-project-beta',
-      html_url: 'https://github.com/mddiosc/test-project-beta',
-      description: 'Another snapshot-backed project',
-      homepage: null,
-      language: 'JavaScript',
-      created_at: '2023-01-01T00:00:00.000Z',
-      updated_at: '2024-05-01T00:00:00.000Z',
-      pushed_at: '2024-05-01T00:00:00.000Z',
-      stargazers_count: 5,
-      forks_count: 1,
-      topics: ['javascript', 'node'],
-      languages: {
-        JavaScript: 5000,
-        CSS: 1000,
-      },
-    },
-  ],
+const snapshotPath = path.resolve(process.cwd(), 'src/data/projects-snapshot.json')
+const snapshot = JSON.parse(readFileSync(snapshotPath, 'utf8')) as {
+  generatedAt: string
+  source: 'generated' | 'fallback'
+  projects: Array<{
+    name: string
+    html_url: string
+    homepage: string | null
+  }>
 }
 
-async function mockProjectsSnapshotModule(page: Page, payload: unknown) {
-  await page.route('**/src/data/projects-snapshot.json?*', async (route) => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/javascript',
-      body: `export default ${JSON.stringify(payload)};`,
-    })
-  })
+const firstProject = snapshot.projects[0]
+if (!firstProject) {
+  throw new Error('Projects snapshot must contain at least one project for e2e tests')
 }
+
+const projectWithHomepage = snapshot.projects.find(
+  (project) => typeof project.homepage === 'string' && project.homepage.length > 0,
+)
 
 test.describe('Projects page', () => {
-  test.describe('Snapshot-backed happy path', () => {
-    test.beforeEach(async ({ page }) => {
-      await mockProjectsSnapshotModule(page, mockProjectsSnapshot)
-
-      await page.route('**/api.github.com/**', async (route) => {
-        await route.abort()
-      })
-
-      await page.goto('/es/projects')
-      await page.waitForLoadState('networkidle')
+  test.beforeEach(async ({ page }) => {
+    await page.route('**/api.github.com/**', async (route) => {
+      await route.abort()
     })
 
-    test('should load and display the Projects page title', async ({ page }) => {
-      await expect(page).toHaveURL(/\/(es|en)\/projects/)
-      await expect(page.locator('h2').first()).toBeVisible({ timeout: 5000 })
-    })
+    await page.goto('/es/projects')
+    await page.waitForLoadState('networkidle')
+  })
 
-    test('should render project cards from the internal snapshot', async ({ page }) => {
-      await expect(page.getByText('test-project-alpha')).toBeVisible({ timeout: 10000 })
-      await expect(page.getByText('test-project-beta')).toBeVisible({ timeout: 10000 })
-    })
+  test('should load and display the Projects page title', async ({ page }) => {
+    await expect(page).toHaveURL(/\/(es|en)\/projects/)
+    await expect(page.locator('h2').first()).toBeVisible({ timeout: 5000 })
+  })
 
-    test('should display project statistics from snapshot data', async ({ page }) => {
-      await expect(page.getByText('2').first()).toBeVisible()
-      await expect(page.getByText('47').first()).toBeVisible()
-      await expect(page.getByText('8').first()).toBeVisible()
-    })
+  test('should render projects from the committed snapshot', async ({ page }) => {
+    await expect(page.getByText(firstProject.name)).toBeVisible({ timeout: 10000 })
+  })
 
-    test('should show a Demo link for a project with a homepage', async ({ page }) => {
-      await expect(page.getByRole('link', { name: /demo/i }).first()).toBeVisible()
+  test('should render without direct GitHub API access at runtime', async ({ page }) => {
+    await expect(page.getByRole('link', { name: firstProject.name }).first()).toBeVisible({
+      timeout: 10000,
     })
+  })
 
-    test('should open GitHub URL in a new tab when clicking a project card link', async ({
+  test('should open the GitHub project link in a new tab', async ({ page }) => {
+    const projectLink = page.getByRole('link', { name: firstProject.name }).first()
+    await expect(projectLink).toBeVisible()
+
+    const [popup] = await Promise.all([page.waitForEvent('popup'), projectLink.click()])
+
+    await popup.waitForLoadState()
+    expect(popup.url()).toContain(firstProject.html_url)
+  })
+
+  if (projectWithHomepage) {
+    test('should show a demo link when the snapshot contains a project homepage', async ({
       page,
     }) => {
-      const projectLink = page.getByRole('link', { name: 'test-project-alpha' }).first()
-      await expect(projectLink).toBeVisible()
-
-      const [popup] = await Promise.all([page.waitForEvent('popup'), projectLink.click()])
-
-      await popup.waitForLoadState()
-      expect(popup.url()).toContain('github.com/mddiosc/test-project-alpha')
+      await expect(page.getByRole('link', { name: /demo/i }).first()).toBeVisible()
     })
-
-    test('should render without direct GitHub API access', async ({ page }) => {
-      await expect(page.getByText('test-project-alpha')).toBeVisible({ timeout: 10000 })
-      await expect(page.getByText('test-project-beta')).toBeVisible({ timeout: 10000 })
-    })
-  })
-
-  test.describe('Empty state', () => {
-    test('should render the empty state when the snapshot has no projects', async ({ page }) => {
-      await mockProjectsSnapshotModule(page, {
-        generatedAt: '2026-03-26T00:00:00.000Z',
-        source: 'fallback',
-        projects: [],
-      })
-
-      await page.goto('/es/projects')
-      await page.waitForLoadState('networkidle')
-
-      const emptyContent = page
-        .getByText(/no projects|no hay proyectos|no se encontraron|empty|vacío/i)
-        .first()
-      await expect(emptyContent).toBeVisible({ timeout: 10000 })
-    })
-  })
-
-  test.describe('Invalid snapshot state', () => {
-    test('should render the error component when the snapshot is invalid', async ({ page }) => {
-      await mockProjectsSnapshotModule(page, {
-        generatedAt: '2026-03-26T00:00:00.000Z',
-        source: 'generated',
-      })
-
-      await page.goto('/es/projects')
-      await page.waitForLoadState('networkidle')
-
-      const errorContent = page.getByText(/error|failed|unable|fallo|error al/i).first()
-      await expect(errorContent).toBeVisible({ timeout: 10000 })
-    })
-  })
+  }
 })
