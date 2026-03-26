@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@9.15.3",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "pnpm run generate:projects-snapshot && vite --host",
     "generate:projects-snapshot": "node ./scripts/generate-projects-snapshot.mjs",
     "build": "pnpm run generate:projects-snapshot && vite build",
     "lint": "eslint .",

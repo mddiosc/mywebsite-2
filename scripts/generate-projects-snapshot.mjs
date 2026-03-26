@@ -2,11 +2,15 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { loadEnv } from 'vite'
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const repoRoot = path.resolve(__dirname, '..')
 const snapshotPath = path.join(repoRoot, 'src/data/projects-snapshot.json')
 const excludedProjectIds = new Set([334629076])
+const mode = process.env.NODE_ENV ?? 'development'
+const env = loadEnv(mode, repoRoot, '')
 
 async function readExistingSnapshot() {
   try {
@@ -59,8 +63,8 @@ function normalizeProject(project) {
 }
 
 async function generateSnapshot() {
-  const githubToken = process.env.VITE_GITHUB_TOKEN ?? ''
-  const githubUsername = process.env.VITE_GITHUB_USERNAME ?? ''
+  const githubToken = process.env.VITE_GITHUB_TOKEN ?? env.VITE_GITHUB_TOKEN ?? ''
+  const githubUsername = process.env.VITE_GITHUB_USERNAME ?? env.VITE_GITHUB_USERNAME ?? ''
   const existingSnapshot = await readExistingSnapshot()
 
   if (!githubUsername) {
