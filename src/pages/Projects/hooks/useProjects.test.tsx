@@ -1,25 +1,25 @@
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type { AxiosResponse } from 'axios'
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook, waitFor } from '@testing-library/react'
 
-import type { GitHubProject } from '@/types'
+import type { GitHubProject, ProjectsSnapshot } from '@/types'
 
-// Mock axios before importing
-vi.mock('@/lib/axios', () => ({
-  axiosInstance: {
-    get: vi.fn(),
+let mockSnapshot: ProjectsSnapshot = {
+  generatedAt: '2026-03-26T00:00:00.000Z',
+  source: 'generated',
+  projects: [],
+}
+
+vi.mock('@/data/projects-snapshot.json', () => ({
+  get default() {
+    return mockSnapshot
   },
 }))
 
-// Import after mock
-import { axiosInstance } from '@/lib/axios'
 import { useProjects } from './useProjects'
-
-const mockGet = vi.mocked(axiosInstance).get as ReturnType<typeof vi.fn>
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -249,8 +249,12 @@ const mockProject2: GitHubProject = {
 
 describe('useProjects', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
     localStorage.clear()
+    mockSnapshot = {
+      generatedAt: '2026-03-26T00:00:00.000Z',
+      source: 'generated',
+      projects: [],
+    }
   })
 
   afterEach(() => {
@@ -258,16 +262,7 @@ describe('useProjects', () => {
   })
 
   it('should fetch projects successfully', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockResolvedValueOnce({
-      data: [mockProject1],
-    } as AxiosResponse)
-
-    mockGet.mockResolvedValueOnce({
-      data: mockProject1.languages,
-    } as AxiosResponse)
+    mockSnapshot.projects = [mockProject1]
 
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
@@ -293,25 +288,10 @@ describe('useProjects', () => {
     expect(project?.forks_count).toBe(mockProject1.forks_count)
 
     expect(result.current.error).toBeNull()
-
-    expect(mockGet).toHaveBeenCalledTimes(2)
   })
 
   it('should fetch multiple projects and calculate statistics correctly', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockResolvedValueOnce({
-      data: [mockProject1, mockProject2],
-    } as AxiosResponse)
-
-    mockGet.mockResolvedValueOnce({
-      data: mockProject1.languages,
-    } as AxiosResponse)
-
-    mockGet.mockResolvedValueOnce({
-      data: mockProject2.languages,
-    } as AxiosResponse)
+    mockSnapshot.projects = [mockProject1, mockProject2]
 
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
@@ -326,86 +306,9 @@ describe('useProjects', () => {
     expect(result.current.data).toHaveLength(2)
     expect(result.current.data?.[0]?.languages).toBeDefined()
     expect(result.current.data?.[1]?.languages).toBeDefined()
-
-    expect(mockGet).toHaveBeenCalledTimes(3)
-  })
-
-  it('should handle API errors', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockRejectedValueOnce(new Error('API Error'))
-
-    const wrapper = createWrapper()
-    const { result } = renderHook(() => useProjects(), { wrapper })
-
-    await waitFor(
-      () => {
-        expect(result.current.isLoading).toBe(false)
-      },
-      { timeout: 100 },
-    )
-
-    expect(result.current.data).toBeUndefined()
-    expect(result.current.error).toBeTruthy()
-  })
-
-  it('should use GitHub token from environment when available', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', 'valid-token')
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
-
-    const wrapper = createWrapper()
-    const { result } = renderHook(() => useProjects(), { wrapper })
-
-    await waitFor(
-      () => {
-        expect(result.current.isLoading).toBe(false)
-      },
-      { timeout: 100 },
-    )
-
-    expect(mockGet).toHaveBeenCalledWith('https://api.github.com/users/testuser/repos', {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-        Authorization: 'token valid-token',
-      },
-    })
-  })
-
-  it('should work without authentication when no token is available', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', undefined)
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
-
-    const wrapper = createWrapper()
-    const { result } = renderHook(() => useProjects(), { wrapper })
-
-    await waitFor(
-      () => {
-        expect(result.current.isLoading).toBe(false)
-      },
-      { timeout: 100 },
-    )
-
-    const callArgs = mockGet.mock.calls[0]
-    expect(callArgs?.[1]).toBeDefined()
-    const config = callArgs?.[1] as { headers: { Accept: string; Authorization?: string } }
-    expect(config).toEqual({
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    })
   })
 
   it('should handle empty repository list', async () => {
-    vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
-    vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-
-    mockGet.mockResolvedValueOnce({ data: [] } as AxiosResponse)
-
     const wrapper = createWrapper()
     const { result } = renderHook(() => useProjects(), { wrapper })
 
@@ -418,5 +321,45 @@ describe('useProjects', () => {
 
     expect(result.current.data).toEqual([])
     expect(result.current.error).toBeNull()
+  })
+
+  it('should calculate statistics from snapshot projects', async () => {
+    mockSnapshot.projects = [mockProject1, mockProject2]
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
+
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
+
+    expect(result.current.statistics.totalProjects).toBe(2)
+    expect(result.current.statistics.totalStars).toBe(15)
+    expect(result.current.statistics.totalForks).toBe(3)
+    expect(result.current.statistics.projectsWithDemos).toBe(1)
+    expect(result.current.statistics.uniqueTopics).toBe(4)
+  })
+
+  it('should surface an error when the snapshot shape is invalid', async () => {
+    mockSnapshot = {
+      generatedAt: '2026-03-26T00:00:00.000Z',
+      source: 'generated',
+      projects: undefined as unknown as GitHubProject[],
+    }
+
+    const wrapper = createWrapper()
+    const { result } = renderHook(() => useProjects(), { wrapper })
+
+    await waitFor(
+      () => {
+        expect(result.current.isLoading).toBe(false)
+      },
+      { timeout: 100 },
+    )
+
+    expect(result.current.error).toBeInstanceOf(Error)
+    expect(result.current.data).toBeUndefined()
   })
 })

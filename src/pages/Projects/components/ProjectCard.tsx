@@ -116,6 +116,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false)
   const [isDescriptionTruncated, setIsDescriptionTruncated] = useState(false)
   const descriptionTextRef = useRef<HTMLParagraphElement>(null)
+  const isTouchDevice = 'ontouchstart' in globalThis
 
   const {
     refs: topicsRefs,
@@ -140,14 +141,14 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
   })
 
   const topicsHover = useHover(topicsContext, {
-    enabled: !('ontouchstart' in window), // Disable hover on touch devices
+    enabled: !isTouchDevice, // Disable hover on touch devices
   })
   const topicsFocus = useFocus(topicsContext)
   const topicsDismiss = useDismiss(topicsContext)
   const topicsRole = useRole(topicsContext, { role: 'tooltip' })
 
   const descriptionHover = useHover(descriptionContext, {
-    enabled: !('ontouchstart' in window), // Disable hover on touch devices
+    enabled: !isTouchDevice, // Disable hover on touch devices
   })
   const descriptionFocus = useFocus(descriptionContext)
   const descriptionDismiss = useDismiss(descriptionContext)
@@ -211,7 +212,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
 
   // Handle mobile tap for description tooltip
   const handleDescriptionClick = (e: React.MouseEvent) => {
-    if ('ontouchstart' in window && isDescriptionTruncated) {
+    if (isTouchDevice && isDescriptionTruncated) {
       e.stopPropagation()
       setIsDescriptionOpen(!isDescriptionOpen)
     }
@@ -219,9 +220,43 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
 
   // Handle mobile tap for topics tooltip
   const handleTopicsClick = (e: React.MouseEvent) => {
-    if ('ontouchstart' in window) {
+    if (isTouchDevice) {
       e.stopPropagation()
       setIsTopicsOpen(!isTopicsOpen)
+    }
+  }
+
+  const openProject = () => {
+    globalThis.open(project.html_url, '_blank', 'noopener,noreferrer')
+  }
+
+  const shouldIgnoreCardActivation = (target: EventTarget | null) => {
+    if (!(target instanceof HTMLElement)) {
+      return false
+    }
+
+    const hasHelperCursor =
+      target.classList.contains('cursor-help') || Boolean(target.closest('.cursor-help'))
+
+    const interactiveTarget = target.closest('a') ?? target.closest('button')
+
+    return Boolean(interactiveTarget ?? hasHelperCursor)
+  }
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!shouldIgnoreCardActivation(e.target)) {
+      openProject()
+    }
+  }
+
+  const handleCardKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (shouldIgnoreCardActivation(e.target)) {
+      return
+    }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      openProject()
     }
   }
 
@@ -231,15 +266,14 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] as const }}
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      onClick={(e) => {
-        // Only navigate to GitHub if not clicking on an interactive element
-        const target = e.target as HTMLElement
-        const hasHelperCursor =
-          target.classList.contains('cursor-help') || target.closest('.cursor-help')
-        if (!target.closest('a') && !target.closest('button') && !hasHelperCursor) {
-          window.open(project.html_url, '_blank')
-        }
-      }}
+      role="link"
+      tabIndex={0}
+      aria-label={t('pages.projects.card.openProjectAria', {
+        defaultValue: `Open ${project.name} on GitHub`,
+        projectName: project.name,
+      })}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
       className="group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200/50 bg-white/80 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 dark:border-gray-700/50 dark:bg-gray-900/80 dark:hover:border-primary/40 dark:hover:shadow-primary/20"
     >
       {/* Animated glow effect on hover */}
@@ -292,19 +326,31 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
         {/* Description section - Fixed height */}
         <div className="mb-4 h-24">
           <div className="relative h-full">
-            <div
-              ref={isDescriptionTruncated ? descriptionRefs.setReference : undefined}
-              {...(isDescriptionTruncated ? getDescriptionReferenceProps() : {})}
-              className={`h-full overflow-hidden ${isDescriptionTruncated ? 'cursor-help' : ''}`}
-              onClick={handleDescriptionClick}
-            >
-              <p
-                ref={descriptionTextRef}
-                className="line-clamp-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300"
+            {isDescriptionTruncated ? (
+              <button
+                type="button"
+                ref={descriptionRefs.setReference}
+                {...getDescriptionReferenceProps()}
+                className="h-full w-full cursor-help overflow-hidden text-left"
+                onClick={handleDescriptionClick}
               >
-                {description}
-              </p>
-            </div>
+                <p
+                  ref={descriptionTextRef}
+                  className="line-clamp-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300"
+                >
+                  {description}
+                </p>
+              </button>
+            ) : (
+              <div className="h-full overflow-hidden">
+                <p
+                  ref={descriptionTextRef}
+                  className="line-clamp-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300"
+                >
+                  {description}
+                </p>
+              </div>
+            )}
             {isDescriptionOpen && isDescriptionTruncated && (
               <FloatingPortal>
                 <div
@@ -323,7 +369,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                       </p>
                     </div>
                     {/* Close button for mobile */}
-                    {'ontouchstart' in window && (
+                    {isTouchDevice && (
                       <button
                         type="button"
                         onClick={(e) => {
@@ -399,7 +445,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                 className={`h-2 w-2 rounded-full ${project.language ? (languageBarColors[project.language] ?? 'bg-gray-400') : 'bg-gray-400'}`}
               />
               <span className={`text-xs font-medium ${langColors?.text ?? 'text-gray-600'}`}>
-                {project.language || 'No language'}
+                {project.language ?? 'No language'}
               </span>
             </div>
           )}
@@ -419,14 +465,15 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
               ))}
               {project.topics.length > 4 && (
                 <>
-                  <span
+                  <button
+                    type="button"
                     ref={topicsRefs.setReference}
                     {...getTopicsReferenceProps()}
                     onClick={handleTopicsClick}
                     className="inline-flex cursor-help items-center rounded-lg bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent ring-1 ring-accent/20 transition-colors hover:bg-accent/20 dark:bg-accent/20 dark:text-accent dark:ring-accent/30"
                   >
                     +{project.topics.length - 4} {t('pages.projects.card.moreTopics')}
-                  </span>
+                  </button>
                   {isTopicsOpen && (
                     <FloatingPortal>
                       <div
@@ -452,7 +499,7 @@ const ProjectCard = ({ project, delay }: ProjectCardProps) => {
                             </div>
                           </div>
                           {/* Close button for mobile */}
-                          {'ontouchstart' in window && (
+                          {isTouchDevice && (
                             <button
                               type="button"
                               onClick={(e) => {
