@@ -2,7 +2,7 @@
  * Types specific to the Projects page
  */
 
-import { GitHubProject } from '@/types'
+import { ProjectWithCaseStudy } from '@/types/projectCaseStudy'
 
 export interface StatisticItemProps {
   value: number
@@ -17,7 +17,7 @@ export interface TopicsDisplayProps {
 }
 
 export interface ProjectsGridProps {
-  projects: GitHubProject[]
+  projects: ProjectWithCaseStudy[]
   isLoading: boolean
   error: Error | null
 }

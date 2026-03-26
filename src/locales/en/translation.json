@@ -1,7 +1,13 @@
 {
   "welcome": "Welcome",
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "backTo": "Back to {{page}}",
+    "minutesRead": "{{minutes}} min read",
+    "projects": "Projects",
+    "published": "Published",
+    "readingTime": "Reading time",
+    "visit": "Visit"
   },
   "navigation": {
     "home": "Home",
@@ -65,6 +71,14 @@
       "title": "Projects",
       "description": "Open source projects showcasing my work with the React ecosystem.",
       "portfolio": "GitHub",
+      "caseStudyNotFound": "Case study not found",
+      "role": "Role",
+      "status": "Status",
+      "projectDetails": "Project Details",
+      "repository": "Repository",
+      "mainLanguage": "Main Language",
+      "stars": "Stars",
+      "demo": "Demo",
       "statistics": {
         "featuredProjects": "Featured",
         "githubStars": "Stars",
@@ -238,10 +252,6 @@
       "title": "Error loading blog",
       "retry": "Retry"
     }
-  },
-  "footer": {
-    "contact": "Contact",
-    "copyright": "All rights reserved."
   },
   "accessibility": {
     "skipToMain": "Skip to main content",

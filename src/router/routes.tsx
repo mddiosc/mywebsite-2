@@ -15,6 +15,10 @@ const BlogPost = lazy(async () => {
   const module = await import('../pages/Blog/components/BlogPost')
   return { default: module.BlogPost }
 })
+const ProjectCaseStudy = lazy(async () => {
+  const module = await import('../pages/Projects/components/ProjectCaseStudy')
+  return { default: module.ProjectCaseStudy }
+})
 
 // Loading fallback component
 const PageLoader = () => {
@@ -63,6 +67,7 @@ export function AppRoutes() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="projects" element={<Projects />} />
+            <Route path="projects/:slug" element={<ProjectCaseStudy />} />
             <Route path="contact" element={<Contact />} />
             <Route path="blog" element={<Blog />} />
             <Route path="blog/:slug" element={<BlogPost />} />

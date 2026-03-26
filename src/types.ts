@@ -35,3 +35,12 @@ export interface ProjectsSnapshot {
   source: 'generated' | 'fallback'
   projects: GitHubProject[]
 }
+
+// Re-export case study types for convenience
+export type {
+  ProjectCaseStudy,
+  ProjectCaseStudyMeta,
+  ProjectWithCaseStudy,
+  CaseStudyLanguage,
+  ProjectCaseStudiesSnapshot,
+} from './types/projectCaseStudy'
