@@ -3,3 +3,6 @@
 .gemini/**
 .github/prompts/**
 .github/skills/**
+.opencode/**
+.opencode/command/**
+.opencode/skills/**
