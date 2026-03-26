@@ -1,153 +1,143 @@
-import {
-  test,
-  expect,
-  mockGitHubApiSuccess,
-  mockGitHubApiError,
-  mockGitHubApiEmpty,
-} from './fixtures'
+import type { Page } from '@playwright/test'
 
-/**
- * Projects page tests
- * Covers: happy path (real or mocked API), error state, empty state,
- * project card rendering, external link popup.
- */
+import { test, expect } from './fixtures'
+
+const mockProjectsSnapshot = {
+  generatedAt: '2026-03-26T00:00:00.000Z',
+  source: 'generated',
+  projects: [
+    {
+      id: 1,
+      name: 'test-project-alpha',
+      full_name: 'mddiosc/test-project-alpha',
+      html_url: 'https://github.com/mddiosc/test-project-alpha',
+      description: 'A snapshot-backed test project',
+      homepage: 'https://example.com',
+      language: 'TypeScript',
+      created_at: '2024-01-01T00:00:00.000Z',
+      updated_at: '2024-06-01T00:00:00.000Z',
+      pushed_at: '2024-06-01T00:00:00.000Z',
+      stargazers_count: 42,
+      forks_count: 7,
+      topics: ['typescript', 'react'],
+      languages: {
+        TypeScript: 8000,
+        JavaScript: 2000,
+      },
+    },
+    {
+      id: 2,
+      name: 'test-project-beta',
+      full_name: 'mddiosc/test-project-beta',
+      html_url: 'https://github.com/mddiosc/test-project-beta',
+      description: 'Another snapshot-backed project',
+      homepage: null,
+      language: 'JavaScript',
+      created_at: '2023-01-01T00:00:00.000Z',
+      updated_at: '2024-05-01T00:00:00.000Z',
+      pushed_at: '2024-05-01T00:00:00.000Z',
+      stargazers_count: 5,
+      forks_count: 1,
+      topics: ['javascript', 'node'],
+      languages: {
+        JavaScript: 5000,
+        CSS: 1000,
+      },
+    },
+  ],
+}
+
+async function mockProjectsSnapshotModule(page: Page, payload: unknown) {
+  await page.route('**/src/data/projects-snapshot.json?*', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/javascript',
+      body: `export default ${JSON.stringify(payload)};`,
+    })
+  })
+}
+
 test.describe('Projects page', () => {
-  // ---------------------------------------------------------------------------
-  // Happy path — mocked API returning 2 projects
-  // ---------------------------------------------------------------------------
-
-  test.describe('Happy path (mocked API)', () => {
+  test.describe('Snapshot-backed happy path', () => {
     test.beforeEach(async ({ page }) => {
-      await mockGitHubApiSuccess(page)
+      await mockProjectsSnapshotModule(page, mockProjectsSnapshot)
+
+      await page.route('**/api.github.com/**', async (route) => {
+        await route.abort()
+      })
+
       await page.goto('/es/projects')
       await page.waitForLoadState('networkidle')
     })
 
     test('should load and display the Projects page title', async ({ page }) => {
       await expect(page).toHaveURL(/\/(es|en)\/projects/)
-
-      // The page has a section heading (translated from pages.projects.portfolio)
-      const heading = page.locator('h1, h2').first()
-      await expect(heading).toBeVisible({ timeout: 5000 })
+      await expect(page.locator('h2').first()).toBeVisible({ timeout: 5000 })
     })
 
-    test('should render project cards after loading', async ({ page }) => {
-      // Wait for skeleton to disappear and cards to appear
-      // Project cards have an <a> with the project name inside an h3
-      await expect(page.locator('h3').first()).toBeVisible({ timeout: 10000 })
-
-      const cards = page.locator('h3')
-      const count = await cards.count()
-      expect(count).toBeGreaterThanOrEqual(1)
+    test('should render project cards from the internal snapshot', async ({ page }) => {
+      await expect(page.getByText('test-project-alpha')).toBeVisible({ timeout: 10000 })
+      await expect(page.getByText('test-project-beta')).toBeVisible({ timeout: 10000 })
     })
 
-    test('should display project name from mock data', async ({ page }) => {
-      // Our mock project is named "test-project-alpha"
-      const projectName = page.getByText('test-project-alpha')
-      await expect(projectName).toBeVisible({ timeout: 10000 })
-    })
-
-    test('should display star and fork counts on a card', async ({ page }) => {
-      // Star count "42" and fork count "7" come from the mock
-      await expect(page.locator('h3').first()).toBeVisible({ timeout: 10000 })
-      const starCount = page.getByText('42').first()
-      await expect(starCount).toBeVisible()
+    test('should display project statistics from snapshot data', async ({ page }) => {
+      await expect(page.getByText('2').first()).toBeVisible()
+      await expect(page.getByText('47').first()).toBeVisible()
+      await expect(page.getByText('8').first()).toBeVisible()
     })
 
     test('should show a Demo link for a project with a homepage', async ({ page }) => {
-      await expect(page.locator('h3').first()).toBeVisible({ timeout: 10000 })
-      // The first mock project has homepage: 'https://example.com'
-      const demoLink = page.getByRole('link', { name: /demo/i }).first()
-      await expect(demoLink).toBeVisible()
+      await expect(page.getByRole('link', { name: /demo/i }).first()).toBeVisible()
     })
 
     test('should open GitHub URL in a new tab when clicking a project card link', async ({
       page,
     }) => {
-      await expect(page.locator('h3').first()).toBeVisible({ timeout: 10000 })
-
-      // The project name is a direct <a href="...github..."> link
       const projectLink = page.getByRole('link', { name: 'test-project-alpha' }).first()
       await expect(projectLink).toBeVisible()
 
       const [popup] = await Promise.all([page.waitForEvent('popup'), projectLink.click()])
 
       await popup.waitForLoadState()
-      expect(popup.url()).toContain('github.com')
+      expect(popup.url()).toContain('github.com/mddiosc/test-project-alpha')
     })
 
-    test('should display project statistics section', async ({ page }) => {
-      await expect(page.locator('h3').first()).toBeVisible({ timeout: 10000 })
-      // Statistics section renders total projects, stars, etc.
-      const stats = page.getByText(/\d+/).first()
-      await expect(stats).toBeVisible()
+    test('should render without direct GitHub API access', async ({ page }) => {
+      await expect(page.getByText('test-project-alpha')).toBeVisible({ timeout: 10000 })
+      await expect(page.getByText('test-project-beta')).toBeVisible({ timeout: 10000 })
     })
   })
 
-  // ---------------------------------------------------------------------------
-  // Skeleton loading state
-  // ---------------------------------------------------------------------------
-
-  test.describe('Skeleton loading state', () => {
-    test('should show skeleton cards while loading', async ({ page }) => {
-      // Delay the API response to catch the skeleton state
-      await page.route('**/api.github.com/users/*/repos**', async (route) => {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        await route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([]),
-        })
+  test.describe('Empty state', () => {
+    test('should render the empty state when the snapshot has no projects', async ({ page }) => {
+      await mockProjectsSnapshotModule(page, {
+        generatedAt: '2026-03-26T00:00:00.000Z',
+        source: 'fallback',
+        projects: [],
       })
 
       await page.goto('/es/projects')
-
-      // Skeletons use animate-pulse — check they appear before data loads
-      const skeleton = page.locator('.animate-pulse').first()
-      await expect(skeleton).toBeVisible({ timeout: 3000 })
-    })
-  })
-
-  // ---------------------------------------------------------------------------
-  // Error state — API returns 500
-  // ---------------------------------------------------------------------------
-
-  test.describe('Error state (API 500)', () => {
-    test('should render the error component when the API fails', async ({ page }) => {
-      await mockGitHubApiError(page)
-      await page.goto('/es/projects')
       await page.waitForLoadState('networkidle')
 
-      // ProjectsError renders a visible error message
-      const errorContent = page.getByText(/error|failed|unable|fallo|error al/i).first()
-      await expect(errorContent).toBeVisible({ timeout: 10000 })
-    })
-
-    test('should render the error component in English', async ({ page }) => {
-      await mockGitHubApiError(page)
-      await page.goto('/en/projects')
-      await page.waitForLoadState('networkidle')
-
-      const errorContent = page.getByText(/error|failed|unable/i).first()
-      await expect(errorContent).toBeVisible({ timeout: 10000 })
-    })
-  })
-
-  // ---------------------------------------------------------------------------
-  // Empty state — API returns []
-  // ---------------------------------------------------------------------------
-
-  test.describe('Empty state (API returns empty array)', () => {
-    test('should render the empty state component when there are no projects', async ({ page }) => {
-      await mockGitHubApiEmpty(page)
-      await page.goto('/es/projects')
-      await page.waitForLoadState('networkidle')
-
-      // ProjectsEmptyState renders a message about no projects found
       const emptyContent = page
         .getByText(/no projects|no hay proyectos|no se encontraron|empty|vacío/i)
         .first()
       await expect(emptyContent).toBeVisible({ timeout: 10000 })
+    })
+  })
+
+  test.describe('Invalid snapshot state', () => {
+    test('should render the error component when the snapshot is invalid', async ({ page }) => {
+      await mockProjectsSnapshotModule(page, {
+        generatedAt: '2026-03-26T00:00:00.000Z',
+        source: 'generated',
+      })
+
+      await page.goto('/es/projects')
+      await page.waitForLoadState('networkidle')
+
+      const errorContent = page.getByText(/error|failed|unable|fallo|error al/i).first()
+      await expect(errorContent).toBeVisible({ timeout: 10000 })
     })
   })
 })

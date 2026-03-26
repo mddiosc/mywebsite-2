@@ -6,7 +6,8 @@
   "packageManager": "pnpm@9.15.3",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "generate:projects-snapshot": "node ./scripts/generate-projects-snapshot.mjs",
+    "build": "pnpm run generate:projects-snapshot && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",

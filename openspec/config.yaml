@@ -1,0 +1,90 @@
+schema: spec-driven
+
+context: |
+  Product: bilingual personal portfolio and technical blog for Miguel Ángel de Dios.
+  Goal: present professional profile, showcase projects, publish technical content, and convert visitors into qualified contact opportunities.
+
+  Current user-facing areas:
+  - Home: positioning, hero, and featured content
+  - About: profile, experience, and technology overview
+  - Projects: GitHub-backed portfolio showcase
+  - Blog: localized markdown-driven technical articles
+  - Contact: validated contact funnel with Formspree and optional reCAPTCHA
+
+  Real stack and runtime:
+  - Frontend: React 19, TypeScript, Vite 7, Tailwind CSS 4, React Router 7
+  - Data/state: TanStack React Query, React Context for theme
+  - Content: markdown files under src/content/blog/{es,en}
+  - Forms/validation: React Hook Form patterns, Zod, Formspree, react-google-recaptcha-v3
+  - UX: Framer Motion, route preloading, navigation progress, theme switching
+  - SEO/meta: React 19 native head tags via DocumentHead, sitemap generated in Vite
+  - Testing: Vitest + Testing Library for unit/integration, Playwright for e2e
+  - Deployment: static SPA build served via Nginx and Docker
+  - Analytics/integrations: Umami, GitHub API, Formspree, Google reCAPTCHA
+
+  Architecture reality:
+  - The repo is organized mainly by feature/page, not true atomic design.
+  - Routing is language-prefixed (/es, /en) and implemented in src/router/routes.tsx.
+  - Projects currently fetch GitHub data directly from the client.
+  - Blog content is loaded from local markdown with import.meta.glob.
+  - This is primarily a static frontend; avoid introducing backend complexity unless the change clearly requires it.
+
+  Quality and product priorities:
+  - Preserve bilingual behavior for Spanish and English.
+  - Preserve accessibility, responsive behavior, and SEO quality.
+  - Prefer incremental changes with clear user value and narrow scope.
+  - Favor maintainable architecture over flashy additions.
+  - Avoid proposals that add infrastructure without a direct product or reliability payoff.
+  - Keep existing visual language unless a change explicitly targets design.
+
+  Known constraints and opportunities:
+  - Documentation is partially out of sync with the actual implementation.
+  - Projects page is a strong candidate for server-side caching or build-time data snapshots.
+  - Blog has enough content volume to justify stronger discovery, taxonomy, and editorial features.
+  - Contact flow can evolve from a generic form into a more qualified professional funnel.
+  - Security-sensitive logic should not rely only on client-side protections.
+
+  Repo conventions:
+  - Package manager: pnpm
+  - Code style: TypeScript-first, functional React components, feature-based organization
+  - Routing and URLs should remain localized when relevant.
+  - Favor changes that can be validated with existing test tooling.
+  - When a change moves into implementation, create and work on a dedicated git branch.
+  - Default branch naming should use the pattern codex/<change-name> unless a different branch strategy is explicitly required.
+
+rules:
+  proposal:
+    - Focus on concrete user or product value, not generic refactoring language.
+    - Include explicit scope boundaries and non-goals when the change could expand easily.
+    - Call out affected areas of the site or architecture in practical terms.
+    - Avoid assuming a backend exists unless the proposal introduces one deliberately.
+  design:
+    - Ground design decisions in the current repo architecture and deployment model.
+    - Prefer the simplest architecture that solves the problem within a mostly static frontend.
+    - Note SEO, i18n, accessibility, and performance implications when relevant.
+    - Identify migration or compatibility concerns if existing content or routes are affected.
+  tasks:
+    - Break work into small, sequential implementation steps.
+    - Include validation tasks for tests, manual checks, or deployment-sensitive behavior.
+    - Keep tasks implementation-oriented and avoid vague research-only items unless they unblock a decision.
+    - Separate content/model changes from UI changes when both are required.
+    - Include a first implementation task or note indicating work should happen on a dedicated git branch for the change.
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+# Example:
+#   context: |
+#     Tech stack: TypeScript, React, Node.js
+#     We use conventional commits
+#     Domain: e-commerce platform
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours

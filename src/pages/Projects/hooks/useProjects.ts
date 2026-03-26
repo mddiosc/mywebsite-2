@@ -1,13 +1,23 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import { axiosInstance } from '@/lib/axios'
-import { GitHubProject } from '@/types'
+import projectsSnapshot from '@/data/projects-snapshot.json'
+import { GitHubProject, ProjectsSnapshot } from '@/types'
 
-/**
- * Type definition for repository languages
- * Maps language names to number of bytes of code
- */
-type Languages = Record<string, number>
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null
+
+const parseProjectsSnapshot = (value: unknown): ProjectsSnapshot => {
+  if (!isRecord(value) || !Array.isArray(value['projects'])) {
+    throw new Error('Projects snapshot is invalid or missing the projects array')
+  }
+
+  return {
+    generatedAt:
+      typeof value['generatedAt'] === 'string' ? value['generatedAt'] : new Date(0).toISOString(),
+    source: value['source'] === 'generated' ? 'generated' : 'fallback',
+    projects: value['projects'] as GitHubProject[],
+  }
+}
 
 /**
  * Interface for project statistics
@@ -65,16 +75,20 @@ const calculateProjectStatistics = (projects: GitHubProject[] | undefined): Proj
 
   // Calculate unique technologies
   const allTechnologies = new Set([
-    ...projects.map((project) => project.language).filter(Boolean),
+    ...projects
+      .map((project) => project.language)
+      .filter(
+        (language): language is string => typeof language === 'string' && language.length > 0,
+      ),
     ...projects.flatMap((project) => (project.languages ? Object.keys(project.languages) : [])),
   ])
 
-  const technologiesList = Array.from(allTechnologies).sort()
+  const technologiesList = Array.from(allTechnologies).sort((a, b) => a.localeCompare(b))
 
   // Calculate topics
   const allTopics = projects.flatMap((project) => project.topics)
   const uniqueTopicsSet = new Set(allTopics)
-  const uniqueTopicsList = Array.from(uniqueTopicsSet).sort()
+  const uniqueTopicsList = Array.from(uniqueTopicsSet).sort((a, b) => a.localeCompare(b))
 
   return {
     totalProjects: projects.length,
@@ -93,51 +107,8 @@ const calculateProjectStatistics = (projects: GitHubProject[] | undefined): Proj
  * @returns A promise that resolves to an array of GitHub projects with language data
  */
 const fetchProjects = async (): Promise<GitHubProject[]> => {
-  // Configure headers for GitHub API
-  const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
-  }
-
-  // Add authorization header if token is available
-  const githubToken = import.meta.env.VITE_GITHUB_TOKEN ?? ''
-  const githubUsername = import.meta.env.VITE_GITHUB_USERNAME ?? ''
-
-  if (githubToken && githubToken !== 'your_github_token_here') {
-    headers['Authorization'] = `token ${githubToken}`
-  }
-
-  // Get repository list
-  const { data } = await axiosInstance.get<GitHubProject[]>(
-    `https://api.github.com/users/${githubUsername}/repos`,
-    { headers },
-  )
-
-  const projectsWithLanguages = await Promise.all(
-    data.map(async (project) => {
-      try {
-        const languagesResponse = await axiosInstance.get<Languages>(
-          project.languages_url ||
-            `https://api.github.com/repos/${githubUsername}/${project.name}/languages`,
-          { headers },
-        )
-
-        // Add languages to the project object
-        return {
-          ...project,
-          languages: languagesResponse.data,
-        }
-      } catch (error) {
-        console.error(`Error fetching languages for ${project.name}:`, error)
-        // If request fails, return project without languages
-        return {
-          ...project,
-          languages: {} as Languages,
-        }
-      }
-    }),
-  )
-
-  return projectsWithLanguages
+  const snapshot = parseProjectsSnapshot(projectsSnapshot)
+  return await Promise.resolve(snapshot.projects)
 }
 
 /**
