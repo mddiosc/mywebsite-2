@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-26T16:47:08.525Z",
+  "generatedAt": "2026-03-27T10:37:04.991Z",
   "source": "generated",
   "projects": [
     {
@@ -202,15 +202,15 @@
       "html_url": "https://github.com/mddiosc/mywebsite-2",
       "description": "Modern personal portfolio website built with React, TypeScript, and Vite. Features multilingual support (Spanish/English), responsive design, project showcase with GitHub integration, and contact form functionality. Fully internationalized with i18n support and comprehensive testing coverage.",
       "languages": {
-        "TypeScript": 391880,
+        "TypeScript": 455489,
         "JavaScript": 9027,
         "CSS": 2456,
         "Dockerfile": 1945,
         "HTML": 604
       },
       "created_at": "2025-03-07T08:12:07Z",
-      "updated_at": "2026-03-26T15:41:43Z",
-      "pushed_at": "2026-03-26T15:44:04Z",
+      "updated_at": "2026-03-27T09:51:35Z",
+      "pushed_at": "2026-03-27T09:51:32Z",
       "homepage": "https://migueldedioscalles.dev",
       "stargazers_count": 1,
       "watchers_count": 1,
