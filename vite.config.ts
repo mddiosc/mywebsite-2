@@ -1,6 +1,5 @@
-import { readdirSync } from 'fs'
-import path from 'path'
-import { join } from 'path'
+import { readdirSync } from 'node:fs'
+import path, { join } from 'node:path'
 
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
