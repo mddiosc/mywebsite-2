@@ -51,4 +51,4 @@
 - [x] 5.2 Run `pnpm build` one final time on the complete updated branch
 - [x] 5.3 Verify `dist/` is clean and `pnpm preview` serves the app correctly
 - [x] 5.4 Update `openspec/config.yaml` context section to reflect Vite 8 and TypeScript 5.9
-- [ ] 5.5 Open PR from `feat/modernize-stack` to `main` and confirm CI pipeline (quality + e2e jobs) passes
+- [x] 5.5 Open PR from `feat/modernize-stack` to `main` and confirm CI pipeline (quality + e2e jobs) passes
