@@ -47,6 +47,9 @@ jobs:
           VITE_FORMSPREE_ID: ${{ secrets.VITE_FORMSPREE_ID }}
           VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
 
+      - name: Performance budget
+        run: pnpm performance:budget
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
