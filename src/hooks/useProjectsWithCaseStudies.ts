@@ -1,70 +1,57 @@
-import { useTranslation } from 'react-i18next'
-
-import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 import { useProjectCaseStudies } from './useProjectCaseStudies'
 
 import { useProjects } from '@/pages/Projects/hooks/useProjects'
-import type { ProjectWithCaseStudy } from '@/types'
 import { mergeProjectsWithCaseStudies } from '@/utils/mergeProjectData'
 
 /**
- * Extended hook that combines projects with case study enrichment
- * Falls back gracefully if case studies are not available
+ * Extended hook that combines projects with case study enrichment.
+ * Merges synchronously with useMemo so locale switches are reflected immediately
+ * without a stale intermediate React Query cache entry.
+ * Falls back gracefully if case studies are not available.
  */
 export function useProjectsWithCaseStudies() {
-  const { i18n } = useTranslation()
-
   // Load projects
   const projectsQuery = useProjects()
 
-  // Load case studies in the current language
+  // Load case studies in the current language.
+  // useProjectCaseStudies already keys its query by language, so data here
+  // always corresponds to the active locale.
   const caseStudiesQuery = useProjectCaseStudies()
 
-  // Combine and merge data — wait for both queries to settle before merging
-  const mergedQuery = useQuery({
-    queryKey: [
-      'projects-with-case-studies',
-      i18n.language,
-      // Re-run merge when case studies finish loading (count change signals new data)
-      caseStudiesQuery.data?.length ?? 0,
-    ],
-    queryFn: () => {
-      if (!projectsQuery.data) {
-        throw new Error('Projects data not available')
-      }
+  const isLoading = projectsQuery.isLoading || caseStudiesQuery.isLoading
+  const error = projectsQuery.error ?? caseStudiesQuery.error ?? null
 
-      // If case studies failed to load, return projects without enrichment
-      if (caseStudiesQuery.error) {
-        console.warn('Case studies failed to load, returning projects without enrichment', {
-          error: caseStudiesQuery.error,
-        })
-        return projectsQuery.data.map((project) => ({
-          project,
-          caseStudy: null,
-          hasCaseStudy: false,
-        }))
-      }
+  // Merge whenever either data source changes. No third query needed.
+  const data = useMemo(() => {
+    if (!projectsQuery.data) return undefined
 
-      // Merge projects with case studies
-      const caseStudies = caseStudiesQuery.data ?? []
-      return mergeProjectsWithCaseStudies(projectsQuery.data, caseStudies)
-    },
-    // Wait for projects to load AND for case studies to finish loading (success or error)
-    enabled: !!projectsQuery.data && !caseStudiesQuery.isLoading,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-    placeholderData: (previousData: ProjectWithCaseStudy[] | undefined) => previousData,
-  })
+    if (caseStudiesQuery.error) {
+      console.warn('Case studies failed to load, returning projects without enrichment', {
+        error: caseStudiesQuery.error,
+      })
+      return projectsQuery.data.map((project) => ({
+        project,
+        caseStudy: null,
+        hasCaseStudy: false,
+      }))
+    }
+
+    const caseStudies = caseStudiesQuery.data ?? []
+    return mergeProjectsWithCaseStudies(projectsQuery.data, caseStudies)
+  }, [projectsQuery.data, caseStudiesQuery.data, caseStudiesQuery.error])
 
   return {
-    data: mergedQuery.data,
-    isLoading: projectsQuery.isLoading || caseStudiesQuery.isLoading || mergedQuery.isLoading,
-    error: projectsQuery.error ?? caseStudiesQuery.error ?? mergedQuery.error,
+    data,
+    isLoading,
+    error,
     projectsOnly: projectsQuery.data,
     caseStudiesOnly: caseStudiesQuery.data,
     statistics: projectsQuery.statistics,
-    refetch: async () => mergedQuery.refetch(),
+    refetch: async () => {
+      await caseStudiesQuery.refetch()
+    },
   }
 }
 
@@ -75,7 +62,7 @@ export function useProjectWithCaseStudy(projectSlug: string) {
   const { data: mergedProjects, isLoading, error, refetch } = useProjectsWithCaseStudies()
 
   const projectWithCaseStudy =
-    mergedProjects?.find((item: ProjectWithCaseStudy) => {
+    mergedProjects?.find((item) => {
       return item.caseStudy?.slug === projectSlug || item.project.name === projectSlug
     }) ?? null
 
