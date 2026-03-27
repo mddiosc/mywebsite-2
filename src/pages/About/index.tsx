@@ -7,6 +7,7 @@ import { useAboutData } from './hooks'
 
 import { DocumentHead } from '@/components'
 import { fadeIn, smoothTransition } from '@/lib/animations'
+import { buildLocalizedSeoUrls } from '@/lib/seo'
 
 /**
  * About page component
@@ -15,6 +16,8 @@ import { fadeIn, smoothTransition } from '@/lib/animations'
 const AboutPage = () => {
   const { t, i18n } = useTranslation()
   const { skills, stats, technologies, biographyParagraphs } = useAboutData()
+  const locale = i18n.language === 'en' ? 'en' : 'es'
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/about', locale)
 
   return (
     <>
@@ -22,7 +25,8 @@ const AboutPage = () => {
         title={`${t('navigation.about')} - Portfolio`}
         description={t('about.hero.subtitle')}
         keywords="about, developer, skills, technologies, experience, biography"
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/about`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <motion.div

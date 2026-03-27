@@ -14,6 +14,7 @@ import { PROJECTS_CONSTANTS, TRANSLATION_KEYS } from './constants'
 import { DocumentHead } from '@/components'
 import { useProjectsWithCaseStudies } from '@/hooks/useProjectsWithCaseStudies'
 import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
+import { buildLocalizedSeoUrls } from '@/lib/seo'
 
 /**
  * Main Projects page component
@@ -22,6 +23,8 @@ import { fadeIn, fadeInUp, smoothTransition } from '@/lib/animations'
 const ProjectsPage = () => {
   const { t, i18n } = useTranslation()
   const { data: projects, isLoading, error, statistics } = useProjectsWithCaseStudies()
+  const locale = i18n.language === 'en' ? 'en' : 'es'
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/projects', locale)
 
   const hasProjects = !isLoading && !error && projects && projects.length > 0
   const hasTopics = hasProjects && statistics.allTopics.length > 0
@@ -33,7 +36,8 @@ const ProjectsPage = () => {
         title={`${t('navigation.projects')} - Portfolio`}
         description={t('pages.projects.description')}
         keywords="projects, github, repositories, code, development, open source"
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/projects`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <motion.div

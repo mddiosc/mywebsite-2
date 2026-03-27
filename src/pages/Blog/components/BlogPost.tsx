@@ -14,11 +14,13 @@ import { DocumentHead } from '../../../components/DocumentHead'
 import { useThemeContext } from '../../../context'
 import { useBlogPost } from '../../../hooks/useBlog'
 import { fadeIn, smoothTransition } from '../../../lib/animations'
+import { buildLocalizedSeoUrls } from '../../../lib/seo'
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation()
   const { isDark } = useThemeContext()
+  const locale = i18n.language === 'en' ? 'en' : 'es'
   const { data: post, isLoading: loading, error, refetch } = useBlogPost(slug ?? '')
 
   // Dynamically load highlight.js theme based on dark mode
@@ -50,6 +52,8 @@ export function BlogPost() {
     )
   }
 
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, `/blog/${slug}`, locale)
+
   return (
     <>
       <DocumentHead
@@ -59,7 +63,8 @@ export function BlogPost() {
         articlePublishedTime={post.meta.date}
         articleAuthor={post.meta.author}
         articleTags={post.meta.tags}
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/blog/${slug}`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <motion.div

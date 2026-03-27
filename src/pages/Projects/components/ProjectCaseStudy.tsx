@@ -16,6 +16,7 @@ import { DocumentHead } from '../../../components/DocumentHead'
 import { useThemeContext } from '../../../context'
 import { useProjectWithCaseStudy } from '../../../hooks/useProjectsWithCaseStudies'
 import { fadeIn, smoothTransition } from '../../../lib/animations'
+import { buildLocalizedSeoUrls } from '../../../lib/seo'
 
 // Helpers to strip the `node` prop that react-markdown injects (not forwarded to DOM)
 type MdProps<T extends keyof React.JSX.IntrinsicElements> = Omit<
@@ -74,6 +75,7 @@ export function ProjectCaseStudy() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation()
   const { isDark } = useThemeContext()
+  const locale = i18n.language === 'en' ? 'en' : 'es'
   const {
     data: projectWithCaseStudy,
     isLoading: loading,
@@ -121,6 +123,8 @@ export function ProjectCaseStudy() {
     )
   }
 
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, `/projects/${slug}`, locale)
+
   return (
     <>
       <DocumentHead
@@ -128,7 +132,8 @@ export function ProjectCaseStudy() {
         description={caseStudy.meta.summary}
         ogType="article"
         articlePublishedTime={caseStudy.meta.published}
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/projects/${slug}`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <motion.div
