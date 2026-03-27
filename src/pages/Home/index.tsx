@@ -6,9 +6,12 @@ import { Hero, HomeFeatures } from './components'
 
 import { DocumentHead } from '../../components'
 import { fadeIn, smoothTransition } from '../../lib/animations'
+import { buildLocalizedSeoUrls } from '../../lib/seo'
 
 const Home = () => {
   const { t, i18n } = useTranslation()
+  const locale = i18n.language === 'en' ? 'en' : 'es'
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/', locale)
 
   return (
     <>
@@ -16,7 +19,8 @@ const Home = () => {
         title={`${t('navigation.home')} - Portfolio`}
         description={t('components.hero.subtitle')}
         keywords="portfolio, developer, frontend, react, typescript"
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <motion.div

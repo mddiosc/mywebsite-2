@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { ContactForm, ContactHeader, ContactSuccess } from './components'
 
 import { DocumentHead } from '../../components'
+import { buildLocalizedSeoUrls } from '../../lib/seo'
 
 /**
  * Contact page root component
@@ -25,6 +26,8 @@ import { DocumentHead } from '../../components'
 const Contact = () => {
   const { t, i18n } = useTranslation()
   const [showSuccess, setShowSuccess] = useState(false)
+  const locale = i18n.language === 'en' ? 'en' : 'es'
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/contact', locale)
 
   /**
    * Handles successful form submission
@@ -52,7 +55,8 @@ const Contact = () => {
         title={`${t('navigation.contact')} - Portfolio`}
         description={t('contact.header.subtitle')}
         keywords="contact, email, message, communication, get in touch"
-        canonicalUrl={`${import.meta.env.VITE_SITE_URL}/${i18n.language}/contact`}
+        canonicalUrl={seoUrls.canonicalUrl}
+        alternateUrls={seoUrls.alternateUrls}
       />
 
       <div className="pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24">

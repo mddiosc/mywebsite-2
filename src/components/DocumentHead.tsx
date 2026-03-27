@@ -15,6 +15,11 @@
 const SITE_URL = import.meta.env.VITE_SITE_URL
 const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.png`
 
+interface AlternateUrl {
+  hreflang: 'es' | 'en' | 'x-default'
+  href: string
+}
+
 interface DocumentHeadProps {
   title: string
   description: string
@@ -29,6 +34,8 @@ interface DocumentHeadProps {
   articleTags?: string[]
   // Canonical URL
   canonicalUrl?: string
+  // Alternate language URLs
+  alternateUrls?: AlternateUrl[]
 }
 
 /**
@@ -48,7 +55,8 @@ export function DocumentHead({
   articleAuthor,
   articleTags,
   canonicalUrl,
-}: DocumentHeadProps) {
+  alternateUrls,
+}: Readonly<DocumentHeadProps>) {
   return (
     <>
       {/* React 19: title is automatically hoisted to <head> */}
@@ -86,6 +94,16 @@ export function DocumentHead({
 
       {/* Canonical URL */}
       {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+      {/* Alternate language URLs */}
+      {alternateUrls?.map((alternate) => (
+        <link
+          key={`${alternate.hreflang}-${alternate.href}`}
+          rel="alternate"
+          hrefLang={alternate.hreflang}
+          href={alternate.href}
+        />
+      ))}
     </>
   )
 }
