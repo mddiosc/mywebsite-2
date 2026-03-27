@@ -53,6 +53,9 @@ jobs:
       - name: Performance budget
         run: pnpm performance:budget
 
+      - name: Lighthouse CI
+        run: pnpm lighthouse:ci
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
