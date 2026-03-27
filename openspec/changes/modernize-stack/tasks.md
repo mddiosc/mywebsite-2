@@ -18,21 +18,21 @@
 - [x] 2.12 Run `pnpm type-check` — must pass with zero errors
 - [x] 2.13 Run `pnpm test` — all unit tests must pass
 - [x] 2.14 Run `pnpm build` — build must succeed and produce `dist/`
-- [ ] 2.15 Commit Phase 1 changes with message `feat: phase 1 safe dependency updates and volta pinning`
+- [x] 2.15 Commit Phase 1 changes with message `feat: phase 1 safe dependency updates and volta pinning`
 
 ## 3. Phase 2 — Vite 8 + Rolldown Migration
 
-- [ ] 3.1 Update `vite` to `^8.0.3` in `package.json` (devDependencies)
-- [ ] 3.2 Update `@vitejs/plugin-react-swc` to `^4.3.0` in `package.json` (devDependencies)
-- [ ] 3.3 Run `pnpm install` to update lockfile
-- [ ] 3.4 In `vite.config.ts`: remove the `build.rollupOptions` block entirely
-- [ ] 3.5 In `vite.config.ts`: add `build.rolldownOptions.output.codeSplitting` with the following groups (in priority order): `react-vendor` (react + react-dom, priority 30), `animation-vendor` (framer-motion, priority 20), `ui-vendor` (@headlessui + @heroicons + @floating-ui, priority 15), `data-vendor` (@tanstack + react-hook-form + @hookform + zod + axios, priority 10), `i18n-vendor` (react-i18next + i18next, priority 10), `markdown-vendor` (react-markdown + rehype + remark + highlight, priority 5)
-- [ ] 3.6 Keep `chunkSizeWarningLimit: 600` in build options
-- [ ] 3.7 Run `pnpm build` and verify it completes without errors
-- [ ] 3.8 Inspect `dist/assets/` — confirm named chunk files exist (react-vendor, animation-vendor, etc.) and no single file exceeds 600KB
-- [ ] 3.9 Verify `dist/sitemap.xml` exists and contains all expected routes (static + dynamic blog routes in both `/es/` and `/en/`)
-- [ ] 3.10 Run `pnpm test` — all unit tests must pass
-- [ ] 3.11 Run `pnpm test:e2e` — all Playwright tests must pass (or document any pre-existing failures)
+- [x] 3.1 Update `vite` to `^8.0.3` in `package.json` (devDependencies)
+- [x] 3.2 Update `@vitejs/plugin-react-swc` to `^4.3.0` in `package.json` (devDependencies)
+- [x] 3.3 Run `pnpm install` to update lockfile
+- [x] 3.4 In `vite.config.ts`: remove the `build.rollupOptions` block entirely
+- [x] 3.5 In `vite.config.ts`: add `build.rolldownOptions.output.codeSplitting` with the following groups (in priority order): `react-vendor` (react + react-dom, priority 30), `animation-vendor` (framer-motion, priority 20), `ui-vendor` (@headlessui + @heroicons + @floating-ui, priority 15), `data-vendor` (@tanstack + react-hook-form + @hookform + zod + axios, priority 10), `i18n-vendor` (react-i18next + i18next, priority 10), `markdown-vendor` (react-markdown + rehype + remark + highlight, priority 5)
+- [x] 3.6 Keep `chunkSizeWarningLimit: 600` in build options
+- [x] 3.7 Run `pnpm build` and verify it completes without errors
+- [x] 3.8 Inspect `dist/assets/` — confirm named chunk files exist (react-vendor, animation-vendor, etc.) and no single file exceeds 600KB
+- [x] 3.9 Verify `dist/sitemap.xml` exists and contains all expected routes (static + dynamic blog routes in both `/es/` and `/en/`)
+- [x] 3.10 Run `pnpm test` — all unit tests must pass
+- [x] 3.11 Run `pnpm test:e2e` — all Playwright tests must pass (or document any pre-existing failures)
 - [ ] 3.12 Commit Phase 2 changes with message `feat: upgrade to vite 8 with rolldown and migrate to codeSplitting API`
 
 ## 4. Phase 3 — Remaining Dev Tooling Majors
