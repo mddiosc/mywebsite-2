@@ -3,7 +3,7 @@ import path from 'path'
 import { join } from 'path'
 
 import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import sitemap from 'vite-plugin-sitemap'
 import { configDefaults } from 'vitest/config'
@@ -55,18 +55,39 @@ export default defineConfig(() => ({
     },
   },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom'],
-          'router-vendor': ['react-router'],
-          'animation-vendor': ['framer-motion'],
-          'ui-vendor': ['@headlessui/react', '@heroicons/react'],
-          'query-vendor': ['@tanstack/react-query'],
-          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'i18n-vendor': ['react-i18next', 'i18next', 'i18next-browser-languagedetector'],
-          'markdown-vendor': ['react-markdown', 'rehype-highlight', 'remark-gfm'],
+        codeSplitting: {
+          groups: [
+            // React core — highest priority, smallest stable chunk
+            { name: 'react-vendor', test: /node_modules[\\/](react|react-dom)[\\/]/, priority: 30 },
+            // Animations — large, changes independently of app code
+            { name: 'animation-vendor', test: /node_modules[\\/]framer-motion[\\/]/, priority: 20 },
+            // UI primitives
+            {
+              name: 'ui-vendor',
+              test: /node_modules[\\/](@headlessui|@heroicons|@floating-ui)[\\/]/,
+              priority: 15,
+            },
+            // Data fetching, forms, validation, HTTP
+            {
+              name: 'data-vendor',
+              test: /node_modules[\\/](@tanstack|react-hook-form|@hookform|zod|axios)[\\/]/,
+              priority: 10,
+            },
+            // Internationalisation
+            {
+              name: 'i18n-vendor',
+              test: /node_modules[\\/](react-i18next|i18next)[\\/]/,
+              priority: 10,
+            },
+            // Markdown rendering — large, rarely changes
+            {
+              name: 'markdown-vendor',
+              test: /node_modules[\\/](react-markdown|rehype|remark|highlight\.js)[\\/]/,
+              priority: 5,
+            },
+          ],
         },
       },
     },

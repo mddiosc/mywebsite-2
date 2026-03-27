@@ -7,7 +7,7 @@ FROM node:22-alpine AS builder
 RUN apk upgrade --no-cache
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@9.15.3 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 WORKDIR /app
 

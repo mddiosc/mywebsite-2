@@ -12,7 +12,7 @@ context: |
   - Contact: validated contact funnel with Formspree and optional reCAPTCHA
 
   Real stack and runtime:
-  - Frontend: React 19, TypeScript, Vite 7, Tailwind CSS 4, React Router 7
+  - Frontend: React 19, TypeScript 5.9, Vite 8 (Rolldown), Tailwind CSS 4, React Router 7
   - Data/state: TanStack React Query, React Context for theme
   - Content: markdown files under src/content/blog/{es,en}
   - Forms/validation: React Hook Form patterns, Zod, Formspree, react-google-recaptcha-v3
