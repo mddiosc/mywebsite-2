@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "pnpm run generate:projects-snapshot && vite --host",
     "generate:projects-snapshot": "node ./scripts/generate-projects-snapshot.mjs",
@@ -101,14 +101,12 @@
   },
   "volta": {
     "node": "22.13.0",
-    "pnpm": "9.15.4"
+    "pnpm": "10.33.0"
   },
   "pnpm": {
-    "ignoredBuiltDependencies": [
-      "esbuild"
-    ],
     "onlyBuiltDependencies": [
-      "@tailwindcss/oxide"
+      "@tailwindcss/oxide",
+      "esbuild"
     ],
     "overrides": {
       "mdast-util-to-hast": ">=13.2.1"
