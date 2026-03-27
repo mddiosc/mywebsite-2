@@ -32,5 +32,5 @@
 
 ## 6. Delivery
 
-- [ ] 6.1 Commit with message `feat(seo): enforce canonical and hreflang consistency for localized routes`
-- [ ] 6.2 Push branch and open PR to `main`
+- [x] 6.1 Commit with message `feat(seo): enforce canonical and hreflang consistency for localized routes`
+- [x] 6.2 Push branch and open PR to `main`
