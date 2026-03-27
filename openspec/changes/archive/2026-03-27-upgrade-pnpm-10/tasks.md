@@ -32,6 +32,6 @@
 
 ## 6. Commit and PR
 
-- [ ] 6.1 Commit with message `feat: upgrade pnpm 9 to 10.33.0 and update lifecycle script config`
-- [ ] 6.2 Push branch and open PR from `feat/upgrade-pnpm-10` to `main`
-- [ ] 6.3 Confirm CI pipeline (quality + e2e jobs) passes — pay attention to the pnpm setup step in the workflow
+- [x] 6.1 Commit with message `feat: upgrade pnpm 9 to 10.33.0 and update lifecycle script config`
+- [x] 6.2 Push branch and open PR from `feat/upgrade-pnpm-10` to `main`
+- [x] 6.3 Confirm CI pipeline (quality + e2e jobs) passes — pay attention to the pnpm setup step in the workflow
