@@ -42,13 +42,13 @@
 - [x] 4.3 Run `pnpm lint` — must pass with zero errors
 - [x] 4.4 Run `pnpm format:check` — must pass
 - [x] 4.5 Run `pnpm quality` (full quality gate: lint + docs:lint + format:check + type-check)
-- [ ] 4.6 Trigger a real pre-commit hook check: stage a file and attempt a commit to verify husky + lint-staged + commitlint all fire correctly
-- [ ] 4.7 Commit Phase 3 changes with message `feat: upgrade dev tooling majors (globals, lint-staged, prettier-plugin-tailwindcss)`
+- [x] 4.6 Trigger a real pre-commit hook check: stage a file and attempt a commit to verify husky + lint-staged + commitlint all fire correctly
+- [x] 4.7 Commit Phase 3 changes with message `feat: upgrade dev tooling majors (globals, lint-staged, prettier-plugin-tailwindcss)`
 
 ## 5. Final Validation
 
-- [ ] 5.1 Run full test suite: `pnpm test:coverage` — verify coverage thresholds still pass
-- [ ] 5.2 Run `pnpm build` one final time on the complete updated branch
-- [ ] 5.3 Verify `dist/` is clean and `pnpm preview` serves the app correctly
-- [ ] 5.4 Update `openspec/config.yaml` context section to reflect Vite 8 and TypeScript 5.9
+- [x] 5.1 Run full test suite: `pnpm test:coverage` — verify coverage thresholds still pass
+- [x] 5.2 Run `pnpm build` one final time on the complete updated branch
+- [x] 5.3 Verify `dist/` is clean and `pnpm preview` serves the app correctly
+- [x] 5.4 Update `openspec/config.yaml` context section to reflect Vite 8 and TypeScript 5.9
 - [ ] 5.5 Open PR from `feat/modernize-stack` to `main` and confirm CI pipeline (quality + e2e jobs) passes
