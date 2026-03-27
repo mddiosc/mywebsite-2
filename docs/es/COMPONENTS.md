@@ -53,10 +53,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, className }) => {
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `children` | `React.ReactNode` | ✅ | - | Contenido a renderizar dentro del layout |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop        | Tipo              | Requerido | Por Defecto | Descripción                              |
+| ----------- | ----------------- | --------- | ----------- | ---------------------------------------- |
+| `children`  | `React.ReactNode` | ✅        | -           | Contenido a renderizar dentro del layout |
+| `className` | `string`          | ❌        | `''`        | Clases CSS adicionales                   |
 
 **Ejemplo de uso:**
 
@@ -83,14 +83,14 @@ interface NavbarProps {
   className?: string
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ 
-  transparent = false, 
-  fixed = true, 
-  className 
+export const Navbar: React.FC<NavbarProps> = ({
+  transparent = false,
+  fixed = true,
+  className
 }) => {
   const { t } = useTranslation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  
+
   return (
     <nav className={cn(
       'navbar-base',
@@ -109,11 +109,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `transparent` | `boolean` | ❌ | `false` | Si el navbar debe ser transparente |
-| `fixed` | `boolean` | ❌ | `true` | Si el navbar debe estar fijo en la parte superior |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop          | Tipo      | Requerido | Por Defecto | Descripción                                       |
+| ------------- | --------- | --------- | ----------- | ------------------------------------------------- |
+| `transparent` | `boolean` | ❌        | `false`     | Si el navbar debe ser transparente                |
+| `fixed`       | `boolean` | ❌        | `true`      | Si el navbar debe estar fijo en la parte superior |
+| `className`   | `string`  | ❌        | `''`        | Clases CSS adicionales                            |
 
 **Estados internos:**
 
@@ -141,14 +141,14 @@ interface FooterProps {
   className?: string
 }
 
-export const Footer: React.FC<FooterProps> = ({ 
+export const Footer: React.FC<FooterProps> = ({
   variant = 'default',
   showSocial = true,
-  className 
+  className
 }) => {
   const { t } = useTranslation()
   const currentYear = new Date().getFullYear()
-  
+
   return (
     <footer className={cn('footer-base', className)}>
       {variant === 'default' && (
@@ -164,11 +164,11 @@ export const Footer: React.FC<FooterProps> = ({
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `variant` | `'default' \| 'minimal'` | ❌ | `'default'` | Variante de diseño del footer |
-| `showSocial` | `boolean` | ❌ | `true` | Si mostrar enlaces sociales |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop         | Tipo                     | Requerido | Por Defecto | Descripción                   |
+| ------------ | ------------------------ | --------- | ----------- | ----------------------------- |
+| `variant`    | `'default' \| 'minimal'` | ❌        | `'default'` | Variante de diseño del footer |
+| `showSocial` | `boolean`                | ❌        | `true`      | Si mostrar enlaces sociales   |
+| `className`  | `string`                 | ❌        | `''`        | Clases CSS adicionales        |
 
 ## 🎯 Componentes de Funcionalidad
 
@@ -194,13 +194,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 }) => {
   const { t } = useTranslation()
   const [isHovered, setIsHovered] = useState(false)
-  
+
   const cardVariants = {
     default: 'project-card-default',
     featured: 'project-card-featured',
     compact: 'project-card-compact'
   }
-  
+
   return (
     <motion.div
       className={cn(cardVariants[variant], className)}
@@ -210,8 +210,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       onClick={() => onCardClick?.(project)}
     >
       <ProjectImage src={project.image} alt={project.name} />
-      <ProjectContent 
-        project={project} 
+      <ProjectContent
+        project={project}
         showStats={showStats}
         isHovered={isHovered}
       />
@@ -222,13 +222,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `project` | `GitHubProject` | ✅ | - | Datos del proyecto a mostrar |
-| `variant` | `'default' \| 'featured' \| 'compact'` | ❌ | `'default'` | Variante visual de la tarjeta |
-| `showStats` | `boolean` | ❌ | `true` | Si mostrar estadísticas del proyecto |
-| `onCardClick` | `(project: GitHubProject) => void` | ❌ | - | Callback al hacer clic en la tarjeta |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop          | Tipo                                   | Requerido | Por Defecto | Descripción                          |
+| ------------- | -------------------------------------- | --------- | ----------- | ------------------------------------ |
+| `project`     | `GitHubProject`                        | ✅        | -           | Datos del proyecto a mostrar         |
+| `variant`     | `'default' \| 'featured' \| 'compact'` | ❌        | `'default'` | Variante visual de la tarjeta        |
+| `showStats`   | `boolean`                              | ❌        | `true`      | Si mostrar estadísticas del proyecto |
+| `onCardClick` | `(project: GitHubProject) => void`     | ❌        | -           | Callback al hacer clic en la tarjeta |
+| `className`   | `string`                               | ❌        | `''`        | Clases CSS adicionales               |
 
 **Tipos relacionados:**
 
@@ -295,7 +295,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
     resolver: zodResolver(contactSchema),
     defaultValues: initialValues
   })
-  
+
   const onFormSubmit = async (data: ContactFormData) => {
     try {
       await onSubmit?.(data)
@@ -305,9 +305,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({
       toast.error(t('contact.form.error'))
     }
   }
-  
+
   return (
-    <form 
+    <form
       onSubmit={handleSubmit(onFormSubmit)}
       className={cn('contact-form', className)}
     >
@@ -321,7 +321,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           placeholder={t('contact.form.namePlaceholder')}
         />
       </FormField>
-      
+
       <FormField
         label={t('contact.form.email')}
         error={errors.email?.message}
@@ -333,7 +333,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           placeholder={t('contact.form.emailPlaceholder')}
         />
       </FormField>
-      
+
       <FormField
         label={t('contact.form.message')}
         error={errors.message?.message}
@@ -345,9 +345,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           rows={5}
         />
       </FormField>
-      
+
       {showReCaptcha && <ReCaptchaField />}
-      
+
       <Button
         type="submit"
         loading={isSubmitting}
@@ -362,25 +362,20 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `onSubmit` | `(data: ContactFormData) => Promise<void>` | ❌ | - | Función para manejar envío del formulario |
-| `initialValues` | `Partial<ContactFormData>` | ❌ | `{}` | Valores iniciales del formulario |
-| `showReCaptcha` | `boolean` | ❌ | `true` | Si mostrar verificación reCAPTCHA |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop            | Tipo                                       | Requerido | Por Defecto | Descripción                               |
+| --------------- | ------------------------------------------ | --------- | ----------- | ----------------------------------------- |
+| `onSubmit`      | `(data: ContactFormData) => Promise<void>` | ❌        | -           | Función para manejar envío del formulario |
+| `initialValues` | `Partial<ContactFormData>`                 | ❌        | `{}`        | Valores iniciales del formulario          |
+| `showReCaptcha` | `boolean`                                  | ❌        | `true`      | Si mostrar verificación reCAPTCHA         |
+| `className`     | `string`                                   | ❌        | `''`        | Clases CSS adicionales                    |
 
 **Esquema de validación:**
 
 ```typescript
 const contactSchema = z.object({
-  name: z.string()
-    .min(2, t('validation.name.min'))
-    .max(50, t('validation.name.max')),
-  email: z.string()
-    .email(t('validation.email.invalid')),
-  message: z.string()
-    .min(10, t('validation.message.min'))
-    .max(1000, t('validation.message.max'))
+  name: z.string().min(2, t('validation.name.min')).max(50, t('validation.name.max')),
+  email: z.string().email(t('validation.email.invalid')),
+  message: z.string().min(10, t('validation.message.min')).max(1000, t('validation.message.max')),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -437,13 +432,13 @@ export const TechnologyGrid: React.FC<TechnologyGridProps> = ({
 
 **Props:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `technologies` | `Technology[]` | ✅ | - | Array de tecnologías a mostrar |
-| `columns` | `number` | ❌ | `3` | Número de columnas en desktop |
-| `showNames` | `boolean` | ❌ | `true` | Si mostrar nombres de tecnologías |
-| `animationDelay` | `number` | ❌ | `0.1` | Delay entre animaciones de elementos |
-| `className` | `string` | ❌ | `''` | Clases CSS adicionales |
+| Prop             | Tipo           | Requerido | Por Defecto | Descripción                          |
+| ---------------- | -------------- | --------- | ----------- | ------------------------------------ |
+| `technologies`   | `Technology[]` | ✅        | -           | Array de tecnologías a mostrar       |
+| `columns`        | `number`       | ❌        | `3`         | Número de columnas en desktop        |
+| `showNames`      | `boolean`      | ❌        | `true`      | Si mostrar nombres de tecnologías    |
+| `animationDelay` | `number`       | ❌        | `0.1`       | Delay entre animaciones de elementos |
+| `className`      | `string`       | ❌        | `''`        | Clases CSS adicionales               |
 
 ## 🎛️ Componentes UI Base
 
@@ -479,13 +474,13 @@ export const Button: React.FC<ButtonProps> = ({
     outline: 'btn-outline',
     ghost: 'btn-ghost'
   }
-  
+
   const buttonSizes = {
     sm: 'btn-sm',
     md: 'btn-md',
     lg: 'btn-lg'
   }
-  
+
   return (
     <button
       className={cn(
@@ -509,13 +504,13 @@ export const Button: React.FC<ButtonProps> = ({
 
 **Props heredadas de HTMLButtonElement más:**
 
-| Prop | Tipo | Requerido | Por Defecto | Descripción |
-|------|------|-----------|-------------|-------------|
-| `variant` | `'default' \| 'primary' \| 'secondary' \| 'outline' \| 'ghost'` | ❌ | `'default'` | Variante visual del botón |
-| `size` | `'sm' \| 'md' \| 'lg'` | ❌ | `'md'` | Tamaño del botón |
-| `loading` | `boolean` | ❌ | `false` | Estado de carga |
-| `leftIcon` | `React.ReactNode` | ❌ | - | Icono a la izquierda del texto |
-| `rightIcon` | `React.ReactNode` | ❌ | - | Icono a la derecha del texto |
+| Prop        | Tipo                                                            | Requerido | Por Defecto | Descripción                    |
+| ----------- | --------------------------------------------------------------- | --------- | ----------- | ------------------------------ |
+| `variant`   | `'default' \| 'primary' \| 'secondary' \| 'outline' \| 'ghost'` | ❌        | `'default'` | Variante visual del botón      |
+| `size`      | `'sm' \| 'md' \| 'lg'`                                          | ❌        | `'md'`      | Tamaño del botón               |
+| `loading`   | `boolean`                                                       | ❌        | `false`     | Estado de carga                |
+| `leftIcon`  | `React.ReactNode`                                               | ❌        | -           | Icono a la izquierda del texto |
+| `rightIcon` | `React.ReactNode`                                               | ❌        | -           | Icono a la derecha del texto   |
 
 **Ejemplos de uso:**
 
@@ -564,7 +559,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   ...props
 }, ref) => {
   const inputId = useId()
-  
+
   return (
     <div className="input-container">
       {label && (
@@ -573,7 +568,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
           {props.required && <span className="required-asterisk">*</span>}
         </label>
       )}
-      
+
       <div className={cn(
         'input-wrapper',
         {
@@ -583,7 +578,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
         }
       )}>
         {leftIcon && <span className="input-left-icon">{leftIcon}</span>}
-        
+
         <input
           ref={ref}
           id={inputId}
@@ -594,14 +589,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
           )}
           {...props}
         />
-        
+
         {rightIcon && <span className="input-right-icon">{rightIcon}</span>}
       </div>
-      
+
       {error && (
         <span className="input-error-text">{error}</span>
       )}
-      
+
       {helperText && !error && (
         <span className="input-helper-text">{helperText}</span>
       )}
@@ -638,23 +633,23 @@ export const Modal: React.FC<ModalProps> = ({
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
-    
+
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscape)
       document.body.style.overflow = 'unset'
     }
   }, [isOpen, onClose])
-  
+
   if (!isOpen) return null
-  
+
   return createPortal(
     <div className="modal-overlay" onClick={closeOnOverlayClick ? onClose : undefined}>
-      <div 
+      <div
         className={cn('modal-content', `modal-${size}`)}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -671,7 +666,7 @@ export const Modal: React.FC<ModalProps> = ({
             )}
           </div>
         )}
-        
+
         <div className="modal-body">
           {children}
         </div>
@@ -741,22 +736,22 @@ export class ErrorBoundary extends React.Component<
     super(props)
     this.state = { hasError: false }
   }
-  
+
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error }
   }
-  
+
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.props.onError?.(error, errorInfo)
     console.error('Error capturado por ErrorBoundary:', error, errorInfo)
   }
-  
+
   render() {
     if (this.state.hasError) {
       const FallbackComponent = this.props.fallback || DefaultErrorFallback
       return <FallbackComponent error={this.state.error!} />
     }
-    
+
     return this.props.children
   }
 }
@@ -790,19 +785,19 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 }) => {
   const { i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
-  
+
   const languages = [
     { code: 'en', label: 'English', flag: '🇺🇸' },
     { code: 'es', label: 'Español', flag: '🇪🇸' }
   ]
-  
+
   const currentLanguage = languages.find(lang => lang.code === i18n.language)
-  
+
   const changeLanguage = (langCode: string) => {
     i18n.changeLanguage(langCode)
     setIsOpen(false)
   }
-  
+
   if (variant === 'toggle') {
     return (
       <button
@@ -814,7 +809,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       </button>
     )
   }
-  
+
   return (
     <div className={cn('language-dropdown', className)}>
       <button
@@ -827,7 +822,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
           'rotate-180': isOpen
         })} />
       </button>
-      
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -875,7 +870,7 @@ const AllTheProviders: React.FC<{ children: React.ReactNode }> = ({ children }) 
       mutations: { retry: false },
     },
   })
-  
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -907,31 +902,31 @@ import { mockProject } from '@/test/mocks'
 describe('ProjectCard', () => {
   it('renderiza información del proyecto correctamente', () => {
     render(<ProjectCard project={mockProject} />)
-    
+
     expect(screen.getByText(mockProject.name)).toBeInTheDocument()
     expect(screen.getByText(mockProject.description)).toBeInTheDocument()
     expect(screen.getByRole('img')).toHaveAttribute('alt', mockProject.name)
   })
-  
+
   it('llama onCardClick cuando se hace clic', () => {
     const handleClick = vi.fn()
     render(<ProjectCard project={mockProject} onCardClick={handleClick} />)
-    
+
     fireEvent.click(screen.getByRole('article'))
-    
+
     expect(handleClick).toHaveBeenCalledWith(mockProject)
   })
-  
+
   it('muestra estadísticas cuando showStats es true', () => {
     render(<ProjectCard project={mockProject} showStats />)
-    
+
     expect(screen.getByText(mockProject.stargazers_count.toString())).toBeInTheDocument()
     expect(screen.getByText(mockProject.forks_count.toString())).toBeInTheDocument()
   })
-  
+
   it('aplica la variante correcta', () => {
     render(<ProjectCard project={mockProject} variant="featured" />)
-    
+
     expect(screen.getByRole('article')).toHaveClass('project-card-featured')
   })
 })
@@ -947,20 +942,20 @@ import { ContactForm } from './ContactForm'
 describe('ContactForm', () => {
   it('valida campos requeridos', async () => {
     render(<ContactForm />)
-    
+
     fireEvent.click(screen.getByRole('button', { name: /enviar/i }))
-    
+
     await waitFor(() => {
       expect(screen.getByText(/el nombre es requerido/i)).toBeInTheDocument()
       expect(screen.getByText(/el email es requerido/i)).toBeInTheDocument()
       expect(screen.getByText(/el mensaje es requerido/i)).toBeInTheDocument()
     })
   })
-  
+
   it('envía formulario con datos válidos', async () => {
     const handleSubmit = vi.fn().mockResolvedValue(undefined)
     render(<ContactForm onSubmit={handleSubmit} />)
-    
+
     fireEvent.change(screen.getByLabelText(/nombre/i), {
       target: { value: 'Juan Pérez' }
     })
@@ -970,9 +965,9 @@ describe('ContactForm', () => {
     fireEvent.change(screen.getByLabelText(/mensaje/i), {
       target: { value: 'Este es un mensaje de prueba' }
     })
-    
+
     fireEvent.click(screen.getByRole('button', { name: /enviar/i }))
-    
+
     await waitFor(() => {
       expect(handleSubmit).toHaveBeenCalledWith({
         name: 'Juan Pérez',
@@ -999,7 +994,7 @@ export const mockProject: GitHubProject = {
   forks_count: 7,
   created_at: '2023-01-01T00:00:00Z',
   updated_at: '2023-12-01T00:00:00Z',
-  topics: ['react', 'typescript', 'vite']
+  topics: ['react', 'typescript', 'vite'],
 }
 
 // test/mocks/handlers.ts
@@ -1009,10 +1004,10 @@ export const handlers = [
   rest.get('/api/projects', (req, res, ctx) => {
     return res(ctx.json([mockProject]))
   }),
-  
+
   rest.post('/api/contact', (req, res, ctx) => {
     return res(ctx.json({ success: true }))
-  })
+  }),
 ]
 ```
 
@@ -1069,7 +1064,7 @@ const MemoizedComponent = ({ items }) => {
   const expensiveValue = useMemo(() => {
     return items.reduce((acc, item) => acc + item.value, 0)
   }, [items])
-  
+
   return <div>{expensiveValue}</div>
 }
 ```

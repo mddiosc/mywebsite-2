@@ -33,15 +33,15 @@
 - [x] 3.9 Verify `dist/sitemap.xml` exists and contains all expected routes (static + dynamic blog routes in both `/es/` and `/en/`)
 - [x] 3.10 Run `pnpm test` — all unit tests must pass
 - [x] 3.11 Run `pnpm test:e2e` — all Playwright tests must pass (or document any pre-existing failures)
-- [ ] 3.12 Commit Phase 2 changes with message `feat: upgrade to vite 8 with rolldown and migrate to codeSplitting API`
+- [x] 3.12 Commit Phase 2 changes with message `feat: upgrade to vite 8 with rolldown and migrate to codeSplitting API`
 
 ## 4. Phase 3 — Remaining Dev Tooling Majors
 
-- [ ] 4.1 Update `@vitest/eslint-plugin` to latest 1.x if not already resolved in Phase 1
-- [ ] 4.2 Update `globals` further if 16.x was resolved to a patch in Phase 1 and 16.x latest is available
-- [ ] 4.3 Run `pnpm lint` — must pass with zero errors
-- [ ] 4.4 Run `pnpm format:check` — must pass
-- [ ] 4.5 Run `pnpm quality` (full quality gate: lint + docs:lint + format:check + type-check)
+- [x] 4.1 Update `@vitest/eslint-plugin` to latest 1.x if not already resolved in Phase 1
+- [x] 4.2 Update `globals` further if 16.x was resolved to a patch in Phase 1 and 16.x latest is available
+- [x] 4.3 Run `pnpm lint` — must pass with zero errors
+- [x] 4.4 Run `pnpm format:check` — must pass
+- [x] 4.5 Run `pnpm quality` (full quality gate: lint + docs:lint + format:check + type-check)
 - [ ] 4.6 Trigger a real pre-commit hook check: stage a file and attempt a commit to verify husky + lint-staged + commitlint all fire correctly
 - [ ] 4.7 Commit Phase 3 changes with message `feat: upgrade dev tooling majors (globals, lint-staged, prettier-plugin-tailwindcss)`
 
