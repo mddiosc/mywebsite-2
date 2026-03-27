@@ -38,6 +38,7 @@ function getSiteUrl() {
 
 describe('SEO metadata for localized routes', () => {
   beforeEach(() => {
+    vi.stubEnv('VITE_SITE_URL', 'https://example.com')
     mockedUseBlogPost.mockReset()
     clearSeoTags()
   })
