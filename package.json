@@ -8,6 +8,7 @@
     "dev": "pnpm run generate:projects-snapshot && vite --host",
     "generate:projects-snapshot": "node ./scripts/generate-projects-snapshot.mjs",
     "build": "pnpm run generate:projects-snapshot && vite build",
+    "performance:budget": "node ./scripts/check-performance-budget.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
