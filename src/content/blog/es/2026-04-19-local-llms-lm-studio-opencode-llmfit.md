@@ -20,7 +20,7 @@ La ironía era que ya tenía el hardware. Mi estación de trabajo llevaba meses 
 
 Con 15.9 GB de VRAM podía ejecutar modelos locales con cierta entidad. La pregunta no era si _podía_ — era _cómo conseguir que esto funcione bien_.
 
-Este post es una continuación de [Agentes IA para desarrollo real: opencode, memoria y LLMs híbridos](/blog/es/agent-era-hybrid-llms-memory). El concepto de enrutamiento híbrido está allí. Aquí me centro en la parte local específicamente.
+Este post es una continuación de [Agentes IA para desarrollo real: opencode, memoria y LLMs híbridos](/es/blog/2026-04-18-agent-era-hybrid-llms-memory). El concepto de enrutamiento híbrido está allí. Aquí me centro en la parte local específicamente.
 
 ---
 
@@ -222,4 +222,4 @@ También: LM Studio también descargó un modelo `text-embedding-nomic-embed-tex
 
 ---
 
-_Post anterior de la serie: [Agentes IA para desarrollo real: opencode, memoria y LLMs híbridos](/blog/es/agent-era-hybrid-llms-memory)._
+_Post anterior de la serie: [Agentes IA para desarrollo real: opencode, memoria y LLMs híbridos](/es/blog/2026-04-18-agent-era-hybrid-llms-memory)._

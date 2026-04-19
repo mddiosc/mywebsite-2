@@ -20,7 +20,7 @@ The irony was that I already had the hardware. My workstation had been sitting m
 
 With 15.9 GB of VRAM, I could run meaningful models locally. The question was not _can I_ — it was _how do I actually get this working the right way_.
 
-This is a follow-up to [AI agents for real development: opencode, memory, and hybrid LLMs](/blog/en/agent-era-hybrid-llms-memory). The hybrid routing concept is there. Here I go into the local side specifically.
+This is a follow-up to [AI agents for real development: opencode, memory, and hybrid LLMs](/en/blog/2026-04-18-agent-era-hybrid-llms-memory). The hybrid routing concept is there. Here I go into the local side specifically.
 
 ---
 
@@ -222,4 +222,4 @@ Also: LM Studio also downloaded a `text-embedding-nomic-embed-text-v1.5` model t
 
 ---
 
-_Previous post in the series: [AI agents for real development: opencode, memory, and hybrid LLMs](/blog/en/agent-era-hybrid-llms-memory)._
+_Previous post in the series: [AI agents for real development: opencode, memory, and hybrid LLMs](/en/blog/2026-04-18-agent-era-hybrid-llms-memory)._
