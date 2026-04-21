@@ -29,3 +29,11 @@ test-results/
 *.njsproj
 *.sln
 *.sw?
+
+# AI agent configurations (see separate ai-agent-configs repo)
+.claude/
+.codex/
+.gemini/
+.opencode/
+.github/skills/
+.github/prompts/
