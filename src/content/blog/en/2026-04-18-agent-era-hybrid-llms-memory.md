@@ -5,7 +5,7 @@ date: '2026-04-18'
 tags: ['ai', 'llm', 'agents', 'opencode', 'engram', 'local-llm', 'developer-tools', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'agent-era-hybrid-llms-memory'
-featured: false
+featured: true
 ---
 
 ## Why I stopped using AI just for autocomplete

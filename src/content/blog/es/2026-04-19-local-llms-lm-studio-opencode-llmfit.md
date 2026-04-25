@@ -5,7 +5,7 @@ date: '2026-04-19'
 tags: ['ia', 'llm', 'llm-local', 'lm-studio', 'opencode', 'herramientas-desarrollo', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'local-llms-lm-studio-opencode-llmfit'
-featured: false
+featured: true
 ---
 
 ## El detonante

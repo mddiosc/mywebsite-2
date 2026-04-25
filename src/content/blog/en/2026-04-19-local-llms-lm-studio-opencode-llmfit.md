@@ -5,7 +5,7 @@ date: '2026-04-19'
 tags: ['ai', 'llm', 'local-llm', 'lm-studio', 'opencode', 'developer-tools', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'local-llms-lm-studio-opencode-llmfit'
-featured: false
+featured: true
 ---
 
 ## The trigger

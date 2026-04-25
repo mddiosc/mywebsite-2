@@ -5,7 +5,7 @@ date: '2026-04-18'
 tags: ['ia', 'llm', 'agentes', 'opencode', 'engram', 'llm-local', 'herramientas-desarrollo', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'agent-era-hybrid-llms-memory'
-featured: false
+featured: true
 ---
 
 ## Por que deje de usar la IA solo para autocompletar

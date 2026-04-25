@@ -5,7 +5,7 @@ date: '2026-04-21'
 tags: ['ai', 'llm', 'agents', 'rtk-ai', 'opencode', 'dev-tools', 'dx', 'performance']
 author: 'Miguel Angel de Dios'
 slug: 'rtk-ai-token-optimization-agents'
-featured: false
+featured: true
 ---
 
 ## What I left pending
