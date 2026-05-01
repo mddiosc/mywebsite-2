@@ -1,4 +1,5 @@
 export { AccessibleMotion } from './AccessibleMotion'
+export { ParticlesBackground } from './ParticlesBackground'
 export { DocumentHead } from './DocumentHead'
 export { default as Footer } from './Footer'
 export { default as LanguageSwitcher } from './LanguageSwitcher'

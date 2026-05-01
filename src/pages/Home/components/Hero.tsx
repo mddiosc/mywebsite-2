@@ -7,7 +7,6 @@ import { useHeroData } from '../hooks'
 
 import { fadeIn, smoothTransition } from '@/lib/animations'
 
-// Staggered letter animation for the title
 const letterVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: (i: number) => ({
@@ -21,7 +20,6 @@ const letterVariants = {
   }),
 }
 
-// Container for staggered children
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -33,8 +31,7 @@ const containerVariants = {
   },
 }
 
-// Animated gradient text component
-function AnimatedTitle({ text }: { text: string }) {
+function AnimatedTitle({ text }: Readonly<{ text: string }>) {
   const words = text.split(' ')
 
   return (
@@ -67,16 +64,15 @@ function AnimatedTitle({ text }: { text: string }) {
   )
 }
 
-// Availability status badge
 function StatusBadge({
   announcement,
   readMore,
   language,
-}: {
+}: Readonly<{
   announcement: string
   readMore: string
   language: string
-}) {
+}>) {
   return (
     <motion.div
       className="mb-8 flex justify-center px-4 sm:mb-10 sm:px-0 lg:mb-12"
@@ -88,7 +84,6 @@ function StatusBadge({
         to={`/${language}/contact`}
         className="group relative inline-flex flex-wrap items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-primary/10 to-accent/10 px-3 py-2 text-center text-xs font-medium text-gray-700 ring-1 ring-primary/20 transition-all hover:shadow-lg hover:shadow-primary/10 hover:ring-primary/40 sm:flex-nowrap sm:gap-2 sm:px-4 sm:text-sm dark:from-primary/20 dark:to-accent/20 dark:text-gray-200 dark:ring-primary/30"
       >
-        {/* Animated pulse dot */}
         <span className="relative flex h-2 w-2 shrink-0">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
           <span className="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
@@ -115,15 +110,11 @@ export default function Hero() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-16">
-      {/* Status Badge */}
       <StatusBadge announcement={announcement} readMore={readMore} language={language} />
 
-      {/* Main Content */}
       <div className="text-center">
-        {/* Animated Title */}
         <AnimatedTitle text={title} />
 
-        {/* Subtitle with fade in */}
         <motion.p
           className="mx-auto mt-6 max-w-3xl text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:mt-10 lg:text-2xl/relaxed dark:text-gray-300"
           initial="hidden"
@@ -134,7 +125,6 @@ export default function Hero() {
           {subtitle}
         </motion.p>
 
-        {/* Decorative element */}
         <motion.div
           className="mt-10 flex justify-center sm:mt-12"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -142,20 +132,12 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 1.2 }}
         >
           <div className="relative">
-            {/* Glow effect */}
             <div className="absolute -inset-1 rounded-full bg-linear-to-r from-primary via-highlight to-accent opacity-30 blur-lg"></div>
-            {/* Scroll indicator */}
             <div className="relative flex h-12 w-8 items-start justify-center rounded-full border-2 border-gray-300 p-2 dark:border-gray-600">
               <motion.div
                 className="h-2 w-1 rounded-full bg-primary"
-                animate={{
-                  y: [0, 12, 0],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
               />
             </div>
           </div>

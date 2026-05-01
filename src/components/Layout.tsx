@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useHtmlLang } from '../hooks/useHtmlLang'
 import { commonTransition, fadeIn } from '../lib/animations'
 
-import { Footer, Navbar, SkipLinks } from '.'
+import { Footer, Navbar, ParticlesBackground, SkipLinks } from '.'
 
 const clipPath =
   'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)'
@@ -47,7 +47,8 @@ const Layout = () => {
   useHtmlLang()
 
   return (
-    <div className="flex min-h-screen flex-col bg-white transition-colors duration-300 dark:bg-[#0A0A0F]">
+    <div className="flex min-h-screen flex-col transition-colors duration-300">
+      <ParticlesBackground />
       <SkipLinks />
       <Navbar />
       <main
