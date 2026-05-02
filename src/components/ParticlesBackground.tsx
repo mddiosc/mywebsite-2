@@ -7,6 +7,7 @@ const MAX_DISTANCE = 130
 const MOUSE_RADIUS = 160
 const MOUSE_FORCE = 0.05
 const BASE_SPEED = 0.4
+const MAX_SPEED = BASE_SPEED * 3
 
 interface Particle {
   x: number
@@ -28,6 +29,70 @@ function createParticles(width: number, height: number): Particle[] {
   }))
 }
 
+function applyMouseRepulsion(p: Particle, mouse: { x: number; y: number }): void {
+  const dx = p.x - mouse.x
+  const dy = p.y - mouse.y
+  const dist = Math.hypot(dx, dy)
+  if (dist >= MOUSE_RADIUS || dist === 0) return
+
+  const force = ((MOUSE_RADIUS - dist) / MOUSE_RADIUS) * MOUSE_FORCE
+  p.vx += (dx / dist) * force
+  p.vy += (dy / dist) * force
+}
+
+function updateParticle(p: Particle, width: number, height: number): void {
+  p.vx *= 0.99
+  p.vy *= 0.99
+
+  const speed = Math.hypot(p.vx, p.vy)
+  if (speed > MAX_SPEED) {
+    p.vx = (p.vx / speed) * MAX_SPEED
+    p.vy = (p.vy / speed) * MAX_SPEED
+  }
+
+  p.x += p.vx
+  p.y += p.vy
+
+  if (p.x < 0) p.x = width
+  if (p.x > width) p.x = 0
+  if (p.y < 0) p.y = height
+  if (p.y > height) p.y = 0
+}
+
+function drawParticle(ctx: CanvasRenderingContext2D, p: Particle, color: string): void {
+  ctx.beginPath()
+  ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
+  ctx.fillStyle = color
+  ctx.globalAlpha = p.opacity
+  ctx.fill()
+}
+
+function drawConnections(
+  ctx: CanvasRenderingContext2D,
+  particles: Particle[],
+  color: string,
+): void {
+  for (let i = 0; i < particles.length; i++) {
+    const a = particles[i]
+    if (a === undefined) continue
+    for (let j = i + 1; j < particles.length; j++) {
+      const b = particles[j]
+      if (b === undefined) continue
+
+      const dist = Math.hypot(a.x - b.x, a.y - b.y)
+      if (dist >= MAX_DISTANCE) continue
+
+      ctx.beginPath()
+      ctx.moveTo(a.x, a.y)
+      ctx.lineTo(b.x, b.y)
+      ctx.strokeStyle = color
+      ctx.globalAlpha = (1 - dist / MAX_DISTANCE) * 0.2
+      ctx.lineWidth = 0.5
+      ctx.stroke()
+    }
+  }
+}
+
 export function ParticlesBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
@@ -42,92 +107,33 @@ export function ParticlesBackground() {
     let rafId: number | null = null
     const mouse = { x: -9999, y: -9999 }
 
-    // Logical dimensions (CSS pixels) — particles live in this space
     let logicalWidth = window.innerWidth
     let logicalHeight = window.innerHeight
+    const particles: Particle[] = []
+
+    const color =
+      getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() ||
+      '#0066ff'
 
     const resize = () => {
       logicalWidth = window.innerWidth
       logicalHeight = window.innerHeight
-
-      // Buffer = logical size (no dpr scaling needed — canvas fills via CSS inset-0)
       canvas.width = logicalWidth
       canvas.height = logicalHeight
+      particles.length = 0
+      particles.push(...createParticles(logicalWidth, logicalHeight))
     }
 
-    resize()
-
-    const particles = createParticles(logicalWidth, logicalHeight)
-
-    const getColor = () =>
-      getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() ||
-      '#0066ff'
-
     const tick = () => {
-      const color = getColor()
-
       ctx.clearRect(0, 0, logicalWidth, logicalHeight)
 
       for (const p of particles) {
-        // Mouse repulsion
-        const dx = p.x - mouse.x
-        const dy = p.y - mouse.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < MOUSE_RADIUS && dist > 0) {
-          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS
-          p.vx += (dx / dist) * force * MOUSE_FORCE
-          p.vy += (dy / dist) * force * MOUSE_FORCE
-        }
-
-        // Dampen
-        p.vx *= 0.99
-        p.vy *= 0.99
-
-        // Clamp speed
-        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
-        const maxSpeed = BASE_SPEED * 3
-        if (speed > maxSpeed) {
-          p.vx = (p.vx / speed) * maxSpeed
-          p.vy = (p.vy / speed) * maxSpeed
-        }
-
-        p.x += p.vx
-        p.y += p.vy
-
-        // Wrap edges using logical dimensions
-        if (p.x < 0) p.x = logicalWidth
-        if (p.x > logicalWidth) p.x = 0
-        if (p.y < 0) p.y = logicalHeight
-        if (p.y > logicalHeight) p.y = 0
-
-        // Draw dot
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
-        ctx.fillStyle = color
-        ctx.globalAlpha = p.opacity
-        ctx.fill()
+        applyMouseRepulsion(p, mouse)
+        updateParticle(p, logicalWidth, logicalHeight)
+        drawParticle(ctx, p, color)
       }
 
-      // Draw connecting lines
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i]
-          const b = particles[j]
-          if (a === undefined || b === undefined) continue
-          const dx = a.x - b.x
-          const dy = a.y - b.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < MAX_DISTANCE) {
-            ctx.beginPath()
-            ctx.moveTo(a.x, a.y)
-            ctx.lineTo(b.x, b.y)
-            ctx.strokeStyle = color
-            ctx.globalAlpha = (1 - dist / MAX_DISTANCE) * 0.2
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        }
-      }
+      drawConnections(ctx, particles, color)
 
       ctx.globalAlpha = 1
 
@@ -135,6 +141,8 @@ export function ParticlesBackground() {
         rafId = requestAnimationFrame(tick)
       }
     }
+
+    resize()
 
     if (prefersReducedMotion) {
       tick()
@@ -153,13 +161,13 @@ export function ParticlesBackground() {
 
     globalThis.addEventListener('resize', resize, { passive: true })
     globalThis.addEventListener('mousemove', onMouseMove, { passive: true })
-    globalThis.addEventListener('mouseleave', onMouseLeave, { passive: true })
+    document.addEventListener('mouseleave', onMouseLeave, { passive: true })
 
     return () => {
       if (rafId !== null) cancelAnimationFrame(rafId)
       globalThis.removeEventListener('resize', resize)
       globalThis.removeEventListener('mousemove', onMouseMove)
-      globalThis.removeEventListener('mouseleave', onMouseLeave)
+      document.removeEventListener('mouseleave', onMouseLeave)
     }
   }, [prefersReducedMotion, isDark])
 
