@@ -174,7 +174,7 @@ export default function Navbar() {
                 <OptimizedImage
                   src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                   alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
-                  className="h-9 w-auto"
+                  className="h-8 w-auto"
                   priority
                 />
               </NavLink>
@@ -295,7 +295,7 @@ export default function Navbar() {
                   <OptimizedImage
                     src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                     alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
-                    className="h-10 w-auto"
+                    className="h-8 w-auto"
                     priority
                   />
                 </NavLink>

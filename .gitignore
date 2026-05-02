@@ -37,3 +37,6 @@ test-results/
 .opencode/
 .github/skills/
 .github/prompts/
+.agents/
+skills-lock.json
+.playwright*

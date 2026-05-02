@@ -101,6 +101,15 @@ export default tseslint.config(
     },
   },
   {
+    // React Three Fiber files use custom JSX elements (group, mesh, meshBasicMaterial, etc.)
+    // that are not standard DOM elements. Disable DOM-specific rules that produce false positives.
+    files: ['src/components/3d/**/*.{ts,tsx}'],
+    rules: {
+      'react-dom/no-unknown-property': 'off',
+      'react-x/no-unknown-property': 'off',
+    },
+  },
+  {
     files: ['**/?(*.)+(spec|test).[jt]s?(x)'],
     plugins: {
       'testing-library': testingLibrary,
