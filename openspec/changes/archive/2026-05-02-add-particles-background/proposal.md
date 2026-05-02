@@ -1,6 +1,6 @@
 # Change: Add Particles Background
 
-## What
+## What Changes
 
 Add an animated 2D particle system as a global background layer across all pages. The particles are rendered on a full-screen canvas with mouse-repulsion physics, connecting lines between nearby particles, and theme-aware colors.
 
