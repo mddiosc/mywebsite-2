@@ -52,7 +52,7 @@ test.describe('Projects page', () => {
     const projectLink = page.getByRole('link', { name: firstProject.name }).first()
     await expect(projectLink).toBeVisible()
 
-    const [popup] = await Promise.all([page.waitForEvent('popup'), projectLink.click()])
+    const [popup] = await Promise.all([page.context().waitForEvent('page'), projectLink.click()])
 
     await popup.waitForLoadState()
     expect(popup.url()).toContain(firstProject.html_url)
