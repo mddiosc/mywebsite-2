@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T16:36:21.828Z",
+  "generatedAt": "2026-05-07T16:50:37.996Z",
   "source": "generated",
   "projects": [
     {
@@ -25,37 +25,6 @@
       "stargazers_count": 4,
       "watchers_count": 4,
       "language": "Go",
-      "forks_count": 0,
-      "archived": false,
-      "disabled": false,
-      "topics": [],
-      "visibility": "public",
-      "default_branch": "main"
-    },
-    {
-      "id": 1193844579,
-      "name": "analytics-cockpit",
-      "full_name": "mddiosc/analytics-cockpit",
-      "owner": {
-        "login": "mddiosc",
-        "avatar_url": "https://avatars.githubusercontent.com/u/34164203?v=4",
-        "html_url": "https://github.com/mddiosc"
-      },
-      "html_url": "https://github.com/mddiosc/analytics-cockpit",
-      "description": null,
-      "languages": {
-        "TypeScript": 50825,
-        "CSS": 7308,
-        "JavaScript": 970,
-        "HTML": 369
-      },
-      "created_at": "2026-03-27T16:31:59Z",
-      "updated_at": "2026-03-27T17:04:09Z",
-      "pushed_at": "2026-03-27T17:04:06Z",
-      "homepage": null,
-      "stargazers_count": 0,
-      "watchers_count": 0,
-      "language": "TypeScript",
       "forks_count": 0,
       "archived": false,
       "disabled": false,
@@ -272,7 +241,7 @@
       },
       "created_at": "2025-03-07T08:12:07Z",
       "updated_at": "2026-05-03T08:29:36Z",
-      "pushed_at": "2026-05-03T08:29:32Z",
+      "pushed_at": "2026-05-07T16:39:05Z",
       "homepage": "https://migueldedioscalles.dev",
       "stargazers_count": 1,
       "watchers_count": 1,
