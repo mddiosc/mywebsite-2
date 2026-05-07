@@ -10,52 +10,69 @@ function calculateReadingTime(content: string): number {
   return Math.ceil(wordCount / wordsPerMinute)
 }
 
-function parseFrontmatter(content: string): { meta: Record<string, unknown>; content: string } {
-  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
-  const exec = frontmatterRegex.exec(content)
+export function parseFrontmatterLine(line: string): [string, string] | null {
+  const trimmed = line.trim()
+  if (!trimmed || trimmed.startsWith('#')) return null
 
-  if (!exec) {
+  const colonIndex = trimmed.indexOf(':')
+  if (colonIndex === -1) return null
+
+  const key = trimmed.substring(0, colonIndex).trim()
+  const value = trimmed.substring(colonIndex + 1).trim()
+  return [key, value]
+}
+
+export function parseFrontmatterValue(raw: string): unknown {
+  let value = raw
+
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    value = value.slice(1, -1)
+  }
+
+  if (value.startsWith('[') && value.endsWith(']')) {
+    return value
+      .slice(1, -1)
+      .split(',')
+      .map((item) => item.trim().replace(/['"]/g, ''))
+      .filter((item) => item.length > 0)
+  }
+
+  if (value === 'true' || value === 'false') {
+    return value === 'true'
+  }
+
+  return value
+}
+
+export function parseFrontmatter(content: string): {
+  meta: Record<string, unknown>
+  content: string
+} {
+  const lines = content.split('\n')
+
+  if (lines[0] !== '---') {
     return { meta: {}, content }
   }
 
-  const frontmatterText = exec[1]
-  const markdownContent = exec[2]
+  const closingDelimiterLineIndex = lines.indexOf('---', 1)
 
-  if (!frontmatterText || !markdownContent) {
+  if (closingDelimiterLineIndex === -1) {
     return { meta: {}, content }
   }
+
+  const frontmatterText = lines.slice(1, closingDelimiterLineIndex).join('\n')
+  const markdownContent = lines.slice(closingDelimiterLineIndex + 1).join('\n')
 
   const meta: Record<string, unknown> = {}
-  const lines = frontmatterText.split('\n')
 
-  for (const line of lines) {
-    const trimmedLine = line.trim()
-    if (!trimmedLine || trimmedLine.startsWith('#')) continue
-
-    const colonIndex = trimmedLine.indexOf(':')
-    if (colonIndex === -1) continue
-
-    const key = trimmedLine.substring(0, colonIndex).trim()
-    let value = trimmedLine.substring(colonIndex + 1).trim()
-
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1)
-    }
-
-    if (value.startsWith('[') && value.endsWith(']')) {
-      const arrayContent = value.slice(1, -1)
-      meta[key] = arrayContent
-        .split(',')
-        .map((item) => item.trim().replace(/['"]/g, ''))
-        .filter((item) => item.length > 0)
-    } else if (value === 'true' || value === 'false') {
-      meta[key] = value === 'true'
-    } else {
-      meta[key] = value
-    }
+  for (const line of frontmatterText.split('\n')) {
+    const parsed = parseFrontmatterLine(line)
+    if (!parsed) continue
+    const [key, value] = parsed
+    meta[key] = parseFrontmatterValue(value)
   }
 
   return { meta, content: markdownContent }
@@ -63,9 +80,6 @@ function parseFrontmatter(content: string): { meta: Record<string, unknown>; con
 
 async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
   try {
-    // Simulamos el delay para mostrar el loading state
-    await new Promise((resolve) => setTimeout(resolve, 100))
-
     const posts: BlogPost[] = []
 
     // Usamos import.meta.glob para cargar los archivos markdown

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-02T09:14:59.077Z",
+  "generatedAt": "2026-05-07T16:36:21.828Z",
   "source": "generated",
   "projects": [
     {
@@ -14,13 +14,13 @@
       "html_url": "https://github.com/mddiosc/vectos",
       "description": null,
       "languages": {
-        "Go": 191939,
+        "Go": 205677,
         "Shell": 8816,
         "Makefile": 749
       },
       "created_at": "2026-04-24T18:10:45Z",
-      "updated_at": "2026-05-01T20:19:34Z",
-      "pushed_at": "2026-05-01T20:19:30Z",
+      "updated_at": "2026-05-05T18:49:26Z",
+      "pushed_at": "2026-05-05T18:49:23Z",
       "homepage": null,
       "stargazers_count": 4,
       "watchers_count": 4,
@@ -264,15 +264,15 @@
       "html_url": "https://github.com/mddiosc/mywebsite-2",
       "description": "Modern personal portfolio website built with React, TypeScript, and Vite. Features multilingual support (Spanish/English), responsive design, project showcase with GitHub integration, and contact form functionality. Fully internationalized with i18n support and comprehensive testing coverage.",
       "languages": {
-        "TypeScript": 467438,
-        "JavaScript": 12530,
+        "TypeScript": 471745,
+        "JavaScript": 12891,
         "CSS": 2456,
         "Dockerfile": 1946,
         "HTML": 604
       },
       "created_at": "2025-03-07T08:12:07Z",
-      "updated_at": "2026-04-25T16:02:02Z",
-      "pushed_at": "2026-04-25T16:01:58Z",
+      "updated_at": "2026-05-03T08:29:36Z",
+      "pushed_at": "2026-05-03T08:29:32Z",
       "homepage": "https://migueldedioscalles.dev",
       "stargazers_count": 1,
       "watchers_count": 1,

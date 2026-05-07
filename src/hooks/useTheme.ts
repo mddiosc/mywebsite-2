@@ -6,12 +6,22 @@ const THEME_STORAGE_KEY = 'theme-preference'
 
 /**
  * Hook to manage theme (dark/light mode) with system preference detection
- * and localStorage persistence
+ * and localStorage persistence.
+ *
+ * NOTE: theme resolution logic here intentionally duplicates the IIFE
+ * in index.html. The IIFE applies the class before React hydrates
+ * (anti-FOUC), and this hook syncs React state with the pre-applied class.
  */
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    // Check localStorage first
-    if (typeof window !== 'undefined') {
+  const [theme, setTheme] = useState<Theme>(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- SSR safety guard
+    if (globalThis.window !== undefined) {
+      // If the inline script already applied a theme class, use it to avoid flash
+      const root = document.documentElement
+      if (root.classList.contains('dark')) return 'dark'
+      if (root.classList.contains('light')) return 'light'
+
+      // Fallback to localStorage
       const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null
       if (stored && ['light', 'dark', 'system'].includes(stored)) {
         return stored
@@ -25,8 +35,11 @@ export function useTheme() {
   // Get the actual theme based on system preference
   const getResolvedTheme = useCallback((): 'light' | 'dark' => {
     if (theme === 'system') {
-      if (typeof window !== 'undefined') {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- SSR safety guard
+      if (globalThis.window !== undefined) {
+        return globalThis.window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
       }
       return 'light'
     }
@@ -39,24 +52,38 @@ export function useTheme() {
     setResolvedTheme(resolved)
 
     const root = document.documentElement
+    const hasCorrectClass = root.classList.contains(resolved)
+
+    // Skip DOM class update if already correct (anti-flash: index.html IIFE set it)
+    // But always sync color-scheme for native controls (buttons, inputs, scrollbars)
+    root.style.colorScheme = resolved
+
+    if (hasCorrectClass) return
+
     root.classList.remove('light', 'dark')
     root.classList.add(resolved)
-
-    // Update color-scheme for native elements
-    root.style.colorScheme = resolved
   }, [getResolvedTheme])
 
   // Listen for system preference changes
   useEffect(() => {
     if (theme !== 'system') return
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const mediaQuery = globalThis.window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = () => {
       const resolved = getResolvedTheme()
       setResolvedTheme(resolved)
-      document.documentElement.classList.remove('light', 'dark')
-      document.documentElement.classList.add(resolved)
-      document.documentElement.style.colorScheme = resolved
+
+      const root = document.documentElement
+      const hasCorrectClass = root.classList.contains(resolved)
+
+      // Always sync color-scheme for native controls
+      root.style.colorScheme = resolved
+
+      // Skip DOM class update if already correct (anti-flash)
+      if (hasCorrectClass) return
+
+      root.classList.remove('light', 'dark')
+      root.classList.add(resolved)
     }
 
     mediaQuery.addEventListener('change', handleChange)
@@ -65,20 +92,20 @@ export function useTheme() {
     }
   }, [theme, getResolvedTheme])
 
-  const setTheme = useCallback((newTheme: Theme) => {
-    setThemeState(newTheme)
+  const updateTheme = useCallback((newTheme: Theme) => {
+    setTheme(newTheme)
     localStorage.setItem(THEME_STORAGE_KEY, newTheme)
   }, [])
 
   const toggleTheme = useCallback(() => {
     const newTheme = resolvedTheme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-  }, [resolvedTheme, setTheme])
+    updateTheme(newTheme)
+  }, [resolvedTheme, updateTheme])
 
   return {
     theme,
     resolvedTheme,
-    setTheme,
+    setTheme: updateTheme,
     toggleTheme,
     isDark: resolvedTheme === 'dark',
   }

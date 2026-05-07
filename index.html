@@ -1,11 +1,38 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!--
+      Theme anti-FOUC IIFE: applies dark/light class before React hydrates.
+      Intentionally duplicates useTheme.ts logic — this is the "first paint" guard,
+      the hook syncs React state with the pre-applied class afterward.
+    -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('theme-preference');
+          var theme = stored;
+          if (!theme || !['light', 'dark', 'system'].includes(theme)) {
+            theme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          if (theme === 'system') {
+            theme = globalThis.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.classList.add(theme);
+        } catch (e) {
+          // localStorage unavailable (rare privacy mode) — graceful fallback
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Portfolio - Miguel Ángel de Dios</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <!-- Resource hints for faster external connections -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://formspree.io" crossorigin />
+    <link rel="preconnect" href="https://mywebsite-umami.mddiosc.cloud" crossorigin />
     <!-- Umami Analytics -->
     <script defer src="https://mywebsite-umami.mddiosc.cloud/script.js" data-website-id="%VITE_UMAMI_WEBSITE_ID%"></script>
   </head>
