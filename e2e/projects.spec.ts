@@ -49,13 +49,13 @@ test.describe('Projects page', () => {
   })
 
   test('should open the GitHub project link in a new tab', async ({ page }) => {
-    const projectLink = page.getByRole('link', { name: firstProject.name }).first()
+    // The inner <a> tag with target="_blank" — not the outer div[role="link"]
+    const projectLink = page.locator('a[target="_blank"]', { hasText: firstProject.name }).first()
     await expect(projectLink).toBeVisible()
 
-    const [popup] = await Promise.all([page.context().waitForEvent('page'), projectLink.click()])
-
-    await popup.waitForLoadState()
-    expect(popup.url()).toContain(firstProject.html_url)
+    await expect(projectLink).toHaveAttribute('target', '_blank')
+    await expect(projectLink).toHaveAttribute('rel', /noopener.*noreferrer|noreferrer.*noopener/)
+    await expect(projectLink).toHaveAttribute('href', firstProject.html_url)
   })
 
   if (projectWithHomepage) {
