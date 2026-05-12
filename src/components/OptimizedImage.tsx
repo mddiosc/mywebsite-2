@@ -1,5 +1,13 @@
 import { useState, useCallback } from 'react'
 
+interface RasterSource {
+  type: 'image/avif' | 'image/webp'
+  srcSet: string
+  sizes?: string
+}
+
+const EMPTY_SOURCES: RasterSource[] = []
+
 interface OptimizedImageProps {
   src: string
   alt: string
@@ -8,6 +16,13 @@ interface OptimizedImageProps {
   height?: number
   priority?: boolean
   placeholder?: string
+  sources?: RasterSource[]
+  srcSet?: string
+  sizes?: string
+}
+
+function isSvgSource(src: string) {
+  return /\.svg(?:$|[?#])/i.test(src)
 }
 
 /**
@@ -24,10 +39,15 @@ export function OptimizedImage({
   height,
   priority = false,
   placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZjNmNGY2O3N0b3Atb3BhY2l0eToxIiAvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNlNWU3ZWI7c3RvcC1vcGFjaXR5OjEiIC8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0idXJsKCNncmFkaWVudCkiIC8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNHB4IiBmaWxsPSIjOWNhM2FmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iMC4zZW0iPkNhcmdhbmRvLi4uPC90ZXh0Pgo8L3N2Zz4K',
-}: OptimizedImageProps) {
+  sources = EMPTY_SOURCES,
+  srcSet,
+  sizes,
+}: Readonly<OptimizedImageProps>) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [isInView, setIsInView] = useState(priority)
+  const hasPictureSources = sources.length > 0
+  const usePicture = hasPictureSources && !isSvgSource(src)
 
   /**
    * React 19 ref callback with cleanup function
@@ -111,20 +131,48 @@ export function OptimizedImage({
       )}
 
       {/* Main image */}
-      {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          onLoad={handleLoad}
-          onError={handleError}
-          loading={priority ? 'eager' : 'lazy'}
-          className={`transition-opacity duration-300 ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          } ${className}`}
-        />
-      )}
+      {isInView &&
+        (usePicture ? (
+          <picture>
+            {sources.map((source) => (
+              <source
+                key={source.type}
+                type={source.type}
+                srcSet={source.srcSet}
+                sizes={source.sizes ?? sizes}
+              />
+            ))}
+            <img
+              src={src}
+              srcSet={srcSet}
+              sizes={sizes}
+              alt={alt}
+              width={width}
+              height={height}
+              onLoad={handleLoad}
+              onError={handleError}
+              loading={priority ? 'eager' : 'lazy'}
+              className={`transition-opacity duration-300 ${
+                isLoaded ? 'opacity-100' : 'opacity-0'
+              } ${className}`}
+            />
+          </picture>
+        ) : (
+          <img
+            src={src}
+            srcSet={srcSet}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            onLoad={handleLoad}
+            onError={handleError}
+            loading={priority ? 'eager' : 'lazy'}
+            className={`transition-opacity duration-300 ${
+              isLoaded ? 'opacity-100' : 'opacity-0'
+            } ${className}`}
+          />
+        ))}
     </div>
   )
 }
