@@ -3,6 +3,7 @@ import path, { join } from 'node:path'
 
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import sitemap from 'vite-plugin-sitemap'
 import { configDefaults } from 'vitest/config'
@@ -42,12 +43,19 @@ export default defineConfig(() => ({
     react(),
     tailwindcss(),
     htmlEnvPlugin(),
+    process.env.ANALYZE === 'true' &&
+      visualizer({
+        filename: 'reports/stats.html',
+        open: false,
+        brotliSize: true,
+        gzipSize: true,
+      }),
     sitemap({
       hostname: process.env.VITE_SITE_URL ?? 'https://migueldedioscalles.com',
       dynamicRoutes: getSitemapRoutes(),
       outDir: 'dist',
     }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
