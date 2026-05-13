@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createRoot } from 'react-dom/client'
 
 import App from './App'
+import { initializeClientObservability } from './lib/clientObservability'
 import { queryClient } from './lib/queryClient'
 import { initializeCriticalResources } from './lib/resourcePreloading'
 
@@ -13,6 +14,7 @@ import './styles/index.css'
 
 // React 19: Initialize critical resource preloading
 initializeCriticalResources()
+initializeClientObservability()
 
 const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 

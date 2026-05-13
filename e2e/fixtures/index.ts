@@ -1,4 +1,4 @@
-import { test as base, expect, type Page } from '@playwright/test'
+import { test as base, type Page } from '@playwright/test'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -7,6 +7,8 @@ import { test as base, expect, type Page } from '@playwright/test'
 export interface PortfolioFixtures {
   /** Navigates to a language-prefixed path and waits for network idle */
   gotoPage: (path: string) => Promise<void>
+  /** Prepares the page for stable screenshot assertions */
+  prepareForScreenshot: () => Promise<void>
   /** Returns the current language from the URL (/es or /en) */
   getCurrentLang: () => Promise<string>
   /** Forces dark mode on via localStorage + html class before navigation */
@@ -123,42 +125,61 @@ export async function mockGitHubApiEmpty(page: Page): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export const test = base.extend<PortfolioFixtures>({
-  gotoPage: async ({ page }, use) => {
-    await use(async (path: string) => {
+  gotoPage: async ({ page }, run) => {
+    await run(async (path: string) => {
       await page.goto(path)
       await page.waitForLoadState('networkidle')
     })
   },
 
-  getCurrentLang: async ({ page }, use) => {
-    await use(async () => {
+  prepareForScreenshot: async ({ page }, run) => {
+    await run(async () => {
+      await page.emulateMedia({ reducedMotion: 'reduce' })
+      await page.addStyleTag({
+        content: `
+          *, *::before, *::after {
+            animation-duration: 0s !important;
+            animation-delay: 0s !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+            caret-color: transparent !important;
+            scroll-behavior: auto !important;
+          }
+        `,
+      })
+    })
+  },
+
+  getCurrentLang: async ({ page }, run) => {
+    await run(async () => {
       const url = page.url()
       const match = /\/(es|en)(\/|$)/.exec(url)
       return match?.[1] ?? 'es'
     })
   },
 
-  enableDarkMode: async ({ page }, use) => {
-    await use(async () => {
+  enableDarkMode: async ({ page }, run) => {
+    await run(async () => {
       await page.addInitScript(() => {
         localStorage.setItem('theme-preference', 'dark')
       })
     })
   },
 
-  enableLightMode: async ({ page }, use) => {
-    await use(async () => {
+  enableLightMode: async ({ page }, run) => {
+    await run(async () => {
       await page.addInitScript(() => {
         localStorage.setItem('theme-preference', 'light')
       })
     })
   },
 
-  isDarkMode: async ({ page }, use) => {
-    await use(async () => {
+  isDarkMode: async ({ page }, run) => {
+    await run(async () => {
       return page.locator('html').evaluate((el) => (el as HTMLElement).classList.contains('dark'))
     })
   },
 })
 
-export { expect }
+export { expect } from '@playwright/test'
