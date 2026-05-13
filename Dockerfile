@@ -7,12 +7,12 @@ FROM node:22-alpine AS builder
 RUN apk upgrade --no-cache
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@10.33.0 --activate
+RUN corepack enable && corepack prepare pnpm@11.1.1 --activate
 
 WORKDIR /app
 
 # Copy dependency manifests first (better layer caching)
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -44,12 +44,11 @@ RUN pnpm run build
 # Stage 2: Production server
 # ============================================================
 # nginxinc/nginx-unprivileged: runs as non-root (uid 101),
-# Debian slim base, minimal attack surface for static file serving
-FROM nginxinc/nginx-unprivileged:1.27-alpine AS production
+# Alpine base, minimal attack surface for static file serving
+FROM nginxinc/nginx-unprivileged:1.29-alpine AS production
 
-# Upgrade all system packages to latest patched versions
 USER root
-RUN apk upgrade --no-cache
+RUN apk upgrade --no-cache && rm -rf /var/cache/apk/*
 USER nginx
 
 # Copy custom nginx config
