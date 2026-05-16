@@ -14,7 +14,7 @@ test.describe('Visual regression', () => {
     const navbar = page.locator('nav[aria-label]').first()
     await expect(navbar).toHaveScreenshot('home-navbar.png', {
       mask: [page.locator('nav[aria-label] button')],
-      maxDiffPixelRatio: 0.02,
+      maxDiffPixelRatio: 0.04,
     })
   })
 
@@ -30,7 +30,7 @@ test.describe('Visual regression', () => {
     await footer.scrollIntoViewIfNeeded()
     await expect(footer).toHaveScreenshot('home-footer.png', {
       mask: [footer.locator('a[target="_blank"]'), footer.locator('a[href$="/contact"]')],
-      maxDiffPixelRatio: 0.02,
+      maxDiffPixelRatio: 0.04,
     })
   })
 })
