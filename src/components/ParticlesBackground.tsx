@@ -2,12 +2,26 @@ import { useEffect, useRef } from 'react'
 
 import { useReducedMotion, useTheme } from '@/hooks'
 
-const PARTICLE_COUNT = 80
-const MAX_DISTANCE = 130
+const MAX_PARTICLES = 80
+const MIN_PARTICLES = 15
+const MAX_DISTANCE_DESKTOP = 130
 const MOUSE_RADIUS = 160
 const MOUSE_FORCE = 0.05
 const BASE_SPEED = 0.4
 const MAX_SPEED = BASE_SPEED * 3
+
+/** Scale particle count with viewport width so mobile screens feel lighter */
+function getParticleCount(width: number): number {
+  // ~390px mobile → 15 particles, ~768px tablet → 40, 1280px+ → 80
+  return Math.round(
+    MIN_PARTICLES + (MAX_PARTICLES - MIN_PARTICLES) * Math.min((width - 320) / 960, 1),
+  )
+}
+
+/** Scale connection distance proportionally to screen width */
+function getMaxDistance(width: number): number {
+  return MAX_DISTANCE_DESKTOP * Math.min(Math.max(width / 1280, 0.45), 1)
+}
 
 interface Particle {
   x: number
@@ -18,8 +32,8 @@ interface Particle {
   opacity: number
 }
 
-function createParticles(width: number, height: number): Particle[] {
-  return Array.from({ length: PARTICLE_COUNT }, () => ({
+function createParticles(width: number, height: number, count: number): Particle[] {
+  return Array.from({ length: count }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
     vx: (Math.random() - 0.5) * BASE_SPEED,
@@ -71,6 +85,7 @@ function drawConnections(
   ctx: CanvasRenderingContext2D,
   particles: Particle[],
   color: string,
+  maxDistance: number,
 ): void {
   for (let i = 0; i < particles.length; i++) {
     const a = particles[i]
@@ -80,13 +95,13 @@ function drawConnections(
       if (b === undefined) continue
 
       const dist = Math.hypot(a.x - b.x, a.y - b.y)
-      if (dist >= MAX_DISTANCE) continue
+      if (dist >= maxDistance) continue
 
       ctx.beginPath()
       ctx.moveTo(a.x, a.y)
       ctx.lineTo(b.x, b.y)
       ctx.strokeStyle = color
-      ctx.globalAlpha = (1 - dist / MAX_DISTANCE) * 0.2
+      ctx.globalAlpha = (1 - dist / maxDistance) * 0.2
       ctx.lineWidth = 0.5
       ctx.stroke()
     }
@@ -109,6 +124,8 @@ export function ParticlesBackground() {
 
     let logicalWidth = window.innerWidth
     let logicalHeight = window.innerHeight
+    let particleCount = getParticleCount(logicalWidth)
+    let maxDistance = getMaxDistance(logicalWidth)
     const particles: Particle[] = []
 
     const color =
@@ -118,10 +135,12 @@ export function ParticlesBackground() {
     const resize = () => {
       logicalWidth = window.innerWidth
       logicalHeight = window.innerHeight
+      particleCount = getParticleCount(logicalWidth)
+      maxDistance = getMaxDistance(logicalWidth)
       canvas.width = logicalWidth
       canvas.height = logicalHeight
       particles.length = 0
-      particles.push(...createParticles(logicalWidth, logicalHeight))
+      particles.push(...createParticles(logicalWidth, logicalHeight, particleCount))
     }
 
     const tick = () => {
@@ -133,7 +152,7 @@ export function ParticlesBackground() {
         drawParticle(ctx, p, color)
       }
 
-      drawConnections(ctx, particles, color)
+      drawConnections(ctx, particles, color, maxDistance)
 
       ctx.globalAlpha = 1
 

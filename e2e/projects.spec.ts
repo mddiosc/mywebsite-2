@@ -39,7 +39,9 @@ test.describe('Projects page', () => {
   })
 
   test('should render projects from the committed snapshot', async ({ page }) => {
-    await expect(page.getByText(firstProject.name)).toBeVisible({ timeout: 10000 })
+    await expect(page.getByRole('link', { name: firstProject.name }).first()).toBeVisible({
+      timeout: 10000,
+    })
   })
 
   test('should render without direct GitHub API access at runtime', async ({ page }) => {
