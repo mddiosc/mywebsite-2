@@ -13,6 +13,12 @@ import { ProjectCaseStudyError } from './ProjectCaseStudyError'
 import { ProjectCaseStudyLoading } from './ProjectCaseStudyLoading'
 
 import { DocumentHead } from '../../../components/DocumentHead'
+import {
+  MarkdownTable,
+  MarkdownTableCell,
+  MarkdownTableHead,
+  MarkdownTableHeader,
+} from '../../../components/MarkdownTable'
 import { useThemeContext } from '../../../context'
 import { useProjectWithCaseStudy } from '../../../hooks/useProjectsWithCaseStudies'
 import { fadeIn, smoothTransition } from '../../../lib/animations'
@@ -70,7 +76,6 @@ const MarkdownPre = ({ children, ...props }: MdProps<'pre'>) => (
     {children}
   </pre>
 )
-
 export function ProjectCaseStudy() {
   const { slug } = useParams<{ slug: string }>()
   const { t, i18n } = useTranslation()
@@ -232,6 +237,10 @@ export function ProjectCaseStudy() {
               a: MarkdownA,
               code: MarkdownCode,
               pre: MarkdownPre,
+              table: MarkdownTable,
+              thead: MarkdownTableHead,
+              th: MarkdownTableHeader,
+              td: MarkdownTableCell,
             }}
           >
             {caseStudy.content}

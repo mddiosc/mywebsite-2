@@ -1,6 +1,7 @@
+import type { ComponentPropsWithoutRef } from 'react'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { type ExtraProps } from 'react-markdown'
 import { useParams, Navigate, Link } from 'react-router'
 
 import { motion } from 'framer-motion'
@@ -11,10 +12,73 @@ import { BlogError } from './BlogError'
 import { BlogLoading } from './BlogLoading'
 
 import { DocumentHead } from '../../../components/DocumentHead'
+import {
+  MarkdownTable,
+  MarkdownTableCell,
+  MarkdownTableHead,
+  MarkdownTableHeader,
+} from '../../../components/MarkdownTable'
 import { useThemeContext } from '../../../context'
 import { useBlogPost } from '../../../hooks/useBlog'
 import { fadeIn, smoothTransition } from '../../../lib/animations'
 import { buildLocalizedSeoUrls } from '../../../lib/seo'
+
+type MdProps<T extends keyof React.JSX.IntrinsicElements> = Omit<
+  ComponentPropsWithoutRef<T> & ExtraProps,
+  'node'
+>
+
+const MarkdownH1 = ({ children }: MdProps<'h1'>) => (
+  <h1 className="mt-8 mb-6 text-3xl font-bold text-gray-900 dark:text-white">{children}</h1>
+)
+const MarkdownH2 = ({ children }: MdProps<'h2'>) => (
+  <h2 className="mt-6 mb-4 text-2xl font-semibold text-gray-900 dark:text-white">{children}</h2>
+)
+const MarkdownH3 = ({ children }: MdProps<'h3'>) => (
+  <h3 className="mt-5 mb-3 text-xl font-semibold text-gray-900 dark:text-white">{children}</h3>
+)
+const MarkdownP = ({ children }: MdProps<'p'>) => (
+  <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">{children}</p>
+)
+const MarkdownUl = ({ children }: MdProps<'ul'>) => (
+  <ul className="mb-4 list-disc pl-6 text-gray-700 dark:text-gray-300">{children}</ul>
+)
+const MarkdownOl = ({ children }: MdProps<'ol'>) => (
+  <ol className="mb-4 list-decimal pl-6 text-gray-700 dark:text-gray-300">{children}</ol>
+)
+const MarkdownLi = ({ children }: MdProps<'li'>) => <li className="mb-1">{children}</li>
+const MarkdownBlockquote = ({ children }: MdProps<'blockquote'>) => (
+  <blockquote className="my-4 border-l-4 border-primary/50 bg-primary/5 py-2 pr-4 pl-4 text-gray-700 italic dark:border-primary-light/50 dark:bg-primary/10 dark:text-gray-300">
+    {children}
+  </blockquote>
+)
+const MarkdownA = ({ children, href }: MdProps<'a'>) => (
+  <a
+    href={href}
+    className="text-primary underline decoration-primary/30 transition-colors hover:decoration-primary dark:text-primary-light dark:decoration-primary-light/30 dark:hover:decoration-primary-light"
+    target={href?.startsWith('http') ? '_blank' : undefined}
+    rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+  >
+    {children}
+  </a>
+)
+const MarkdownStrong = ({ children }: MdProps<'strong'>) => (
+  <strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>
+)
+const MarkdownCode = ({ children, className }: MdProps<'code'>) => {
+  const isInline = !className
+
+  return isInline ? (
+    <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
+      {children}
+    </code>
+  ) : (
+    <code className={className}>{children}</code>
+  )
+}
+const MarkdownPre = ({ children }: MdProps<'pre'>) => (
+  <pre className="my-4 overflow-x-auto rounded-xl bg-gray-50 p-4 dark:bg-gray-900">{children}</pre>
+)
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
@@ -43,13 +107,12 @@ export function BlogPost() {
     return <BlogLoading />
   }
 
+  const handleRetry = () => {
+    refetch().catch(() => undefined)
+  }
+
   if (error || !post) {
-    return (
-      <BlogError
-        message={error?.message ?? t('blog.postNotFound')}
-        onRetry={() => void refetch()}
-      />
-    )
+    return <BlogError message={error?.message ?? t('blog.postNotFound')} onRetry={handleRetry} />
   }
 
   const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, `/blog/${slug}`, locale)
@@ -160,72 +223,22 @@ export function BlogPost() {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
               components={{
-                h1: ({ children }) => (
-                  <h1 className="mt-8 mb-6 text-3xl font-bold text-gray-900 dark:text-white">
-                    {children}
-                  </h1>
-                ),
-                h2: ({ children }) => (
-                  <h2 className="mt-6 mb-4 text-2xl font-semibold text-gray-900 dark:text-white">
-                    {children}
-                  </h2>
-                ),
-                h3: ({ children }) => (
-                  <h3 className="mt-5 mb-3 text-xl font-semibold text-gray-900 dark:text-white">
-                    {children}
-                  </h3>
-                ),
-                p: ({ children }) => (
-                  <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                    {children}
-                  </p>
-                ),
-                ul: ({ children }) => (
-                  <ul className="mb-4 list-disc pl-6 text-gray-700 dark:text-gray-300">
-                    {children}
-                  </ul>
-                ),
-                ol: ({ children }) => (
-                  <ol className="mb-4 list-decimal pl-6 text-gray-700 dark:text-gray-300">
-                    {children}
-                  </ol>
-                ),
-                li: ({ children }) => <li className="mb-1">{children}</li>,
-                blockquote: ({ children }) => (
-                  <blockquote className="my-4 border-l-4 border-primary/50 bg-primary/5 py-2 pr-4 pl-4 text-gray-700 italic dark:border-primary-light/50 dark:bg-primary/10 dark:text-gray-300">
-                    {children}
-                  </blockquote>
-                ),
-                a: ({ children, href }) => (
-                  <a
-                    href={href}
-                    className="text-primary underline decoration-primary/30 transition-colors hover:decoration-primary dark:text-primary-light dark:decoration-primary-light/30 dark:hover:decoration-primary-light"
-                    target={href?.startsWith('http') ? '_blank' : undefined}
-                    rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  >
-                    {children}
-                  </a>
-                ),
-                strong: ({ children }) => (
-                  <strong className="font-semibold text-gray-900 dark:text-white">
-                    {children}
-                  </strong>
-                ),
-                code: ({ children, className }) => {
-                  const isInline = !className
-                  return isInline ? (
-                    <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm text-gray-800 dark:bg-gray-800 dark:text-gray-200">
-                      {children}
-                    </code>
-                  ) : (
-                    <code className={className}>{children}</code>
-                  )
-                },
-                pre: ({ children }) => (
-                  <pre className="my-4 overflow-x-auto rounded-xl bg-gray-50 p-4 dark:bg-gray-900">
-                    {children}
-                  </pre>
-                ),
+                h1: MarkdownH1,
+                h2: MarkdownH2,
+                h3: MarkdownH3,
+                p: MarkdownP,
+                ul: MarkdownUl,
+                ol: MarkdownOl,
+                li: MarkdownLi,
+                blockquote: MarkdownBlockquote,
+                a: MarkdownA,
+                strong: MarkdownStrong,
+                code: MarkdownCode,
+                pre: MarkdownPre,
+                table: MarkdownTable,
+                thead: MarkdownTableHead,
+                th: MarkdownTableHeader,
+                td: MarkdownTableCell,
               }}
             >
               {post.content}
