@@ -39,14 +39,14 @@ const Contact = () => {
   const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 
   useEffect(() => {
-    const ids: string[] = []
+    const addedLinks: HTMLLinkElement[] = []
     const addPreconnect = (href: string, crossOrigin?: string) => {
       const link = document.createElement('link')
       link.rel = 'preconnect'
       link.href = href
       if (crossOrigin) link.crossOrigin = crossOrigin
       document.head.appendChild(link)
-      ids.push(href)
+      addedLinks.push(link)
     }
 
     addPreconnect('https://formspree.io', 'anonymous')
@@ -56,11 +56,7 @@ const Contact = () => {
     }
 
     return () => {
-      for (const href of ids) {
-        for (const el of document.querySelectorAll(`link[rel="preconnect"][href="${href}"]`)) {
-          el.remove()
-        }
-      }
+      for (const link of addedLinks) link.remove()
     }
   }, [recaptchaSiteKey])
 

@@ -147,13 +147,6 @@ export default function Hero() {
               {subtitle}
             </motion.p>
           )}
-
-          {/* Reduced motion: keep static text, no animation */}
-          {shouldAnimate && prefersReducedMotion && (
-            <p className="mt-6 text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:mt-10 lg:text-2xl/relaxed dark:text-gray-300">
-              {subtitle}
-            </p>
-          )}
         </div>
 
         <motion.div

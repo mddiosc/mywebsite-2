@@ -126,6 +126,7 @@ export function ParticlesBackground() {
 
   useEffect(() => {
     const canvas = canvasRef.current
+    if (isMobile) return
     if (canvas === null) return
     const ctx = canvas.getContext('2d')
     if (ctx === null) return
@@ -199,7 +200,7 @@ export function ParticlesBackground() {
       globalThis.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [prefersReducedMotion, isDark])
+  }, [prefersReducedMotion, isDark, isMobile])
 
   if (isMobile) return null
 
