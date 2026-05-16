@@ -14,6 +14,7 @@ outcomes:
   - 'Reindexado incremental para feedback rápido durante el desarrollo'
 repoName: vectos
 relatedPosts:
+  - 'vectos-performance-token-efficiency-agents'
   - 'vectos-semantic-code-retrieval-agents'
   - 'unified-memory-code-embeddings-local'
 ---
