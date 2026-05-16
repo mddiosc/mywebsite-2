@@ -261,6 +261,10 @@ Los agentes no necesitan más contexto por defecto.
 
 Necesitan mejor orientación antes de gastar contexto.
 
+Si te interesa probarlo o seguir su evolución, el repo está aquí:
+
+[github.com/mddiosc/vectos](https://github.com/mddiosc/vectos)
+
 _Relacionado:_
 
 - [Vectos: qué es, cómo funciona y por qué lo estoy construyendo](/es/blog/2026-04-25-vectos-semantic-code-retrieval-agents)

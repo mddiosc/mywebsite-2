@@ -261,6 +261,10 @@ Agents do not need more context by default.
 
 They need better orientation before spending context.
 
+If you want to try it or follow its evolution, the repository is here:
+
+[github.com/mddiosc/vectos](https://github.com/mddiosc/vectos)
+
 _Related:_
 
 - [Vectos: what it is, how it works, and why I am building it](/en/blog/2026-04-25-vectos-semantic-code-retrieval-agents)
