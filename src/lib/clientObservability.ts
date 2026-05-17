@@ -56,11 +56,7 @@ function observeWebVitals() {
     return
   }
 
-  const supportedTypes = [
-    'largest-contentful-paint',
-    'layout-shift',
-    'first-contentful-paint',
-  ] as const
+  const supportedTypes = ['largest-contentful-paint', 'layout-shift', 'paint'] as const
   const observer = new globalThis.PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       if (entry.entryType === 'layout-shift') {
@@ -76,7 +72,7 @@ function observeWebVitals() {
         continue
       }
 
-      if (entry.entryType === 'first-contentful-paint') {
+      if (entry.entryType === 'paint' && entry.name === 'first-contentful-paint') {
         emit({ type: 'web-vital', name: 'fcp', value: entry.startTime })
       }
     }

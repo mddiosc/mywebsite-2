@@ -13,7 +13,7 @@ const AboutHero = () => {
     <div className="relative isolate">
       <svg
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 -z-10 h-256 w-full mask-[radial-gradient(32rem_32rem_at_center,white,transparent)] stroke-gray-200 dark:stroke-gray-800"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-256 w-full mask-[radial-gradient(32rem_32rem_at_center,white,transparent)] stroke-gray-200 dark:stroke-gray-800"
       >
         <defs>
           <pattern
@@ -35,7 +35,7 @@ const AboutHero = () => {
         </svg>
         <rect fill="url(#about-hero-pattern)" width="100%" height="100%" strokeWidth={0} />
       </svg>
-      <div className="overflow-hidden">
+      <div className="relative z-10 overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 pt-8 pb-8 sm:pt-12 sm:pb-12 lg:px-8 lg:pt-16 lg:pb-16">
           <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <motion.div

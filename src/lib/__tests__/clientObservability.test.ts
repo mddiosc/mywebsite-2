@@ -63,12 +63,20 @@ describe('clientObservability', () => {
         hadRecentInput: false,
         toJSON: () => ({}),
       } as PerformanceEntry,
+      {
+        entryType: 'paint',
+        name: 'first-contentful-paint',
+        startTime: 456,
+        duration: 0,
+        toJSON: () => ({}),
+      },
     ])
 
     expect(events).toEqual([
       expect.objectContaining({ type: 'error', message: 'Boom' }),
       expect.objectContaining({ type: 'web-vital', name: 'lcp', value: 1234 }),
       expect.objectContaining({ type: 'web-vital', name: 'cls', value: 0.12 }),
+      expect.objectContaining({ type: 'web-vital', name: 'fcp', value: 456 }),
     ])
   })
 
