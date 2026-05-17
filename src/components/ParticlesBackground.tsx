@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useReducedMotion, useTheme } from '@/hooks'
 
@@ -111,10 +111,22 @@ function drawConnections(
 export function ParticlesBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const prefersReducedMotion = useReducedMotion()
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
   const { isDark } = useTheme()
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
+  useEffect(() => {
     const canvas = canvasRef.current
+    if (isMobile) return
     if (canvas === null) return
     const ctx = canvas.getContext('2d')
     if (ctx === null) return
@@ -188,7 +200,9 @@ export function ParticlesBackground() {
       globalThis.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [prefersReducedMotion, isDark])
+  }, [prefersReducedMotion, isDark, isMobile])
+
+  if (isMobile) return null
 
   return (
     <canvas

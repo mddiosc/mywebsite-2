@@ -1,11 +1,11 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 
 import { motion } from 'framer-motion'
 
-import { HERO_ANIMATION_CONFIG } from '../constants/heroAnimations'
 import { useHeroData } from '../hooks'
 
-import { fadeIn, smoothTransition } from '@/lib/animations'
+import { useReducedMotion } from '@/hooks'
 
 const letterVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -107,6 +107,19 @@ function StatusBadge({
 
 export default function Hero() {
   const { title, subtitle, announcement, readMore, language } = useHeroData()
+  const prefersReducedMotion = useReducedMotion()
+  const [shouldAnimate, setShouldAnimate] = useState(false)
+
+  useEffect(() => {
+    if (prefersReducedMotion) return
+
+    const id = requestAnimationFrame(() => {
+      setShouldAnimate(true)
+    })
+    return () => {
+      cancelAnimationFrame(id)
+    }
+  }, [prefersReducedMotion])
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8 lg:pt-16">
@@ -115,15 +128,26 @@ export default function Hero() {
       <div className="text-center">
         <AnimatedTitle text={title} />
 
-        <motion.p
-          className="mx-auto mt-6 max-w-3xl text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:mt-10 lg:text-2xl/relaxed dark:text-gray-300"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          transition={{ ...smoothTransition, ...HERO_ANIMATION_CONFIG.subtitle }}
-        >
-          {subtitle}
-        </motion.p>
+        <div className="relative mx-auto max-w-3xl">
+          {/* Static placeholder — visible on first paint for LCP, then replaced */}
+          {!shouldAnimate && (
+            <p className="mt-6 text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:mt-10 lg:text-2xl/relaxed dark:text-gray-300">
+              {subtitle}
+            </p>
+          )}
+
+          {/* Animated entrance — replaces static text after first paint with smooth slide-up */}
+          {shouldAnimate && !prefersReducedMotion && (
+            <motion.p
+              className="mt-6 text-lg font-medium text-pretty text-gray-600 sm:mt-8 sm:text-xl lg:mt-10 lg:text-2xl/relaxed dark:text-gray-300"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {subtitle}
+            </motion.p>
+          )}
+        </div>
 
         <motion.div
           className="mt-10 flex justify-center sm:mt-12"

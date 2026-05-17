@@ -8,6 +8,7 @@ const BUDGETS = [
   { label: 'react-vendor', prefix: 'react-vendor-', ext: '.js', maxGzipBytes: 200 * 1024 },
   { label: 'data-vendor', prefix: 'data-vendor-', ext: '.js', maxGzipBytes: 55 * 1024 },
   { label: 'markdown-vendor', prefix: 'markdown-vendor-', ext: '.js', maxGzipBytes: 95 * 1024 },
+  { label: 'i18n-vendor', prefix: 'i18n-vendor-', ext: '.js', maxGzipBytes: 50 * 1024 },
   { label: 'ui-vendor', prefix: 'ui-vendor-', ext: '.js', maxGzipBytes: 35 * 1024 },
   { label: 'animation-vendor', prefix: 'animation-vendor-', ext: '.js', maxGzipBytes: 50 * 1024 },
   { label: 'main-css', prefix: 'index-', ext: '.css', maxGzipBytes: 20 * 1024 },

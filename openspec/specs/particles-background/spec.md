@@ -2,13 +2,13 @@
 
 ## Purpose
 
-TBD - created by archiving change add-particles-background. Update Purpose after archive.
+Provides an animated 2D particle system as a background layer. Particles are rendered on all pages at `z-0` with `pointer-events-none`, and are disabled on mobile viewports (<640px) to conserve CPU/battery.
 
 ## Requirements
 
 ### Requirement: Global Particle Field
 
-The application SHALL render an animated 2D particle system as a background layer on all pages.
+The application SHALL render an animated 2D particle system as a background layer on desktop viewports (>=640px). On mobile viewports (<640px), the canvas SHALL NOT render.
 
 #### Scenario: Particles render behind all content
 
@@ -45,6 +45,13 @@ The application SHALL render an animated 2D particle system as a background laye
 - **WHEN** `prefers-reduced-motion: reduce` is set and the component mounts
 - **THEN** a single frame is rendered (static particle field)
 - **AND** no `requestAnimationFrame` loop is started
+
+#### Scenario: Mobile viewport
+
+- **WHEN** the viewport width is < 640px
+- **THEN** the component returns null and does not render any canvas
+- **AND** no `requestAnimationFrame` loop is started
+- **AND** when the viewport is resized to >= 640px, the canvas mounts and begins animating
 
 ### Requirement: Component Integration
 

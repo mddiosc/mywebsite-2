@@ -9,7 +9,7 @@
  * - Prefetch DNS for future navigations
  */
 
-import { prefetchDNS, preconnect } from 'react-dom'
+import { preconnect } from 'react-dom'
 
 /**
  * Preconnect to external domains for faster resource loading
@@ -17,29 +17,8 @@ import { prefetchDNS, preconnect } from 'react-dom'
  * Establishes early connections to known third-party origins.
  */
 export function preconnectToOrigins() {
-  // Google Fonts
-  preconnect('https://fonts.googleapis.com')
-  preconnect('https://fonts.gstatic.com', { crossOrigin: 'anonymous' })
-
-  // Formspree (contact form)
-  preconnect('https://formspree.io')
-
-  // Google reCAPTCHA
-  preconnect('https://www.google.com')
-  preconnect('https://www.gstatic.com')
-
   // Umami Analytics
   preconnect('https://mywebsite-umami.mddiosc.cloud')
-}
-
-/**
- * Prefetch DNS for external domains
- *
- * Resolves DNS early for domains that will be used later.
- */
-export function prefetchExternalDNS() {
-  prefetchDNS('https://fonts.googleapis.com')
-  prefetchDNS('https://formspree.io')
 }
 
 /**
@@ -49,5 +28,4 @@ export function prefetchExternalDNS() {
  */
 export function initializeCriticalResources() {
   preconnectToOrigins()
-  prefetchExternalDNS()
 }
