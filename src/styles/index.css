@@ -8,7 +8,7 @@
 }
 
 @theme {
-  --font-sans: InterVariable, sans-serif;
+  --font-sans: 'Inter', sans-serif;
 
   /* Modern 2026 Color Palette */
   /* Primary - Electric Blue */
