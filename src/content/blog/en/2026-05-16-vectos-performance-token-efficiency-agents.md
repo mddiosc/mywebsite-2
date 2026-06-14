@@ -5,7 +5,7 @@ date: '2026-05-16'
 tags: ['ai', 'llm', 'agents', 'embeddings', 'rag', 'vectos', 'mcp', 'performance', 'tokens', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'vectos-performance-token-efficiency-agents'
-featured: true
+featured: false
 ---
 
 ## From intuition to measurement

@@ -5,7 +5,7 @@ date: "2025-12-08"
 tags: ["ai", "github-copilot", "claude", "developer-tools", "productivity", "vibe-coding"]
 author: "Miguel Ángel de Dios"
 slug: "ai-assisted-development-copilot-claude"
-featured: true
+featured: false
 ---
 
 A year ago, I was skeptical about AI tools for coding. "Just glorified autocomplete," I thought. Today, GitHub Copilot and Claude are an integral part of my daily workflow. This post documents my journey and lessons learned.

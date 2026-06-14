@@ -5,7 +5,7 @@ date: "2025-09-23"
 tags: ["react", "server-components", "rsc", "nextjs", "performance", "architecture"]
 author: "Miguel Ángel de Dios"
 slug: "react-server-components-depth"
-featured: true
+featured: false
 ---
 
 In my post about React 19, I briefly mentioned Server Components. Today I want to dive deep into this paradigm that is fundamentally changing how we build React applications.

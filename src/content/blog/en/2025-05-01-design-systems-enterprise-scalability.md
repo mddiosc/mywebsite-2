@@ -5,7 +5,7 @@ date: "2025-05-01"
 tags: ["design-systems", "storybook", "design-tokens", "mui", "tailwindcss", "enterprise"]
 author: "Miguel Ángel de Dios"
 slug: "design-systems-enterprise-scalability"
-featured: true
+featured: false
 ---
 
 After working multiple enterprise projects, I've reached a conclusion: **design systems aren't a luxury, they're a necessity**. The difference between a coherent digital product and one that looks like a collage of different websites lies in having a solid design foundation.

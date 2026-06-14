@@ -5,7 +5,7 @@ date: '2026-04-24'
 tags: ['ia', 'llm', 'agentes', 'embeddings', 'rag', 'opencode', 'lm-studio', 'engram', 'vectos', 'herramientas-desarrollo', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'unified-memory-code-embeddings-local'
-featured: true
+featured: false
 ---
 
 ## El problema no era solo la memoria

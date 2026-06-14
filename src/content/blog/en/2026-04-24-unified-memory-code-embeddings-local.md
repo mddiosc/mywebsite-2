@@ -5,7 +5,7 @@ date: '2026-04-24'
 tags: ['ai', 'llm', 'agents', 'embeddings', 'rag', 'opencode', 'lm-studio', 'engram', 'vectos', 'dev-tools', 'dx']
 author: 'Miguel Angel de Dios'
 slug: 'unified-memory-code-embeddings-local'
-featured: true
+featured: false
 ---
 
 ## The problem was not just memory

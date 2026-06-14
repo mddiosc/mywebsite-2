@@ -5,7 +5,7 @@ date: "2025-10-07"
 tags: ["react", "security", "xss", "csp", "authentication", "best-practices"]
 author: "Miguel Ángel de Dios"
 slug: "seguridad-aplicaciones-react"
-featured: true
+featured: false
 ---
 
 La seguridad en aplicaciones frontend a menudo se subestima. "El verdadero trabajo de seguridad está en el backend", escucho frecuentemente. Pero la realidad es que muchas vulnerabilidades se explotan directamente en el navegador. Hoy quiero compartir las prácticas que implemento en todos mis proyectos React.

@@ -5,7 +5,7 @@ date: "2025-06-15"
 tags: ["accessibility", "a11y", "react", "aria", "wcag", "inclusive-design"]
 author: "Miguel Ángel de Dios"
 slug: "accessibility-react-beyond-basics"
-featured: true
+featured: false
 ---
 
 La accesibilidad no es un checkbox al final del proyecto: es una **responsabilidad fundamental** de todo developer. Después de años construyendo aplicaciones React, he aprendido que la verdadera accesibilidad va mucho más allá de añadir `alt` a las imágenes o usar elementos semánticos.

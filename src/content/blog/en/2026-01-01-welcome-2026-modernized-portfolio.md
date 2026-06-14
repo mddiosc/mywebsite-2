@@ -5,7 +5,7 @@ date: "2026-01-01"
 tags: ["portfolio", "react", "design", "dark-mode", "glassmorphism", "ui-ux", "2026"]
 author: "Miguel Ángel de Dios"
 slug: "welcome-2026-modernized-portfolio"
-featured: true
+featured: false
 ---
 
 ## 🎉 Happy New Year 2026
