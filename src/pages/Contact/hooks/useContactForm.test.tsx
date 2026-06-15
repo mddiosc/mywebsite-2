@@ -5,6 +5,8 @@ import type { ReactNode } from 'react'
 import type { AxiosResponse } from 'axios'
 import type { ContactFormData } from '../types'
 
+const mockExecuteRecaptcha = vi.hoisted(() => vi.fn())
+
 // Mock axios
 vi.mock('@/lib/axios', () => ({
   axiosInstance: {
@@ -12,25 +14,15 @@ vi.mock('@/lib/axios', () => ({
   },
 }))
 
-// Mock reCAPTCHA
+// Mock reCAPTCHA — shared mock so tests can set return value
 vi.mock('react-google-recaptcha-v3', () => ({
   useGoogleReCaptcha: () => ({
-    executeRecaptcha: vi.fn(),
-  }),
-}))
-
-// Mock security hooks
-vi.mock('../../../hooks/useSecurity', () => ({
-  useSecurity: () => ({
-    validateSecureInput: vi.fn(),
-    getSecurityHeaders: () => ({ 'X-Security': 'test' }),
+    executeRecaptcha: mockExecuteRecaptcha,
   }),
 }))
 
 // Mock security utilities
 vi.mock('../../../lib/security', () => ({
-  sanitizeHtml: (str: string) => str,
-  sanitizeTextInput: (str: string) => str,
   checkRateLimit: () => ({ allowed: true }),
 }))
 
@@ -75,12 +67,7 @@ describe('useContactForm', () => {
     const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
       axiosInstance: { post: any }
     }
-    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
-      useGoogleReCaptcha: () => { executeRecaptcha: any }
-    }
-
     const mockPost = axiosInstance.post as any
-    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
     mockPost.mockResolvedValue({
@@ -133,12 +120,7 @@ describe('useContactForm', () => {
     const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
       axiosInstance: { post: any }
     }
-    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
-      useGoogleReCaptcha: () => { executeRecaptcha: any }
-    }
-
     const mockPost = axiosInstance.post as any
-    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
     mockPost.mockRejectedValue(new Error('Network error'))
@@ -164,25 +146,8 @@ describe('useContactForm', () => {
     })
   })
 
-  it('should handle missing reCAPTCHA token gracefully', async () => {
-    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
-      axiosInstance: { post: any }
-    }
-    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
-      useGoogleReCaptcha: () => { executeRecaptcha: any }
-    }
-
-    const mockPost = axiosInstance.post as any
-    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
-
+  it('should fail when reCAPTCHA returns null token', async () => {
     mockExecuteRecaptcha.mockResolvedValue(null)
-    mockPost.mockResolvedValue({
-      data: { success: true },
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {},
-    } as AxiosResponse)
 
     const { result } = renderHook(() => useContactForm(), {
       wrapper: createWrapper(),
@@ -200,24 +165,9 @@ describe('useContactForm', () => {
     })
 
     await waitFor(() => {
-      expect(result.current.isSuccess).toBe(true)
+      expect(result.current.isError).toBe(true)
+      expect(result.current.isPending).toBe(false)
     })
-
-    // Should submit without reCAPTCHA token
-    expect(mockPost).toHaveBeenCalledWith(
-      'https://formspree.io/f/test-formspree-id',
-      expect.objectContaining({
-        name: 'John Doe',
-        email: 'john@example.com',
-        'project-type': 'personal',
-        message: 'Test message',
-      }),
-      expect.any(Object),
-    )
-
-    // Should NOT include g-recaptcha-response when token is null
-    const callArgs = mockPost.mock.calls[0]
-    expect(callArgs[1]).not.toHaveProperty('g-recaptcha-response')
   })
 
   it('should handle validation errors', async () => {
@@ -246,12 +196,7 @@ describe('useContactForm', () => {
     const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
       axiosInstance: { post: any }
     }
-    const { useGoogleReCaptcha } = (await vi.importMock('react-google-recaptcha-v3')) as {
-      useGoogleReCaptcha: () => { executeRecaptcha: any }
-    }
-
     const mockPost = axiosInstance.post as any
-    const mockExecuteRecaptcha = useGoogleReCaptcha().executeRecaptcha as any
 
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
     mockPost.mockResolvedValue({

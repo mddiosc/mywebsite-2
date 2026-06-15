@@ -308,7 +308,7 @@ export const createFramerMotionMock = () => {
 
 export const setupGitHubTestEnv = () => {
   vi.stubEnv('VITE_GITHUB_USERNAME', 'testuser')
-  vi.stubEnv('VITE_GITHUB_TOKEN', 'test-token')
+  vi.stubEnv('GITHUB_TOKEN', 'test-token')
 }
 
 export const cleanupGitHubTestEnv = () => {

@@ -33,10 +33,16 @@ const ContactContent = ({ locale, onSuccess }: { locale: 'en' | 'es'; onSuccess:
 }
 
 const Contact = () => {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [showSuccess, setShowSuccess] = useState(false)
   const locale = i18n.language === 'en' ? 'en' : 'es'
   const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
+  const contactEmail = import.meta.env['VITE_CONTACT_EMAIL'] as string | undefined
+
+  const seoUrls = useMemo(
+    () => buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/contact', locale),
+    [locale],
+  )
 
   useEffect(() => {
     const addedLinks: HTMLLinkElement[] = []
@@ -73,7 +79,32 @@ const Contact = () => {
   }, [locale, showSuccess])
 
   if (showSuccess) return content
-  if (!recaptchaSiteKey) return content
+  if (!recaptchaSiteKey) {
+    return (
+      <>
+        <DocumentHead
+          title={`${t('navigation.contact')} - Portfolio`}
+          description={t('contact.header.subtitle')}
+          keywords="contact, email, message, communication, get in touch"
+          canonicalUrl={seoUrls.canonicalUrl}
+          alternateUrls={seoUrls.alternateUrls}
+        />
+        <div className="pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24">
+          <ContactHeader />
+          {contactEmail && (
+            <div className="mx-auto mt-10 max-w-xl text-center">
+              <p className="text-gray-600 dark:text-gray-300">
+                Send me an email at{' '}
+                <a href={`mailto:${contactEmail}`} className="text-primary hover:underline">
+                  {contactEmail}
+                </a>
+              </p>
+            </div>
+          )}
+        </div>
+      </>
+    )
+  }
 
   return (
     <Suspense fallback={content}>

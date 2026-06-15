@@ -13,8 +13,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 
-import { useSecurity } from '../../../hooks/useSecurity'
-import { sanitizeHtml, sanitizeTextInput, checkRateLimit } from '../../../lib/security'
+import { checkRateLimit } from '../../../lib/security'
 import { ContactFormSchema, type ContactFormData } from '../types'
 
 import { axiosInstance } from '@/lib/axios'
@@ -45,10 +44,10 @@ export interface FormState {
  */
 const sanitizeData = (data: ContactFormData): ContactFormData => {
   return {
-    name: sanitizeTextInput(data.name.trim()),
-    email: sanitizeTextInput(data.email.trim().toLowerCase()),
+    name: data.name.trim(),
+    email: data.email.trim().toLowerCase(),
     'project-type': data['project-type'], // Controlled dropdown, no sanitization needed
-    message: sanitizeHtml(data.message.trim()),
+    message: data.message.trim(),
   }
 }
 
@@ -70,7 +69,7 @@ const sanitizeData = (data: ContactFormData): ContactFormData => {
  */
 const submitContactForm = async (
   data: ContactFormData,
-  recaptchaToken?: string,
+  recaptchaToken: string,
 ): Promise<AxiosResponse> => {
   // 1. Validate form data structure
   try {
@@ -102,10 +101,8 @@ const submitContactForm = async (
     throw new Error('VITE_FORMSPREE_ID environment variable is not configured')
   }
 
-  // 5. Prepare form payload with optional reCAPTCHA
-  const formData = recaptchaToken
-    ? { ...sanitizedData, 'g-recaptcha-response': recaptchaToken }
-    : sanitizedData
+  // 5. Prepare form payload with reCAPTCHA token
+  const formData = { ...sanitizedData, 'g-recaptcha-response': recaptchaToken }
 
   // 6. Submit using axios for consistency with rest of app
   const response = await axiosInstance.post(`https://formspree.io/f/${formspreeId}`, formData, {
@@ -141,7 +138,6 @@ const initialFormState: FormState = {
  */
 export const useContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha()
-  const { validateSecureInput, getSecurityHeaders } = useSecurity()
 
   /**
    * Form action handler for useActionState
@@ -151,22 +147,13 @@ export const useContactForm = () => {
   const formAction = useCallback(
     async (_previousState: FormState, data: ContactFormData): Promise<FormState> => {
       try {
-        // Pre-submission security validation
-        try {
-          validateSecureInput(data.message)
-        } catch (error) {
-          throw new Error(`Security validation failed: ${String(error)}`)
+        // Get reCAPTCHA token — fail closed if not available
+        if (!executeRecaptcha) {
+          throw new Error('reCAPTCHA is not available')
         }
-
-        // Get reCAPTCHA token
-        let recaptchaToken: string | undefined
-        if (executeRecaptcha) {
-          try {
-            recaptchaToken = await executeRecaptcha('contact_form')
-          } catch (error) {
-            console.warn('reCAPTCHA execution failed:', error)
-            // Don't throw here, allow submission without reCAPTCHA as fallback
-          }
+        const recaptchaToken = await executeRecaptcha('contact_form')
+        if (!recaptchaToken) {
+          throw new Error('reCAPTCHA verification failed')
         }
 
         await submitContactForm(data, recaptchaToken)
@@ -181,11 +168,10 @@ export const useContactForm = () => {
         console.error('Error sending message:', error)
 
         // Log security-related errors for monitoring
-        if (errorMessage.includes('Rate limit') || errorMessage.includes('Security validation')) {
+        if (errorMessage.includes('Rate limit')) {
           console.warn('Security event:', {
             error: errorMessage,
             timestamp: new Date().toISOString(),
-            headers: getSecurityHeaders(),
           })
         }
 
@@ -195,7 +181,7 @@ export const useContactForm = () => {
         }
       }
     },
-    [executeRecaptcha, validateSecureInput, getSecurityHeaders],
+    [executeRecaptcha],
   )
 
   // React 19's useActionState for declarative form state management
