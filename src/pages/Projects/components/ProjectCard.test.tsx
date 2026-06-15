@@ -34,23 +34,47 @@ vi.mock('react-router', () => ({
   useNavigate: () => mockNavigate,
 }))
 
-// Mock Framer Motion to avoid animation testing complexity
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
-      <div {...props}>{children}</div>
-    ),
-    h3: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
-      <h3 {...props}>{children}</h3>
-    ),
-    p: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
-      <p {...props}>{children}</p>
-    ),
-    a: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
-      <a {...props}>{children}</a>
-    ),
-  },
-}))
+// Mock Framer Motion to avoid animation testing complexity.
+// Strip motion-only props so React doesn't warn about unknown DOM attributes.
+vi.mock('framer-motion', () => {
+  const MOTION_PROPS = new Set([
+    'initial',
+    'animate',
+    'exit',
+    'transition',
+    'variants',
+    'whileHover',
+    'whileTap',
+    'whileFocus',
+    'whileInView',
+    'whileDrag',
+    'viewport',
+    'layout',
+    'layoutId',
+    'drag',
+    'dragConstraints',
+    'onAnimationComplete',
+  ])
+  const clean = (props: Record<string, unknown>) =>
+    Object.fromEntries(Object.entries(props).filter(([k]) => !MOTION_PROPS.has(k)))
+
+  return {
+    motion: {
+      div: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
+        <div {...clean(props)}>{children}</div>
+      ),
+      h3: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
+        <h3 {...clean(props)}>{children}</h3>
+      ),
+      p: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
+        <p {...clean(props)}>{children}</p>
+      ),
+      a: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
+        <a {...clean(props)}>{children}</a>
+      ),
+    },
+  }
+})
 
 // Mock project data for testing
 const createMockProject = (overrides: Partial<GitHubProject> = {}): GitHubProject => ({

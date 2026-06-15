@@ -124,7 +124,35 @@ export async function mockGitHubApiEmpty(page: Page): Promise<void> {
 // Extended test fixture
 // ---------------------------------------------------------------------------
 
+/**
+ * Third-party hosts the app loads (analytics, fonts, reCAPTCHA, form backend).
+ * They block the browser 'load' event, so a slow/unreachable host from CI
+ * runners makes every page.goto() hang. e2e doesn't need them — abort up front.
+ * ponytail: hostname list, add a host here if a new third-party script is added.
+ */
+const THIRD_PARTY_HOSTS = [
+  'mddiosc.cloud', // umami analytics
+  'rsms.me', // Inter font CSS
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
+  'google.com', // reCAPTCHA
+  'gstatic.com',
+  'googletagmanager.com',
+  'formspree.io',
+]
+
 export const test = base.extend<PortfolioFixtures>({
+  page: async ({ page }, run) => {
+    await page.route('**/*', (route) => {
+      const host = new URL(route.request().url()).hostname
+      if (THIRD_PARTY_HOSTS.some((h) => host === h || host.endsWith(`.${h}`))) {
+        return route.abort()
+      }
+      return route.continue()
+    })
+    await run(page)
+  },
+
   gotoPage: async ({ page }, run) => {
     await run(async (path: string) => {
       await page.goto(path)
