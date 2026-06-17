@@ -63,7 +63,7 @@ function normalizeProject(project) {
 }
 
 async function generateSnapshot() {
-  const githubToken = process.env.VITE_GITHUB_TOKEN ?? env.VITE_GITHUB_TOKEN ?? ''
+  const githubToken = process.env.GITHUB_TOKEN ?? env.GITHUB_TOKEN ?? ''
   const githubUsername = process.env.VITE_GITHUB_USERNAME ?? env.VITE_GITHUB_USERNAME ?? ''
   const existingSnapshot = await readExistingSnapshot()
 
