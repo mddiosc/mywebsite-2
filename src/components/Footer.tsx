@@ -75,11 +75,7 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand section */}
           <div className="text-center md:text-left">
-            <Link
-              to={`/${i18n.language}/`}
-              className="inline-block"
-              aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
-            >
+            <Link to={`/${i18n.language}/`} className="inline-block">
               <OptimizedImage
                 src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
                 alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
