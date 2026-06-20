@@ -2,6 +2,12 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 
 import { EnvelopeIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { motion } from 'framer-motion'
+
+import { useThemeContext } from '../context'
+import { fadeIn, commonTransition } from '../lib/animations'
+
+import { OptimizedImage } from '.'
 
 const GitHubIcon = (props: React.ComponentProps<'svg'>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -21,6 +27,7 @@ const LinkedInIcon = (props: React.ComponentProps<'svg'>) => (
 
 export default function Footer() {
   const { t, i18n } = useTranslation()
+  const { isDark } = useThemeContext()
   const currentYear = new Date().getFullYear()
 
   const githubUsername = import.meta.env.VITE_GITHUB_USERNAME ?? ''
@@ -52,24 +59,32 @@ export default function Footer() {
   ]
 
   return (
-    <footer
-      id="footer"
-      tabIndex={-1}
-      className="relative mt-auto bg-white/80 backdrop-blur-md focus:outline-none dark:bg-gray-900/80"
-    >
+    <footer id="footer" tabIndex={-1} className="relative mt-auto focus:outline-none">
       {/* Gradient divider */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <motion.div
+        className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-80px' }}
+        variants={fadeIn}
+        transition={commonTransition}
+      >
         {/* Main footer content */}
         <div className="grid gap-8 md:grid-cols-3">
           {/* Brand section */}
           <div className="text-center md:text-left">
             <Link
               to={`/${i18n.language}/`}
-              className="inline-block text-xl font-bold text-gray-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary-light"
+              className="inline-block"
+              aria-label={t('accessibility.homeLink', { defaultValue: 'Go to homepage' })}
             >
-              &lt;MADC/&gt;
+              <OptimizedImage
+                src={isDark ? '/logo_negative.svg' : '/logo_positive.svg'}
+                alt={t('accessibility.logoAlt', { defaultValue: 'Site logo' })}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               {t('footer.tagline', { defaultValue: 'Building digital experiences' })}
@@ -82,9 +97,10 @@ export default function Footer() {
               <Link
                 key={link.name}
                 to={link.href}
-                className="text-sm text-gray-600 transition-colors hover:text-primary dark:text-gray-400 dark:hover:text-primary-light"
+                className="group relative text-sm text-gray-600 transition-colors hover:text-primary dark:text-gray-400 dark:hover:text-primary-light"
               >
                 {link.name}
+                <span className="absolute -bottom-0.5 left-0 h-0.5 w-0 bg-linear-to-r from-primary to-accent transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </div>
@@ -130,7 +146,7 @@ export default function Footer() {
             </span>
           </p>
         </div>
-      </div>
+      </motion.div>
     </footer>
   )
 }
