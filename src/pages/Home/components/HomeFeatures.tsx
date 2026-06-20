@@ -153,9 +153,7 @@ const HomeFeatures = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
         >
-          <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-            {t('components.homeFeatures.subtitle')}
-          </span>
+          <span className="text-gradient">{t('components.homeFeatures.subtitle')}</span>
         </motion.h2>
         <motion.p
           className="mt-4 text-base text-gray-600 sm:mt-6 sm:text-lg/relaxed dark:text-gray-300"
@@ -193,16 +191,16 @@ const HomeFeatures = () => {
       <motion.div
         className="mt-12 flex flex-col items-center gap-4 sm:mt-16 sm:flex-row sm:justify-center sm:gap-6"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 2.0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.5 }}
       >
         <Link
           to={`/${i18n.language}/about`}
           className="group relative w-full overflow-hidden rounded-xl bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 sm:w-auto sm:px-8 sm:py-4"
         >
           <span className="relative z-10">{t('components.homeFeatures.ctaSecondary')}</span>
-          {/* Shine effect */}
-          <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+          <div className="shine-overlay" aria-hidden="true" />
         </Link>
         <Link
           to={`/${i18n.language}/projects`}

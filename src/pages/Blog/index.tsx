@@ -39,9 +39,7 @@ export default function Blog() {
             className="mb-8 text-center sm:mb-12"
           >
             <h1 className="mb-4 text-4xl font-black tracking-tight sm:text-5xl">
-              <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-                {t('blog.title')}
-              </span>
+              <span className="text-gradient-alt">{t('blog.title')}</span>
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
               {t('blog.description')}

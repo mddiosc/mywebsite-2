@@ -145,12 +145,17 @@ export function ParticlesBackground() {
       '#0066ff'
 
     const resize = () => {
+      // ponytail: cap dpr at 2 — blur imperceptible beyond 2x, saves fillrate
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       logicalWidth = window.innerWidth
       logicalHeight = window.innerHeight
       particleCount = getParticleCount(logicalWidth)
       maxDistance = getMaxDistance(logicalWidth)
-      canvas.width = logicalWidth
-      canvas.height = logicalHeight
+      canvas.width = Math.round(logicalWidth * dpr)
+      canvas.height = Math.round(logicalHeight * dpr)
+      canvas.style.width = `${String(logicalWidth)}px`
+      canvas.style.height = `${String(logicalHeight)}px`
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       particles.length = 0
       particles.push(...createParticles(logicalWidth, logicalHeight, particleCount))
     }

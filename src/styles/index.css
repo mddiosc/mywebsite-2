@@ -73,6 +73,42 @@
   --color-highlight-light: #c4b5fd;
 }
 
+/* Gradient text utility — single source of truth for the signature gradient title look.
+   Usage: <h1 class="text-gradient">...</h1> */
+.text-gradient {
+  background-image: linear-gradient(to right, var(--color-primary), var(--color-highlight), var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--color-primary);
+  -webkit-text-fill-color: transparent;
+}
+
+/* Alternate gradient text — reversed color sweep for visual variety.
+   Usage: <h1 class="text-gradient-alt">...</h1> */
+.text-gradient-alt {
+  background-image: linear-gradient(to right, var(--color-accent), var(--color-primary), var(--color-highlight));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--color-accent);
+  -webkit-text-fill-color: transparent;
+}
+
+/* Shine overlay — animated highlight sweep on hover.
+   Parent needs `overflow-hidden` + `group` (or named `group/…`).
+   Must be a DIRECT child of the group element (selector uses >). */
+.shine-overlay {
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: transform 0.5s ease;
+  pointer-events: none;
+}
+.group:hover > .shine-overlay,
+[class*="group/"]:hover > .shine-overlay {
+  transform: translateX(100%);
+}
+
 /* Smooth theme transition */
 html {
   transition:

@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import { ANIMATION_CONFIG } from '@/constants/animations'
-import { commonTransition, slideIn } from '@/lib/animations'
+import { commonTransition, fadeInUp } from '@/lib/animations'
 
 const AboutHero = () => {
   const { t, i18n } = useTranslation()
@@ -36,21 +36,19 @@ const AboutHero = () => {
         <rect fill="url(#about-hero-pattern)" width="100%" height="100%" strokeWidth={0} />
       </svg>
       <div className="relative z-10 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 pt-8 pb-8 sm:pt-12 sm:pb-12 lg:px-8 lg:pt-16 lg:pb-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <motion.div
               className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl"
               initial="hidden"
               animate="visible"
-              variants={slideIn}
+              variants={fadeInUp}
               transition={{ ...commonTransition, ...ANIMATION_CONFIG.hero }}
             >
-              <h1 className="text-5xl font-black tracking-tight text-pretty sm:text-6xl">
-                <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-                  {t('pages.about.name')}
-                </span>
+              <h1 className="text-4xl font-black tracking-tight text-pretty sm:text-5xl">
+                <span className="text-gradient">{t('pages.about.name')}</span>
               </h1>
-              <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
+              <p className="mt-8 text-lg font-medium text-pretty text-gray-600 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-300">
                 {t('pages.about.hero.subtitle')}
               </p>
               <div className="mt-8">
@@ -58,7 +56,7 @@ const AboutHero = () => {
                   to={`/${i18n.language}/projects`}
                   className="group relative inline-flex items-center overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
                 >
-                  <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                  <span className="shine-overlay" aria-hidden="true" />
                   <span className="relative">{t('pages.about.biography.buttonText')}</span>
                 </Link>
               </div>

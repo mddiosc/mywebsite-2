@@ -21,6 +21,23 @@ Object.defineProperty(globalThis, 'matchMedia', {
   })),
 })
 
+// Mock IntersectionObserver for framer-motion whileInView in jsdom
+class MockIntersectionObserver {
+  readonly root = null
+  readonly rootMargin = ''
+  readonly thresholds: number[] = []
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return []
+  }
+}
+Object.defineProperty(globalThis, 'IntersectionObserver', {
+  writable: true,
+  value: MockIntersectionObserver,
+})
+
 // Store original console.error
 const originalError = console.error
 
