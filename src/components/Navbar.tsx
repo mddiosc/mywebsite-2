@@ -145,7 +145,7 @@ export default function Navbar() {
   return (
     <header role="banner" className="sticky top-0 z-40 py-3">
       {/* Container with fixed max-width - no transitions on layout properties */}
-      <div className="relative mx-auto max-w-4xl px-4">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Pill background - uses only transform and opacity for iOS performance */}
         <div
           className={`pointer-events-none absolute inset-0 rounded-full border bg-white/80 shadow-lg shadow-gray-900/5 backdrop-blur-md dark:bg-gray-900/80 dark:shadow-gray-900/20 ${
