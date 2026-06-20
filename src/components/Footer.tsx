@@ -52,7 +52,11 @@ export default function Footer() {
   ]
 
   return (
-    <footer id="footer" tabIndex={-1} className="relative mt-auto focus:outline-none">
+    <footer
+      id="footer"
+      tabIndex={-1}
+      className="relative mt-auto bg-white/80 backdrop-blur-md focus:outline-none dark:bg-gray-900/80"
+    >
       {/* Gradient divider */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
@@ -117,7 +121,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-8 border-t border-gray-200/50 pt-8 dark:border-gray-700/50">
-          <p className="flex items-center justify-center gap-1 text-center text-sm text-gray-500 dark:text-gray-500">
+          <p className="flex items-center justify-center gap-1 text-center text-sm text-gray-500 dark:text-gray-400">
             &copy; {currentYear} Miguel Ángel de Dios.{' '}
             <span className="inline-flex items-center gap-1">
               {t('footer.madeWith', { defaultValue: 'Made with' })}
