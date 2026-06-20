@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 
 import { ANIMATION_CONFIG } from '@/constants/animations'
-import { commonTransition, slideIn } from '@/lib/animations'
+import { commonTransition, fadeInUp } from '@/lib/animations'
 
 const AboutContact = () => {
   const { t, i18n } = useTranslation()
@@ -12,14 +12,14 @@ const AboutContact = () => {
 
   return (
     <motion.div
-      className="mx-auto mt-16 max-w-7xl px-6 pb-16 sm:mt-20 sm:pb-20 lg:mt-24 lg:px-8 lg:pb-24"
+      className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
       initial="hidden"
       animate="visible"
-      variants={slideIn}
+      variants={fadeInUp}
       transition={{ ...commonTransition, ...ANIMATION_CONFIG.contact }}
     >
       <div className="mx-auto max-w-2xl lg:mx-0">
-        <h2 className="text-4xl font-bold tracking-tight text-pretty text-gray-900 sm:text-5xl dark:text-white">
+        <h2 className="text-4xl font-black tracking-tight text-pretty text-gray-900 sm:text-5xl dark:text-white">
           {t('pages.about.contact.title')}
         </h2>
         <p className="mt-6 text-lg/8 text-gray-600 dark:text-gray-300">
@@ -32,7 +32,7 @@ const AboutContact = () => {
             rel="noopener noreferrer"
             className="group relative inline-flex items-center overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
           >
-            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+            <span className="shine-overlay" aria-hidden="true" />
             <span className="relative">{t('pages.about.contact.emailButton')}</span>
           </a>
           <Link

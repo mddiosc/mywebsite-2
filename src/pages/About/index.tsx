@@ -30,6 +30,7 @@ const AboutPage = () => {
       />
 
       <motion.div
+        className="space-y-16 pt-8 pb-16 sm:space-y-20 sm:pt-12 sm:pb-20 lg:space-y-24 lg:pt-16 lg:pb-24"
         initial="hidden"
         animate="visible"
         variants={fadeIn}

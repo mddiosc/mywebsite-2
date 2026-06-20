@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { OptimizedLogo } from '@/components'
 import { ANIMATION_CONFIG } from '@/constants/animations'
 import type { Technology } from '@/constants/technologies'
-import { commonTransition, slideIn } from '@/lib/animations'
+import { commonTransition, fadeInUp } from '@/lib/animations'
 
 interface TechnologyGridProps {
   technologies: Technology[]
@@ -17,14 +17,14 @@ const TechnologyGrid = ({ technologies, skills }: TechnologyGridProps) => {
 
   return (
     <motion.div
-      className="mx-auto mt-16 max-w-7xl px-6 sm:mt-20 lg:mt-24 lg:px-8"
+      className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
       initial="hidden"
       animate="visible"
-      variants={slideIn}
+      variants={fadeInUp}
       transition={{ ...commonTransition, ...ANIMATION_CONFIG.technologies }}
     >
       <div className="mx-auto max-w-2xl lg:mx-0">
-        <h2 className="text-4xl font-bold tracking-tight text-pretty text-gray-900 sm:text-5xl dark:text-white">
+        <h2 className="text-4xl font-black tracking-tight text-pretty text-gray-900 sm:text-5xl dark:text-white">
           {t('pages.about.skills.title')}
         </h2>
         <p className="mt-6 text-lg/8 text-gray-600 dark:text-gray-300">
