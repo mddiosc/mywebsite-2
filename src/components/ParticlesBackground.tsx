@@ -153,6 +153,8 @@ export function ParticlesBackground() {
       maxDistance = getMaxDistance(logicalWidth)
       canvas.width = Math.round(logicalWidth * dpr)
       canvas.height = Math.round(logicalHeight * dpr)
+      canvas.style.width = `${String(logicalWidth)}px`
+      canvas.style.height = `${String(logicalHeight)}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       particles.length = 0
       particles.push(...createParticles(logicalWidth, logicalHeight, particleCount))

@@ -94,7 +94,8 @@
 }
 
 /* Shine overlay — animated highlight sweep on hover.
-   Parent needs `overflow-hidden` + `group` (or named `group/…`). */
+   Parent needs `overflow-hidden` + `group` (or named `group/…`).
+   Must be a DIRECT child of the group element (selector uses >). */
 .shine-overlay {
   position: absolute;
   inset: 0;
