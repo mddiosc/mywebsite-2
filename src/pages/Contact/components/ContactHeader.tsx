@@ -28,9 +28,7 @@ export const ContactHeader = () => {
   return (
     <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
       <h1 className="text-4xl font-black tracking-tight text-pretty sm:text-5xl">
-        <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-          {t('contact.letsWorkTogether')}
-        </span>
+        <span className="text-gradient-alt">{t('contact.letsWorkTogether')}</span>
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg/8 text-gray-600 lg:max-w-none dark:text-gray-300">
         {t('contact.description')}
@@ -45,7 +43,7 @@ export const ContactHeader = () => {
           className="group relative inline-flex items-center gap-x-2 overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
         >
           {/* Shine effect */}
-          <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+          <span className="shine-overlay" aria-hidden="true" />
           <svg className="size-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path
               fillRule="evenodd"

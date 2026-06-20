@@ -15,89 +15,12 @@ import {
   useRole,
   useInteractions,
 } from '@floating-ui/react'
+import { XMarkIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 
+import { languageColors, languageBarColors } from '../constants'
+
 import { GitHubProject } from '@/types'
-
-/**
- * Mapping of programming languages to their representative colors (bg and text)
- */
-const languageColors: Record<string, { bg: string; text: string; glow: string }> = {
-  JavaScript: {
-    bg: 'bg-yellow-400/20',
-    text: 'text-yellow-600 dark:text-yellow-400',
-    glow: 'shadow-yellow-500/20',
-  },
-  TypeScript: {
-    bg: 'bg-blue-400/20',
-    text: 'text-blue-600 dark:text-blue-400',
-    glow: 'shadow-blue-500/20',
-  },
-  HTML: {
-    bg: 'bg-orange-500/20',
-    text: 'text-orange-600 dark:text-orange-400',
-    glow: 'shadow-orange-500/20',
-  },
-  CSS: {
-    bg: 'bg-purple-500/20',
-    text: 'text-purple-600 dark:text-purple-400',
-    glow: 'shadow-purple-500/20',
-  },
-  Python: {
-    bg: 'bg-green-500/20',
-    text: 'text-green-600 dark:text-green-400',
-    glow: 'shadow-green-500/20',
-  },
-  Java: { bg: 'bg-red-500/20', text: 'text-red-600 dark:text-red-400', glow: 'shadow-red-500/20' },
-  Ruby: { bg: 'bg-red-600/20', text: 'text-red-600 dark:text-red-400', glow: 'shadow-red-600/20' },
-  PHP: {
-    bg: 'bg-indigo-400/20',
-    text: 'text-indigo-600 dark:text-indigo-400',
-    glow: 'shadow-indigo-500/20',
-  },
-  Go: {
-    bg: 'bg-cyan-500/20',
-    text: 'text-cyan-600 dark:text-cyan-400',
-    glow: 'shadow-cyan-500/20',
-  },
-  Rust: {
-    bg: 'bg-amber-600/20',
-    text: 'text-amber-600 dark:text-amber-400',
-    glow: 'shadow-amber-600/20',
-  },
-  Swift: {
-    bg: 'bg-orange-600/20',
-    text: 'text-orange-600 dark:text-orange-400',
-    glow: 'shadow-orange-600/20',
-  },
-  Kotlin: {
-    bg: 'bg-purple-600/20',
-    text: 'text-purple-600 dark:text-purple-400',
-    glow: 'shadow-purple-600/20',
-  },
-  default: {
-    bg: 'bg-gray-400/20',
-    text: 'text-gray-600 dark:text-gray-400',
-    glow: 'shadow-gray-500/20',
-  },
-}
-
-// Language bar colors for the progress indicator
-const languageBarColors: Record<string, string> = {
-  JavaScript: 'bg-yellow-400',
-  TypeScript: 'bg-blue-500',
-  HTML: 'bg-orange-500',
-  CSS: 'bg-purple-500',
-  Python: 'bg-green-500',
-  Java: 'bg-red-500',
-  Ruby: 'bg-red-600',
-  PHP: 'bg-indigo-500',
-  Go: 'bg-cyan-500',
-  Rust: 'bg-amber-600',
-  Swift: 'bg-orange-600',
-  Kotlin: 'bg-purple-600',
-  default: 'bg-gray-400',
-}
 
 interface ProjectCardProps {
   project: GitHubProject
@@ -389,13 +312,7 @@ const ProjectCard = ({ project, delay, hasCaseStudy, caseStudySlug }: ProjectCar
                         className="ml-2 shrink-0 rounded-full p-1 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                         aria-label={t('accessibility.closeMenu')}
                       >
-                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <XMarkIcon className="h-4 w-4" />
                       </button>
                     )}
                   </div>
@@ -592,23 +509,8 @@ const ProjectCard = ({ project, delay, hasCaseStudy, caseStudySlug }: ProjectCar
                   rel="noopener noreferrer"
                   className="group/demo relative inline-flex items-center gap-x-1.5 overflow-hidden rounded-lg bg-linear-to-r from-primary to-highlight px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
                 >
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover/demo:translate-x-full" />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="relative h-3.5 w-3.5"
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"
-                    />
-                  </svg>
+                  <div className="shine-overlay" aria-hidden="true" />
+                  <ArrowTopRightOnSquareIcon className="relative h-3.5 w-3.5" />
                   <span className="relative">{t('pages.projects.card.demo')}</span>
                 </a>
               )}

@@ -46,9 +46,7 @@ const AboutHero = () => {
               transition={{ ...commonTransition, ...ANIMATION_CONFIG.hero }}
             >
               <h1 className="text-5xl font-black tracking-tight text-pretty sm:text-6xl">
-                <span className="bg-linear-to-r from-primary via-highlight to-accent bg-clip-text text-transparent">
-                  {t('pages.about.name')}
-                </span>
+                <span className="text-gradient">{t('pages.about.name')}</span>
               </h1>
               <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none dark:text-gray-400">
                 {t('pages.about.hero.subtitle')}
@@ -58,7 +56,7 @@ const AboutHero = () => {
                   to={`/${i18n.language}/projects`}
                   className="group relative inline-flex items-center overflow-hidden rounded-full bg-linear-to-r from-primary to-highlight px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
                 >
-                  <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
+                  <span className="shine-overlay" aria-hidden="true" />
                   <span className="relative">{t('pages.about.biography.buttonText')}</span>
                 </Link>
               </div>
