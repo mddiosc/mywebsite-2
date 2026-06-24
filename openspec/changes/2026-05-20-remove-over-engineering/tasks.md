@@ -29,10 +29,10 @@
 
 ## 4. Shrink tier (same behavior, fewer lines)
 
-- [ ] 4.1 Derive `ANIMATION_CONFIG` from `ANIMATION_DELAYS` in `src/constants/animations.ts`.
-- [ ] 4.2 Factor out the repeated `ease` across the 6 consts in `src/lib/animations.ts`.
-- [ ] 4.3 Collapse the `Set` logic in `src/components/RoutePreloader.tsx` to a flat loop (preserves: preload all routes except the current one after the delay).
-- [ ] 4.4 `pnpm type-check && pnpm lint && pnpm test` — green. Commit: "refactor: shrink animation configs and route preloader".
+- [x] 4.1 Derive `ANIMATION_CONFIG` from `ANIMATION_DELAYS` in `src/constants/animations.ts`.
+- [x] 4.2 Factor out the repeated `ease` across the 6 consts in `src/lib/animations.ts`.
+- [x] 4.3 Collapse the `Set` logic in `src/components/RoutePreloader.tsx` to a flat loop (preserves: preload all routes except the current one after the delay).
+- [x] 4.4 `pnpm type-check && pnpm lint && pnpm test` — green. Commit: "refactor: shrink animation configs and route preloader".
 
 ## 5. Final validation
 

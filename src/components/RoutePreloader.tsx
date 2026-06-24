@@ -29,26 +29,11 @@ export function SmartRoutePreloader({
       const currentPath = location.pathname.split('/').slice(2).join('/') // Remove language prefix
       const currentRoute = currentPath ? `/${currentPath}` : '/'
 
-      // Preload based on current route - predict likely next routes
-      const routesToPreload = new Set<string>()
-
-      // Strategy: Preload all routes except current one
-      Object.keys(ROUTE_IMPORTS).forEach((route) => {
+      // Preload every route except the current one
+      Object.entries(ROUTE_IMPORTS).forEach(([route, importFn]) => {
         if (!excludeCurrentRoute || route !== currentRoute) {
-          routesToPreload.add(route)
+          void importFn()
         }
-      })
-
-      // If on home, prioritize about and projects
-      if (currentRoute === '/') {
-        routesToPreload.add('/about')
-        routesToPreload.add('/projects')
-      }
-
-      // Preload the selected routes
-      routesToPreload.forEach((route) => {
-        const importFn = ROUTE_IMPORTS[route as keyof typeof ROUTE_IMPORTS]
-        void importFn()
       })
     }, delay)
 
