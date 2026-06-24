@@ -22,7 +22,7 @@
 
 ## 3. Yagni tier (collapse single-use abstractions)
 
-- [x] 3.1 Unify the theme context into a single module (`ThemeProvider` + `useThemeContext`); delete the redundant `themeContextValue.ts`, `useThemeContext.ts`, `ThemeContext.tsx`, `context/index.ts`.
+- [x] 3.1 Consolidate the theme context into a Fast Refresh-compliant split (`ThemeProvider.tsx` + `useThemeContext.ts` + barrel); delete the redundant `themeContextValue.ts`.
 - [x] 3.2 Update imports in live consumers: `App.tsx`, `Navbar.tsx`, `Footer.tsx`, `ThemeToggle.tsx`, `BlogPost.tsx`, `ProjectCaseStudy.tsx`, and tests (`seo-metadata.test.tsx`, `ProjectCaseStudy.routing.test.ts`).
 - [ ] 3.3 Migrate the sole `OptimizedLogo` caller (`TechnologyGrid.tsx`) to `OptimizedImage`; delete `OptimizedLogo.tsx` and its barrel export. Satisfies the `responsive-image-delivery` delta (logos/icons served by `OptimizedImage`, no visual or `priority`/lazy/error semantic change).
 - [ ] 3.4 `pnpm type-check && pnpm lint && pnpm test` — green. Manually verify theme toggle (light/dark/system) and logo rendering in About. Commit: "refactor: collapse theme context and fold OptimizedLogo".
