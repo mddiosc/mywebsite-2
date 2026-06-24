@@ -10,13 +10,10 @@
 import { useActionState, useOptimistic, useCallback, useTransition } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
-import type { AxiosResponse } from 'axios'
 import { z } from 'zod'
 
 import { checkRateLimit } from '../../../lib/security'
 import { ContactFormSchema, type ContactFormData } from '../types'
-
-import { axiosInstance } from '@/lib/axios'
 
 /**
  * Form submission state for useActionState
@@ -67,10 +64,7 @@ const sanitizeData = (data: ContactFormData): ContactFormData => {
  * @returns Promise resolving to the HTTP response
  * @throws Error if validation fails, rate limit exceeded, or submission encounters issues
  */
-const submitContactForm = async (
-  data: ContactFormData,
-  recaptchaToken: string,
-): Promise<AxiosResponse> => {
+const submitContactForm = async (data: ContactFormData, recaptchaToken: string): Promise<void> => {
   // 1. Validate form data structure
   try {
     ContactFormSchema.parse(data)
@@ -104,15 +98,24 @@ const submitContactForm = async (
   // 5. Prepare form payload with reCAPTCHA token
   const formData = { ...sanitizedData, 'g-recaptcha-response': recaptchaToken }
 
-  // 6. Submit using axios for consistency with rest of app
-  const response = await axiosInstance.post(`https://formspree.io/f/${formspreeId}`, formData, {
+  // 6. Submit to Formspree
+  const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
+    body: JSON.stringify(formData),
   })
 
-  // Axios throws on error status codes automatically, so if we get here, it was successful
-  return response
+  // fetch does not throw on HTTP error status — check explicitly
+  if (!response.ok) {
+    const errorMessage = await response
+      .json()
+      .then((body: { error?: string }) => body.error)
+      .catch(() => undefined)
+    throw new Error(errorMessage ?? `Submission failed (${String(response.status)})`)
+  }
 }
 
 /**
