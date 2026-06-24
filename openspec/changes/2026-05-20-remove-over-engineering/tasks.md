@@ -18,7 +18,7 @@
 - [x] 2.2 Delete `src/lib/axios.ts`; update `src/pages/Projects/__tests__/test-utils.tsx` and any axios mocks.
 - [x] 2.3 Remove `axios` from `package.json`; run `pnpm install` to update the lockfile.
 - [x] 2.4 Inline the `preconnect()` from `src/lib/resourcePreloading.ts` into `src/main.tsx`; delete the file.
-- [ ] 2.5 `pnpm type-check && pnpm lint && pnpm test` — green. Manually verify contact form submission (success + error). Commit: "refactor: drop axios for native fetch, inline preconnect".
+- [x] 2.5 `pnpm type-check && pnpm lint && pnpm test` — green. Manually verify contact form submission (success + error). Commit: "refactor: drop axios for native fetch, inline preconnect".
 
 ## 3. Yagni tier (collapse single-use abstractions)
 
