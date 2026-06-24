@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { motion } from 'framer-motion'
 
-import { OptimizedLogo } from '@/components'
+import { OptimizedImage } from '@/components'
 import { ANIMATION_CONFIG } from '@/constants/animations'
 import type { Technology } from '@/constants/technologies'
 import { commonTransition, fadeInUp } from '@/lib/animations'
@@ -40,12 +40,12 @@ const TechnologyGrid = ({ technologies, skills }: TechnologyGridProps) => {
             className="group flex flex-col items-center rounded-xl p-4 transition-all hover:bg-gray-50 dark:hover:bg-gray-800/50"
           >
             <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-white p-3 shadow-sm ring-1 ring-gray-100 transition-transform group-hover:scale-110 dark:ring-gray-700">
-              <OptimizedLogo
+              <OptimizedImage
                 src={tech.logo}
                 alt={tech.name}
                 width={80}
                 height={80}
-                className="max-h-14 w-full object-contain"
+                className="h-14 w-full object-contain"
               />
             </div>
             <p className="mt-3 text-sm font-medium text-gray-900 dark:text-gray-100">{tech.name}</p>
