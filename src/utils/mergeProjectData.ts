@@ -20,7 +20,7 @@ function matchProjectToCaseStudy(
 /**
  * Create a map of case studies indexed by repository name for fast lookup
  */
-export function createCaseStudyMap(caseStudies: ProjectCaseStudy[]): Map<string, ProjectCaseStudy> {
+function createCaseStudyMap(caseStudies: ProjectCaseStudy[]): Map<string, ProjectCaseStudy> {
   const map = new Map<string, ProjectCaseStudy>()
 
   for (const caseStudy of caseStudies) {
@@ -53,31 +53,4 @@ export function mergeProjectsWithCaseStudies(
       hasCaseStudy: matchedCaseStudy !== null,
     }
   })
-}
-
-/**
- * Filter merged projects to only those with case studies
- * @param mergedProjects - Array of merged project views
- * @returns Array of projects that have case studies
- */
-export function filterProjectsWithCaseStudies(
-  mergedProjects: ProjectWithCaseStudy[],
-): ProjectWithCaseStudy[] {
-  return mergedProjects.filter((item) => item.hasCaseStudy)
-}
-
-/**
- * Get a case study by project slug
- * @param slug - The project slug
- * @param mergedProjects - Array of merged project views
- * @returns The matching merged project or null
- */
-export function getProjectBySlug(
-  slug: string,
-  mergedProjects: ProjectWithCaseStudy[],
-): ProjectWithCaseStudy | null {
-  return (
-    mergedProjects.find((item) => item.caseStudy?.slug === slug || item.project.name === slug) ??
-    null
-  )
 }
