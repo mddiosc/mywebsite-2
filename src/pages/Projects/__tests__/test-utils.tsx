@@ -218,18 +218,6 @@ export const createMockStatistics = (
   ...overrides,
 })
 
-export const createMockAxios = () => {
-  const mockGet = vi.fn()
-
-  vi.mock('@/lib/axios', () => ({
-    axiosInstance: {
-      get: mockGet,
-    },
-  }))
-
-  return { mockGet }
-}
-
 export const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {

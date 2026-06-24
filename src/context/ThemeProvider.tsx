@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { ThemeContext } from './themeContextValue'
+import { ThemeContext } from './useThemeContext'
 
 import { useTheme } from '../hooks/useTheme'
 

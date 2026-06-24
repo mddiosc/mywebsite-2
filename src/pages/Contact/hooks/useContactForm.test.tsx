@@ -1,18 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type { ReactNode } from 'react'
-import type { AxiosResponse } from 'axios'
 import type { ContactFormData } from '../types'
 
 const mockExecuteRecaptcha = vi.hoisted(() => vi.fn())
 
-// Mock axios
-vi.mock('@/lib/axios', () => ({
-  axiosInstance: {
-    post: vi.fn(),
-  },
-}))
+// Mock global fetch
+const mockFetch = vi.fn()
+vi.stubGlobal('fetch', mockFetch)
+
+const okResponse = (body: unknown = { success: true }): Response =>
+  ({ ok: true, status: 200, json: () => Promise.resolve(body) }) as Response
 
 // Mock reCAPTCHA — shared mock so tests can set return value
 vi.mock('react-google-recaptcha-v3', () => ({
@@ -33,29 +30,12 @@ vi.stubEnv('VITE_FORMSPREE_ID', 'test-formspree-id')
 import { useContactForm } from './useContactForm'
 
 describe('useContactForm', () => {
-  let queryClient: QueryClient
-
-  const createWrapper = () => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false },
-      },
-    })
-
-    return ({ children }: { children: ReactNode }) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    )
-  }
-
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   it('should initialize with default state', () => {
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     expect(result.current.isPending).toBe(false)
     expect(result.current.isSuccess).toBe(false)
@@ -64,23 +44,10 @@ describe('useContactForm', () => {
   })
 
   it('should handle successful form submission', async () => {
-    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
-      axiosInstance: { post: any }
-    }
-    const mockPost = axiosInstance.post as any
-
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
-    mockPost.mockResolvedValue({
-      data: { success: true },
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {},
-    } as AxiosResponse)
+    mockFetch.mockResolvedValue(okResponse())
 
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     const formData: ContactFormData = {
       name: 'John Doe',
@@ -93,41 +60,30 @@ describe('useContactForm', () => {
       result.current.submitForm(formData)
     })
 
-    // Wait for the mutation to complete
+    // Wait for the submission to complete
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true)
     })
 
     expect(result.current.isPending).toBe(false)
 
-    expect(mockPost).toHaveBeenCalledWith(
+    expect(mockFetch).toHaveBeenCalledWith(
       'https://formspree.io/f/test-formspree-id',
       expect.objectContaining({
-        name: 'John Doe',
-        email: 'john@example.com',
-        'project-type': 'personal',
-        message: 'Test message',
-      }),
-      expect.objectContaining({
+        method: 'POST',
         headers: expect.objectContaining({
           'Content-Type': 'application/json',
         }),
+        body: expect.stringContaining('john@example.com'),
       }),
     )
   })
 
   it('should handle form submission error', async () => {
-    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
-      axiosInstance: { post: any }
-    }
-    const mockPost = axiosInstance.post as any
-
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
-    mockPost.mockRejectedValue(new Error('Network error'))
+    mockFetch.mockRejectedValue(new Error('Network error'))
 
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     const formData: ContactFormData = {
       name: 'John Doe',
@@ -149,9 +105,7 @@ describe('useContactForm', () => {
   it('should fail when reCAPTCHA returns null token', async () => {
     mockExecuteRecaptcha.mockResolvedValue(null)
 
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     const formData: ContactFormData = {
       name: 'John Doe',
@@ -171,9 +125,7 @@ describe('useContactForm', () => {
   })
 
   it('should handle validation errors', async () => {
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     // Submit invalid data (missing required fields)
     const invalidData = {
@@ -193,23 +145,10 @@ describe('useContactForm', () => {
   })
 
   it('should provide success callback functionality', async () => {
-    const { axiosInstance } = (await vi.importMock('@/lib/axios')) as {
-      axiosInstance: { post: any }
-    }
-    const mockPost = axiosInstance.post as any
-
     mockExecuteRecaptcha.mockResolvedValue('recaptcha-token')
-    mockPost.mockResolvedValue({
-      data: { success: true },
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {},
-    } as AxiosResponse)
+    mockFetch.mockResolvedValue(okResponse())
 
-    const { result } = renderHook(() => useContactForm(), {
-      wrapper: createWrapper(),
-    })
+    const { result } = renderHook(() => useContactForm())
 
     const formData: ContactFormData = {
       name: 'John Doe',
