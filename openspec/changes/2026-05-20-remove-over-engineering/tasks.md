@@ -1,22 +1,22 @@
 ## 0. Setup
 
-- [ ] 0.1 Create and work on the dedicated branch `codex/remove-over-engineering`.
+- [x] 0.1 Create and work on the dedicated branch `codex/remove-over-engineering`.
 
 ## 1. Delete tier (dead code — zero risk)
 
-- [ ] 1.1 Delete `src/components/TransitionLink.tsx` and `src/hooks/useNavigationTransition.ts`.
-- [ ] 1.2 Delete `src/components/AccessibleMotion.tsx` and `src/constants/accessibleAnimations.ts`.
-- [ ] 1.3 Remove the `TransitionLink`, `TransitionLinkProps`, and `AccessibleMotion` exports from `src/components/index.ts`.
-- [ ] 1.4 Remove the `useNavigationTransition` and `UseNavigationTransitionResult` exports from `src/hooks/index.ts`.
-- [ ] 1.5 Remove dead exports in `src/utils/mergeProjectData.ts`: `filterProjectsWithCaseStudies`, `getProjectBySlug`, `createCaseStudyMap` (keep `createCaseStudyMap` as a private internal function used by `mergeProjectsWithCaseStudies`).
-- [ ] 1.6 Delete tests that covered only deleted code (if any exist for `accessibleAnimations` / `TransitionLink`).
-- [ ] 1.7 `pnpm type-check && pnpm lint && pnpm test` — all green. Commit: "chore: remove dead components and exports".
+- [x] 1.1 Delete `src/components/TransitionLink.tsx` and `src/hooks/useNavigationTransition.ts`.
+- [x] 1.2 Delete `src/components/AccessibleMotion.tsx` and `src/constants/accessibleAnimations.ts`.
+- [x] 1.3 Remove the `TransitionLink`, `TransitionLinkProps`, and `AccessibleMotion` exports from `src/components/index.ts`.
+- [x] 1.4 Remove the `useNavigationTransition` and `UseNavigationTransitionResult` exports from `src/hooks/index.ts`.
+- [x] 1.5 Remove dead exports in `src/utils/mergeProjectData.ts`: `filterProjectsWithCaseStudies`, `getProjectBySlug`, `createCaseStudyMap` (keep `createCaseStudyMap` as a private internal function used by `mergeProjectsWithCaseStudies`).
+- [x] 1.6 Delete tests that covered only deleted code (if any exist for `accessibleAnimations` / `TransitionLink`).
+- [x] 1.7 `pnpm type-check && pnpm lint && pnpm test` — all green. Commit: "chore: remove dead components and exports".
 
 ## 2. Native tier (prefer the platform)
 
-- [ ] 2.1 Rewrite the `useContactForm.ts` call with native `fetch`, preserving error-message normalization.
-- [ ] 2.2 Delete `src/lib/axios.ts`; update `src/pages/Projects/__tests__/test-utils.tsx` and any axios mocks.
-- [ ] 2.3 Remove `axios` from `package.json`; run `pnpm install` to update the lockfile.
+- [x] 2.1 Rewrite the `useContactForm.ts` call with native `fetch`, preserving error-message normalization.
+- [x] 2.2 Delete `src/lib/axios.ts`; update `src/pages/Projects/__tests__/test-utils.tsx` and any axios mocks.
+- [x] 2.3 Remove `axios` from `package.json`; run `pnpm install` to update the lockfile.
 - [ ] 2.4 Inline the `preconnect()` from `src/lib/resourcePreloading.ts` into `src/main.tsx`; delete the file.
 - [ ] 2.5 `pnpm type-check && pnpm lint && pnpm test` — green. Manually verify contact form submission (success + error). Commit: "refactor: drop axios for native fetch, inline preconnect".
 
