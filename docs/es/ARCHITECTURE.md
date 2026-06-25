@@ -85,7 +85,7 @@ pages/
 
 #### Framework Principal
 
-- **React 19.0**: Última versión de React con características concurrentes
+- **React 19.2**: Última versión de React con características concurrentes
 - **TypeScript 5.9**: Seguridad de tipos completa y DX mejorada
 - **Vite 8.0**: Herramienta de build moderna con HMR
 

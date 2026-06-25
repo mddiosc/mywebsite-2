@@ -32,7 +32,7 @@ This is a modern, multilingual personal portfolio website built with cutting-edg
 
 #### Core Technologies
 
-- **React 19.0** - Modern UI library with latest features
+- **React 19.2** - Modern UI library with latest features
 - **TypeScript 5.9** - Type safety and enhanced developer experience
 - **Vite 8.0** - Fast build tool and development server
 - **Tailwind CSS 4.2** - Utility-first CSS framework
@@ -93,9 +93,9 @@ mywebsite-2/
 │   ├── styles/           # Global styles
 │   ├── utils/            # General utilities
 │   ├── constants/        # Application constants
-│   └── types/            # TypeScript type definitions
+│   ├── types/            # Shared TypeScript type definitions
+│   └── types.ts          # Global TypeScript types
 ├── .github/              # GitHub workflows and templates
-├── tests/                # Test utilities and configuration
 └── configuration files   # Various config files
 ```
 

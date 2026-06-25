@@ -422,27 +422,40 @@ Para estilos que no se pueden expresar con Tailwind:
 
 ```typescript
 // vite.config.ts (el bloque `test`)
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
+import { configDefaults } from 'vitest/config'
 
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(() => ({
+  // ...plugins, resolve, build...
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
     globals: true,
-    css: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    exclude: [...configDefaults.exclude, 'e2e/*'],
     coverage: {
-      reporter: ['text', 'json', 'html'],
+      provider: 'v8' as const,
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
+        ...(configDefaults.coverage.exclude ?? []),
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
+        'src/vite-env.d.ts',
+        'src/main.tsx',
+        'src/i18n/**',
+        'src/constants/**',
       ],
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 15,
+        statements: 20,
+      },
     },
   },
-})
+}))
 ```
 
 ### Escribiendo Pruebas

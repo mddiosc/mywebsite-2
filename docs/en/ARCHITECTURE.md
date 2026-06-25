@@ -88,7 +88,7 @@ pages/
 
 #### Core Framework
 
-- **React 19.0**: Latest React with concurrent features
+- **React 19.2**: Latest React with concurrent features
 - **TypeScript 5.9**: Full type safety and enhanced DX
 - **Vite 8.0**: Modern build tool with HMR
 

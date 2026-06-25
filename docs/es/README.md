@@ -65,7 +65,7 @@ pnpm preview
 
 ### Tecnologías Principales
 
-- **React 19.0** - Biblioteca de UI
+- **React 19.2** - Biblioteca de UI
 - **TypeScript 5.9** - Seguridad de tipos
 - **Vite 8.0** - Herramienta de build y servidor de desarrollo
 - **Tailwind CSS 4.2** - Framework CSS utility-first
@@ -109,8 +109,10 @@ mywebsite-2/
 │   ├── lib/              # Bibliotecas de utilidades
 │   ├── locales/          # Archivos de traducción
 │   ├── router/           # Configuración de enrutamiento
+│   ├── styles/           # Estilos globales
 │   ├── utils/            # Utilidades generales
-│   └── styles/           # Estilos globales
+│   ├── types/            # Tipos TypeScript compartidos
+│   └── types.ts          # Tipos TypeScript globales
 └── ...archivos de configuración
 ```
 

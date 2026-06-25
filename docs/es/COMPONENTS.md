@@ -883,7 +883,7 @@ import { render, RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import i18n from './i18n-test'
+import i18n from '@/test/i18n-for-tests'
 
 const AllTheProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient({
