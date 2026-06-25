@@ -5,6 +5,13 @@
       Theme anti-FOUC IIFE: applies dark/light class before React hydrates.
       Intentionally duplicates useTheme.ts logic — this is the "first paint" guard,
       the hook syncs React state with the pre-applied class afterward.
+
+      WARNING: This inline script's content is PINNED by a sha256 hash in the
+      `script-src` directive of nginx.conf (both CSP blocks). Changing even a single
+      character of this script requires regenerating the hash and updating BOTH CSP
+      blocks in nginx.conf, or the browser will block this script (theme FOUC).
+      Regenerate with:
+        printf '%s' "<script content bytes>" | openssl dgst -sha256 -binary | openssl base64
     -->
     <script>
       (function() {
