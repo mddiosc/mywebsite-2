@@ -25,10 +25,11 @@ const LinkedInIcon = (props: React.ComponentProps<'svg'>) => (
   </svg>
 )
 
+const currentYear = new Date().getFullYear()
+
 export default function Footer() {
   const { t, i18n } = useTranslation()
   const { isDark } = useThemeContext()
-  const currentYear = new Date().getFullYear()
 
   const githubUsername = import.meta.env.VITE_GITHUB_USERNAME ?? ''
   const linkedinUsername = import.meta.env.VITE_LINKEDIN_USERNAME ?? ''
