@@ -71,7 +71,7 @@ const submitContactForm = async (data: ContactFormData, recaptchaToken: string):
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessages = error.issues.map((issue) => issue.message).join(', ')
-      throw new Error(`Validation error: ${errorMessages}`)
+      throw new Error(`Validation error: ${errorMessages}`, { cause: error })
     }
     throw error
   }

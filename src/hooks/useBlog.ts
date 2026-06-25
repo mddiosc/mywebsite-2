@@ -136,7 +136,7 @@ async function loadBlogPosts(language: BlogLanguage): Promise<BlogPost[]> {
     return posts
   } catch (err) {
     console.error('Error loading blog posts:', err)
-    throw new Error('Error al cargar los posts del blog')
+    throw new Error('Error al cargar los posts del blog', { cause: err })
   }
 }
 

@@ -123,7 +123,7 @@ async function loadCaseStudies(language: CaseStudyLanguage): Promise<ProjectCase
     return caseStudies
   } catch (err) {
     console.error('Error loading case studies:', err)
-    throw new Error('Error al cargar los estudios de casos')
+    throw new Error('Error al cargar los estudios de casos', { cause: err })
   }
 }
 
