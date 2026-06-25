@@ -1,13 +1,13 @@
 # ============================================================
 # Stage 1: Builder
 # ============================================================
-FROM node:22-alpine AS builder
+FROM node:24.18.0-alpine3.24 AS builder
 
 # Upgrade all system packages to latest patched versions
 RUN apk upgrade --no-cache
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@11.1.1 --activate
+# Install pnpm (must match packageManager in package.json + mise.toml)
+RUN corepack enable && corepack prepare pnpm@11.9.0 --activate
 
 WORKDIR /app
 
@@ -44,7 +44,7 @@ RUN GITHUB_TOKEN=$GITHUB_TOKEN pnpm run build
 # ============================================================
 # nginxinc/nginx-unprivileged: runs as non-root (uid 101),
 # Alpine base, minimal attack surface for static file serving
-FROM nginxinc/nginx-unprivileged:1.29-alpine AS production
+FROM nginxinc/nginx-unprivileged:1.31.2-alpine3.23 AS production
 
 USER root
 RUN apk upgrade --no-cache && rm -rf /var/cache/apk/*
