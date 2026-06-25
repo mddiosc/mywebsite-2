@@ -32,19 +32,19 @@ This is a modern, multilingual personal portfolio website built with cutting-edg
 
 #### Core Technologies
 
-- **React 19.0** - Modern UI library with latest features
-- **TypeScript 5.6** - Type safety and enhanced developer experience
-- **Vite 6.0** - Fast build tool and development server
-- **Tailwind CSS 4.0** - Utility-first CSS framework
+- **React 19.2** - Modern UI library with latest features
+- **TypeScript 5.9** - Type safety and enhanced developer experience
+- **Vite 8.0** - Fast build tool and development server
+- **Tailwind CSS 4.2** - Utility-first CSS framework
 
 #### Key Libraries
 
-- **Framer Motion 12.4** - Animation library for smooth transitions
-- **React Router 7.2** - Client-side routing
-- **React Hook Form 7.60** - Form management with validation
-- **TanStack Query 5.67** - Server state management
-- **React i18next 15.4** - Internationalization framework
-- **Axios 1.8** - HTTP client for API requests
+- **Framer Motion 12.38** - Animation library for smooth transitions
+- **React Router 7.17** - Client-side routing
+- **React Hook Form 7.72** - Form management with validation
+- **TanStack Query 5.95** - Server state management
+- **React i18next 15.7** - Internationalization framework
+- **Zod 4.3** - Schema validation
 
 #### Development Tools
 
@@ -67,31 +67,35 @@ mywebsite-2/
 │   ├── logo.svg           # Main logo
 │   └── logo_*.svg         # Logo variations
 ├── src/
-│   ├── components/        # Reusable UI components
-│   │   ├── Footer.tsx
-│   │   ├── Layout.tsx
-│   │   ├── LanguageSwitcher.tsx
-│   │   └── Navbar.tsx
+│   ├── components/        # Reusable UI components (Footer, Layout, Navbar, LanguageSwitcher, ...)
 │   ├── pages/            # Page components
 │   │   ├── Home/         # Home page components
 │   │   ├── About/        # About page components
 │   │   ├── Projects/     # Projects page components
 │   │   ├── Contact/      # Contact page components
+│   │   ├── Blog/         # Blog page components
 │   │   └── NotFound.tsx  # 404 page
+│   ├── content/          # Blog markdown content
+│   ├── context/          # React context providers
+│   ├── data/             # Static data sources
 │   ├── hooks/            # Custom React hooks
+│   ├── i18n/             # Internationalization configuration
 │   ├── lib/              # Utility libraries
-│   │   ├── animations.ts # Animation configurations
-│   │   ├── axios.ts      # HTTP client setup
-│   │   └── queryClient.ts # React Query configuration
+│   │   ├── animations.ts    # Animation configurations
+│   │   ├── queryClient.ts   # React Query configuration
+│   │   ├── security.ts      # Security helpers
+│   │   ├── seo.ts           # SEO utilities
+│   │   └── clientObservability.ts # Client-side observability
 │   ├── locales/          # Translation files
 │   │   ├── en/           # English translations
 │   │   └── es/           # Spanish translations
 │   ├── router/           # Routing configuration
 │   ├── styles/           # Global styles
+│   ├── utils/            # General utilities
 │   ├── constants/        # Application constants
-│   └── types.ts          # TypeScript type definitions
+│   ├── types/            # Shared TypeScript type definitions
+│   └── types.ts          # Global TypeScript types
 ├── .github/              # GitHub workflows and templates
-├── tests/                # Test utilities and configuration
 └── configuration files   # Various config files
 ```
 
@@ -126,6 +130,12 @@ mywebsite-2/
 - reCAPTCHA integration for spam protection
 - Success and error state handling
 - Social media links
+
+### Blog Page (`/blog`)
+
+- Markdown-driven blog posts
+- Post listing and individual post views
+- Multilingual content support
 
 ## 🔧 Quick Start
 

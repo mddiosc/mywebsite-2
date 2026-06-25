@@ -35,94 +35,62 @@ El proyecto implementa una estrategia de pruebas integral que abarca múltiples 
 ### Vitest - Framework de Pruebas
 
 ```typescript
-// vitest.config.ts
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+// vite.config.ts (el bloque `test`)
+import { configDefaults } from 'vitest/config'
+// ...plugins de vite, resolve.alias, build...
 
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(() => ({
+  // ...plugins, resolve, build...
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
     globals: true,
-    css: true,
-    
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    exclude: [...configDefaults.exclude, 'e2e/*'],
+
     // Configuración de cobertura
     coverage: {
+      provider: 'v8' as const,
       reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        'dist/',
-        'build/',
-        'coverage/',
-        '**/*.test.{ts,tsx}',
-        '**/*.spec.{ts,tsx}'
+        ...(configDefaults.coverage.exclude ?? []),
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
+        'src/vite-env.d.ts',
+        'src/main.tsx',
+        'src/i18n/**',
+        'src/constants/**',
       ],
-      // Umbrales de cobertura
-      statements: 80,
-      branches: 75,
-      functions: 80,
-      lines: 80
+      // Umbrales de cobertura (intencionalmente bajos)
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 15,
+        statements: 20,
+      },
     },
-    
-    // Configuración de watch
-    watch: {
-      exclude: ['node_modules', 'dist', 'build']
-    },
-    
-    // Configuración de timeouts
-    testTimeout: 10000,
-    hookTimeout: 10000
   },
-  
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-      '@/test': resolve(__dirname, './src/test')
-    }
-  }
-})
+}))
 ```
 
 ### Configuración Inicial de Pruebas
 
 ```typescript
 // src/test/setup.ts
-import '@testing-library/jest-dom'
-import { expect, afterEach, vi } from 'vitest'
+import '@testing-library/jest-dom/vitest'
+import { afterEach, beforeAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import * as matchers from '@testing-library/jest-dom/matchers'
 
-// Extender matchers de jest-dom
-expect.extend(matchers)
+// Importar y configurar i18n para pruebas
+import './i18n-for-tests'
 
-// Limpiar después de cada prueba
-afterEach(() => {
-  cleanup()
-})
-
-// Mock de IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn()
-}))
-
-// Mock de ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn()
-}))
-
-// Mock de matchMedia
-Object.defineProperty(window, 'matchMedia', {
+// Mock de window.matchMedia para componentes que usan useReducedMotion
+Object.defineProperty(globalThis, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -131,107 +99,84 @@ Object.defineProperty(window, 'matchMedia', {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
-  }))
+  })),
 })
 
-// Mock de scrollTo
-Object.defineProperty(window, 'scrollTo', {
+// Mock de IntersectionObserver para framer-motion whileInView en jsdom
+class MockIntersectionObserver {
+  readonly root = null
+  readonly rootMargin = ''
+  readonly thresholds: number[] = []
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return []
+  }
+}
+Object.defineProperty(globalThis, 'IntersectionObserver', {
   writable: true,
-  value: vi.fn()
+  value: MockIntersectionObserver,
 })
 
-// Variables de entorno para pruebas
-vi.mock('../env', () => ({
-  VITE_API_URL: 'http://localhost:3000/api',
-  VITE_RECAPTCHA_SITE_KEY: 'test-recaptcha-key'
-}))
+// Silenciar errores de consola conocidos en pruebas
+const originalError = console.error
+beforeAll(() => {
+  console.error = (...args: unknown[]) => {
+    const firstArg = args[0]
+    const message =
+      firstArg instanceof Error ? firstArg.message : typeof firstArg === 'string' ? firstArg : JSON.stringify(firstArg)
+    if (message.includes('Error sending message') || message.includes('Validation error')) return
+    originalError(...args)
+  }
+})
+
+afterEach(() => {
+  cleanup()
+  vi.clearAllMocks()
+})
 ```
 
 ### Utilidades de Pruebas Personalizadas
 
 ```typescript
 // src/test/utils.tsx
-import React, { ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
+import { ReactElement } from 'react'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import i18n from './i18n-test'
+
+import { render, RenderOptions, RenderResult } from '@testing-library/react'
+
+import i18n from './i18n-for-tests'
 
 // Configuración de QueryClient para pruebas
-const createTestQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      staleTime: Infinity,
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: 0,
+        staleTime: 0,
+      },
     },
-    mutations: {
-      retry: false,
-    },
-  },
-  logger: {
-    log: console.log,
-    warn: console.warn,
-    error: () => {}, // Silenciar errores en pruebas
-  },
-})
+  })
 
-// Providers combinados para pruebas
-const AllTheProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const queryClient = createTestQueryClient()
-  
-  return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          {children}
-        </I18nextProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  )
-}
-
-// Función de render personalizada
-const customRender = (
+// Función de render con todos los providers
+export function renderWithProviders(
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { wrapper: AllTheProviders, ...options })
-
-// Función de render con providers específicos
-export const renderWithProviders = (
-  ui: ReactElement,
-  {
-    preloadedState = {},
-    queryClient = createTestQueryClient(),
-    route = '/',
-    ...renderOptions
-  }: {
-    preloadedState?: any
-    queryClient?: QueryClient
-    route?: string
-  } & Omit<RenderOptions, 'wrapper'> = {}
-) => {
-  window.history.pushState({}, 'Test page', route)
-  
-  const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          {children}
-        </I18nextProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  )
-  
-  return {
-    ...render(ui, { wrapper: Wrapper, ...renderOptions }),
-    queryClient
-  }
+  options?: Omit<RenderOptions, 'wrapper'>,
+): RenderResult {
+  const testQueryClient = createTestQueryClient()
+  return render(ui, {
+    wrapper: ({ children }) => (
+      <QueryClientProvider client={testQueryClient}>
+        <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+      </QueryClientProvider>
+    ),
+    ...options,
+  })
 }
-
-// Re-exportar todo de testing-library
-export * from '@testing-library/react'
-export { customRender as render }
 ```
 
 ## 🧪 Pruebas Unitarias
@@ -242,9 +187,8 @@ export { customRender as render }
 // src/hooks/__tests__/useProjects.test.ts
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { useProjects } from '../useProjects'
-import { server } from '@/test/server'
-import { http, HttpResponse } from 'msw'
 
 // Mock data
 const mockProjects = [
@@ -266,7 +210,7 @@ const createWrapper = () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } }
   })
-  
+
   return ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
       {children}
@@ -275,65 +219,76 @@ const createWrapper = () => {
 }
 
 describe('useProjects', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('obtiene proyectos exitosamente', async () => {
-    server.use(
-      http.get('/api/projects', () => {
-        return HttpResponse.json(mockProjects)
-      })
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockProjects),
+      } as Response),
     )
-    
+
     const { result } = renderHook(() => useProjects(), {
       wrapper: createWrapper()
     })
-    
+
     expect(result.current.isLoading).toBe(true)
-    
+
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true)
     })
-    
+
     expect(result.current.data).toEqual(mockProjects)
     expect(result.current.isLoading).toBe(false)
   })
-  
+
   it('maneja errores correctamente', async () => {
-    server.use(
-      http.get('/api/projects', () => {
-        return new HttpResponse(null, { status: 500 })
-      })
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ message: 'Server error' }),
+      } as Response),
     )
-    
+
     const { result } = renderHook(() => useProjects(), {
       wrapper: createWrapper()
     })
-    
+
     await waitFor(() => {
       expect(result.current.isError).toBe(true)
     })
-    
+
     expect(result.current.error).toBeDefined()
   })
-  
+
   it('filtra proyectos excluidos', async () => {
     const projectsWithExcluded = [
       ...mockProjects,
       { ...mockProjects[0], id: 334629076 } // Proyecto excluido
     ]
-    
-    server.use(
-      http.get('/api/projects', () => {
-        return HttpResponse.json(projectsWithExcluded)
-      })
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(projectsWithExcluded),
+      } as Response),
     )
-    
+
     const { result } = renderHook(() => useProjects(), {
       wrapper: createWrapper()
     })
-    
+
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true)
     })
-    
+
     expect(result.current.data).toHaveLength(1)
     expect(result.current.data?.[0].id).toBe(1)
   })
@@ -407,8 +362,19 @@ describe('animations', () => {
 ```typescript
 // src/components/__tests__/ProjectCard.test.tsx
 import { render, screen, fireEvent, waitFor } from '@/test/utils'
+import { vi } from 'vitest'
 import { ProjectCard } from '../ProjectCard'
-import { mockProject } from '@/test/mocks'
+
+const mockProject = {
+  id: 1,
+  name: 'awesome-project',
+  description: 'An awesome project built with React and TypeScript',
+  html_url: 'https://github.com/user/awesome-project',
+  language: 'TypeScript',
+  stargazers_count: 42,
+  forks_count: 7,
+  topics: ['react', 'typescript'],
+}
 
 describe('ProjectCard', () => {
   const defaultProps = {
@@ -484,9 +450,8 @@ describe('ProjectCard', () => {
 ```typescript
 // src/pages/Contact/components/__tests__/ContactForm.test.tsx
 import { render, screen, fireEvent, waitFor } from '@/test/utils'
+import { vi } from 'vitest'
 import { ContactForm } from '../ContactForm'
-import { server } from '@/test/server'
-import { http, HttpResponse } from 'msw'
 
 describe('ContactForm', () => {
   const mockOnSubmit = vi.fn()
@@ -539,12 +504,14 @@ describe('ContactForm', () => {
       message: 'Este es un mensaje de prueba'
     }
     
-    server.use(
-      http.post('/api/contact', () => {
-        return HttpResponse.json({ success: true })
-      })
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ success: true }),
+      } as Response),
     )
-    
+
     render(<ContactForm onSubmit={mockOnSubmit} />)
     
     fireEvent.change(screen.getByLabelText(/nombre/i), {
@@ -795,57 +762,51 @@ test.describe('Rendimiento', () => {
 
 ## 🎯 Mocking y Fixtures
 
-### Mock Service Worker (MSW)
+### Mocking de APIs con `fetch`
+
+El proyecto no usa MSW. Las llamadas a la API se mockean stubbeando el `fetch` global con `vi.fn()` / `vi.stubGlobal('fetch', ...)` y mockeando módulos con `vi.mock(...)`.
 
 ```typescript
-// src/test/server.ts
-import { setupServer } from 'msw/node'
-import { handlers } from './handlers'
+// Ejemplo: stub de fetch para una prueba
+import { vi } from 'vitest'
 
-export const server = setupServer(...handlers)
+beforeEach(() => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ success: true }),
+    } as Response),
+  )
+})
 
-// Configuración en setup.ts
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+afterEach(() => {
+  vi.restoreAllMocks()
+})
 ```
 
-```typescript
-// src/test/handlers.ts
-import { http, HttpResponse } from 'msw'
-import { mockProjects, mockContactResponse } from './mocks'
+Para sobrescribir el comportamiento en una prueba concreta, vuelve a stubbear `fetch` dentro del test o usa `vi.mocked(fetch).mockResolvedValueOnce(...)`.
 
-export const handlers = [
-  // Mock API de proyectos
-  http.get('https://api.github.com/users/:username/repos', ({ params }) => {
-    return HttpResponse.json(mockProjects)
-  }),
-  
-  // Mock formulario de contacto
-  http.post('/api/contact', async ({ request }) => {
-    const body = await request.json()
-    
-    if (body.email === 'error@example.com') {
-      return new HttpResponse(null, { status: 500 })
-    }
-    
-    return HttpResponse.json(mockContactResponse)
-  }),
-  
-  // Mock reCAPTCHA
-  http.post('https://www.google.com/recaptcha/api/siteverify', () => {
-    return HttpResponse.json({ success: true })
-  })
-]
+### Mocking de Módulos
+
+```typescript
+import { vi } from 'vitest'
+
+// Mock de un módulo completo
+vi.mock('@/services/projects', () => ({
+  fetchProjects: vi.fn().mockResolvedValue([{ id: 1, name: 'mock-project' }]),
+}))
 ```
 
 ### Fixtures de Datos
 
+Los datos de prueba se definen inline dentro de cada test (o en un archivo co-localizado junto al test). No existe un directorio `src/test/mocks/`.
+
 ```typescript
-// src/test/mocks/projects.ts
+// Datos de ejemplo definidos inline en el test
 import type { GitHubProject } from '@/types'
 
-export const mockProject: GitHubProject = {
+const mockProject: GitHubProject = {
   id: 1,
   name: 'awesome-project',
   full_name: 'user/awesome-project',
@@ -869,7 +830,7 @@ export const mockProject: GitHubProject = {
   disabled: false
 }
 
-export const mockProjects: GitHubProject[] = [
+const mockProjects: GitHubProject[] = [
   mockProject,
   {
     ...mockProject,
@@ -889,33 +850,39 @@ export const mockProjects: GitHubProject[] = [
 ### Configuración de Umbrales
 
 ```typescript
-// vitest.config.ts - configuración de cobertura
-export default defineConfig({
+// vite.config.ts (el bloque `test`) - configuración de cobertura
+export default defineConfig(() => ({
   test: {
     coverage: {
-      // Umbrales mínimos de cobertura
-      statements: 80,
-      branches: 75,
-      functions: 80,
-      lines: 80,
-      
-      // Archivos a excluir
+      // Umbrales mínimos de cobertura (intencionalmente bajos)
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 15,
+        statements: 20,
+      },
+
+      // Archivos a incluir / excluir
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
+        'src/vite-env.d.ts',
         'src/main.tsx',
-        'src/vite-env.d.ts'
+        'src/i18n/**',
+        'src/constants/**',
       ],
-      
+
       // Reportes de cobertura
       reporter: ['text', 'json', 'html', 'lcov'],
-      reportsDirectory: './coverage'
     }
   }
-})
+}))
 ```
+
+> Nota: los umbrales enforceados por la configuración son bajos (líneas/sentencias 20%, funciones/ramas 15%) para mantener el CI en verde mientras la cobertura crece. Los objetivos más altos (90%+ en componentes, 95%+ en utils) son aspiracionales, no puertas de CI.
 
 ### Scripts de Cobertura
 
@@ -923,9 +890,7 @@ export default defineConfig({
 {
   "scripts": {
     "test:coverage": "vitest run --coverage",
-    "test:coverage:watch": "vitest --coverage",
-    "test:coverage:ui": "vitest --ui --coverage",
-    "coverage:open": "open coverage/index.html"
+    "test:coverage:ui": "vitest --ui --coverage"
   }
 }
 ```
@@ -1026,8 +991,7 @@ src/
 └── test/
     ├── setup.ts
     ├── utils.tsx
-    ├── mocks/
-    └── fixtures/
+    └── i18n-for-tests.ts
 ```
 
 Esta guía de pruebas proporciona un marco completo para mantener alta calidad de código a través de testing efectivo. Para más detalles sobre configuración específica, consulta los archivos de configuración en el directorio raíz del proyecto.

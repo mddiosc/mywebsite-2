@@ -15,10 +15,19 @@ The component library follows atomic design principles and is organized into dif
 
 ```text
 src/components/
-├── Layout.tsx              # Main layout wrapper
-├── Navbar.tsx              # Navigation component
+├── DocumentHead.tsx        # SEO head tags (title, meta, OG) per route
 ├── Footer.tsx              # Footer component
 ├── LanguageSwitcher.tsx    # Language toggle
+├── Layout.tsx              # Main layout wrapper
+├── MarkdownTable.tsx       # Styled wrapper for markdown tables
+├── Navbar.tsx              # Navigation component
+├── NavigationProgress.tsx  # Top loading bar on route changes
+├── OptimizedImage.tsx      # Responsive images + SVG logos, lazy/error states
+├── ParticlesBackground.tsx # Animated particle background canvas
+├── RoutePreloader.tsx     # Preloads route chunks on link hover
+├── ScrollToTop.tsx         # Resets scroll position on navigation
+├── SkipLinks.tsx           # Accessibility skip-to-content links
+├── ThemeToggle.tsx         # Light/dark theme switch
 └── index.ts                # Component exports
 
 src/pages/
@@ -39,12 +48,17 @@ src/pages/
 │   │   ├── AboutContent.tsx
 │   │   ├── TechnologyGrid.tsx
 │   │   └── index.ts
-└── Contact/
-    ├── components/
-    │   ├── ContactForm.tsx
-    │   ├── ContactHeader.tsx
-    │   └── index.ts
+├── Blog/
+│   └── components/
+├── Contact/
+│   ├── components/
+│   │   ├── ContactForm.tsx
+│   │   ├── ContactHeader.tsx
+│   │   └── index.ts
+└── NotFound.tsx
 ```
+
+> Note: `OptimizedImage` replaced the former `OptimizedLogo` component, which no longer exists. SVG logos and raster images are both handled by `OptimizedImage`.
 
 ## 🏗️ Layout Components
 
@@ -165,6 +179,20 @@ const LanguageSwitcher: React.FC = () => {
 - Smooth language switching
 - URL update with new language
 - Persistent language preference
+
+## 🧩 Shared Utility Components
+
+Beyond the layout components above, `src/components/` exports several shared utilities used across pages:
+
+- **`OptimizedImage`** (`OptimizedImage.tsx`): Handles responsive raster images and SVG logos with lazy loading and error fallback states. It replaced the former `OptimizedLogo` component, which no longer exists.
+- **`ThemeToggle`** (`ThemeToggle.tsx`): Light/dark theme switch wired to the theme provider.
+- **`SkipLinks`** (`SkipLinks.tsx`): Accessibility skip-to-content links for keyboard users.
+- **`ScrollToTop`** (`ScrollToTop.tsx`): Resets scroll position to the top on route changes.
+- **`NavigationProgress`** (`NavigationProgress.tsx`): Top loading bar shown during route transitions.
+- **`ParticlesBackground`** (`ParticlesBackground.tsx`): Animated particle canvas used as a decorative background.
+- **`DocumentHead`** (`DocumentHead.tsx`): Manages SEO head tags (title, meta, Open Graph) per route.
+- **`MarkdownTable`** (`MarkdownTable.tsx`): Styled wrapper for rendering markdown tables.
+- **`RoutePreloader`** (`RoutePreloader.tsx`): Preloads route chunks on link hover to speed up navigation.
 
 ## 🏠 Home Page Components
 

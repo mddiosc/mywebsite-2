@@ -73,10 +73,10 @@ pnpm preview
 
 ### Core Technologies
 
-- **React 19.0** - UI library
-- **TypeScript 5.6** - Type safety
-- **Vite 6.0** - Build tool and dev server
-- **Tailwind CSS 4.0** - Utility-first CSS framework
+- **React 19.2** - UI library
+- **TypeScript 5.9** - Type safety
+- **Vite 8.0** - Build tool and dev server
+- **Tailwind CSS 4.2** - Utility-first CSS framework
 
 ### Key Libraries
 
@@ -85,8 +85,7 @@ pnpm preview
 - **React Hook Form** - Form management
 - **React Query (TanStack)** - Server state management
 - **React i18next** - Internationalization
-- **Zustand** - Global state management
-- **Axios** - HTTP client
+- **Zod** - Schema validation
 
 ### Development Tools
 
@@ -110,11 +109,18 @@ mywebsite-2/
 ├── src/
 │   ├── components/        # Reusable UI components
 │   ├── pages/            # Page components
+│   ├── content/          # Blog markdown content
+│   ├── context/          # React context providers
+│   ├── data/             # Static data sources
 │   ├── hooks/            # Custom React hooks
+│   ├── i18n/             # Internationalization configuration
 │   ├── lib/              # Utility libraries
 │   ├── locales/          # Translation files
 │   ├── router/           # Routing configuration
-│   └── styles/           # Global styles
+│   ├── styles/           # Global styles
+│   ├── utils/            # General utilities
+│   ├── types/            # Shared TypeScript types
+│   └── types.ts          # Global TypeScript types
 └── ...config files
 ```
 

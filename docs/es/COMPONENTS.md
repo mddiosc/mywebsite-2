@@ -7,24 +7,32 @@ Esta guía proporciona documentación completa de todos los componentes UI utili
 ### Organización Jerárquica
 
 ```text
-components/
-├── Layout/               # Componentes de layout
-│   ├── Layout.tsx       # Wrapper principal de aplicación
-│   ├── Navbar.tsx       # Barra de navegación
-│   └── Footer.tsx       # Pie de página
-├── UI/                  # Componentes UI básicos
-│   ├── Button.tsx       # Componente botón reutilizable
-│   ├── Input.tsx        # Componente input de formulario
-│   └── Modal.tsx        # Componente modal/dialog
-├── Features/            # Componentes específicos de funcionalidad
-│   ├── ProjectCard.tsx  # Tarjeta de proyecto
-│   ├── ContactForm.tsx  # Formulario de contacto
-│   └── TechGrid.tsx     # Grid de tecnologías
-└── Common/              # Componentes comunes
-    ├── LoadingSpinner.tsx
-    ├── ErrorBoundary.tsx
-    └── LanguageSwitcher.tsx
+src/components/
+├── DocumentHead.tsx        # Etiquetas SEO head (title, meta, OG) por ruta
+├── Footer.tsx              # Pie de página
+├── LanguageSwitcher.tsx    # Selector de idioma
+├── Layout.tsx              # Wrapper principal de aplicación
+├── MarkdownTable.tsx       # Wrapper estilizado para tablas markdown
+├── Navbar.tsx              # Barra de navegación
+├── NavigationProgress.tsx  # Barra de carga superior en cambios de ruta
+├── OptimizedImage.tsx      # Imágenes responsive + logos SVG, lazy/error states
+├── ParticlesBackground.tsx # Fondo animado de partículas (canvas)
+├── RoutePreloader.tsx     # Pre-carga chunks de ruta al hacer hover en links
+├── ScrollToTop.tsx         # Reinicia scroll al navegar
+├── SkipLinks.tsx           # Links de accesibilidad skip-to-content
+├── ThemeToggle.tsx         # Interruptor de tema claro/oscuro
+└── index.ts                # Exportaciones de componentes
+
+src/pages/
+├── Home/
+├── Projects/
+├── About/
+├── Blog/
+├── Contact/
+└── NotFound.tsx
 ```
+
+> Nota: `OptimizedImage` reemplazó al antiguo componente `OptimizedLogo`, que ya no existe. Logos SVG e imágenes raster son manejados por `OptimizedImage`.
 
 ## 🏗️ Componentes de Layout
 
@@ -851,6 +859,20 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 }
 ```
 
+## 🧩 Componentes Compartidos Adicionales
+
+Además de los componentes de layout, `src/components/` exporta varias utilidades compartidas usadas entre páginas:
+
+- **`OptimizedImage`** (`OptimizedImage.tsx`): Maneja imágenes raster responsive y logos SVG con lazy loading y estados de error. Reemplazó al antiguo componente `OptimizedLogo`, que ya no existe.
+- **`ThemeToggle`** (`ThemeToggle.tsx`): Interruptor de tema claro/oscuro conectado al proveedor de tema.
+- **`SkipLinks`** (`SkipLinks.tsx`): Links de accesibilidad skip-to-content para usuarios de teclado.
+- **`ScrollToTop`** (`ScrollToTop.tsx`): Reinicia la posición de scroll al cambiar de ruta.
+- **`NavigationProgress`** (`NavigationProgress.tsx`): Barra de carga superior durante transiciones de ruta.
+- **`ParticlesBackground`** (`ParticlesBackground.tsx`): Canvas animado de partículas usado como fondo decorativo.
+- **`DocumentHead`** (`DocumentHead.tsx`): Gestiona etiquetas SEO head (title, meta, Open Graph) por ruta.
+- **`MarkdownTable`** (`MarkdownTable.tsx`): Wrapper estilizado para renderizar tablas markdown.
+- **`RoutePreloader`** (`RoutePreloader.tsx`): Pre-carga chunks de ruta al hacer hover en links para acelerar la navegación.
+
 ## 🧪 Patrones de Pruebas
 
 ### Configuración de Pruebas de Componentes
@@ -861,7 +883,7 @@ import { render, RenderOptions } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import i18n from './i18n-test'
+import i18n from '@/test/i18n-for-tests'
 
 const AllTheProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const queryClient = new QueryClient({
@@ -997,18 +1019,29 @@ export const mockProject: GitHubProject = {
   topics: ['react', 'typescript', 'vite'],
 }
 
-// test/mocks/handlers.ts
-import { rest } from 'msw'
+// test/mocks/fetch.ts — el proyecto NO usa MSW; se stubbea fetch global con vi
+import { vi } from 'vitest'
 
-export const handlers = [
-  rest.get('/api/projects', (req, res, ctx) => {
-    return res(ctx.json([mockProject]))
-  }),
+// Stub de fetch para pruebas de hooks/servicios que usan fetch nativo
+export function mockFetchResponse(body: unknown, ok = true, status = 200) {
+  const response = {
+    ok,
+    status,
+    json: async () => body,
+  } as Response
 
-  rest.post('/api/contact', (req, res, ctx) => {
-    return res(ctx.json({ success: true }))
-  }),
-]
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(response))
+  return vi.mocked(fetch)
+}
+
+// Uso en una prueba:
+// beforeEach(() => {
+//   mockFetchResponse([mockProject])
+// })
+//
+// afterEach(() => {
+//   vi.unstubAllGlobals()
+// })
 ```
 
 ## 📚 Guías de Uso
