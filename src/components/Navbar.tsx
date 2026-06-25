@@ -19,15 +19,20 @@ import { useThemeContext } from '../context'
 import { LanguageSwitcher, OptimizedImage, ThemeToggle } from '.'
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
   const { t, i18n } = useTranslation()
   const { isDark } = useThemeContext()
   const location = useLocation()
 
-  useEffect(() => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [menuPathname, setMenuPathname] = useState(location.pathname)
+
+  // Close mobile menu on route change — adjust state during render (not in effect)
+  // so the react-compiler set-state-in-effect rule stays satisfied.
+  if (location.pathname !== menuPathname) {
+    setMenuPathname(location.pathname)
     setMobileMenuOpen(false)
-  }, [location.pathname])
+  }
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
