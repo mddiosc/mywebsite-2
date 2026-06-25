@@ -79,7 +79,7 @@ export default defineConfig(() => ({
             // Data fetching, forms, validation, HTTP
             {
               name: 'data-vendor',
-              test: /node_modules[\\/](@tanstack|react-hook-form|@hookform|zod|axios)[\\/]/,
+              test: /node_modules[\\/](@tanstack|react-hook-form|@hookform|zod)[\\/]/,
               priority: 10,
             },
             // Internationalisation

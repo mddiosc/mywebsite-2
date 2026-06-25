@@ -89,12 +89,12 @@ pages/
 #### Core Framework
 
 - **React 19.0**: Latest React with concurrent features
-- **TypeScript 5.6**: Full type safety and enhanced DX
-- **Vite 6.0**: Modern build tool with HMR
+- **TypeScript 5.9**: Full type safety and enhanced DX
+- **Vite 8.0**: Modern build tool with HMR
 
 #### Routing
 
-- **React Router 7.2**: Client-side routing with nested routes
+- **React Router 7.17**: Client-side routing with nested routes
 - **Route-based code splitting**: Automatic bundle optimization
 - **Language-aware routing**: URL structure supports i18n
 
@@ -107,7 +107,7 @@ pages/
 
 #### Styling Architecture
 
-- **Tailwind CSS 4.0**: Utility-first CSS framework
+- **Tailwind CSS 4.2**: Utility-first CSS framework
 - **CSS Custom Properties**: Dynamic theming support
 - **Component-scoped styles**: Modular CSS approach
 - **Responsive design**: Mobile-first breakpoints
@@ -127,7 +127,7 @@ Custom Hooks (useProjects, useAboutData)
      ↓
 React Query (Server State Management)
      ↓
-HTTP Client (Axios)
+HTTP Client (native fetch)
      ↓
 External APIs (GitHub, Email Service)
 ```
@@ -161,14 +161,22 @@ src/
 ├── hooks/                  # Custom React hooks
 ├── lib/                    # Utility libraries
 │   ├── animations.ts       # Animation configurations
-│   ├── axios.ts           # HTTP client setup
-│   └── queryClient.ts     # React Query setup
+│   ├── clientObservability.ts # Client-side observability/logging
+│   ├── queryClient.ts     # React Query setup
+│   ├── security.ts        # Security utilities
+│   └── seo.ts             # SEO helpers
 ├── locales/               # Translation files
 │   ├── en/                # English translations
 │   └── es/                # Spanish translations
 ├── router/                # Routing configuration
 │   ├── index.tsx          # Router setup
 │   └── routes.tsx         # Route definitions
+├── i18n/                  # Internationalization config
+├── content/               # Static content/data
+├── context/               # React Context providers
+├── data/                  # Data sources and repositories
+├── utils/                 # Utility helpers
+├── types/                 # Shared TypeScript type definitions
 ├── constants/             # Application constants
 ├── styles/               # Global styles
 ├── types.ts              # Global TypeScript types
@@ -331,7 +339,7 @@ export const smoothTransition = {
 1. **Code Splitting**: Route-based lazy loading
 2. **Tree Shaking**: Unused code elimination
 3. **Asset Optimization**: Image compression and lazy loading
-4. **Bundle Analysis**: Webpack bundle analyzer integration
+4. **Bundle Analysis**: Vite + rollup-plugin-visualizer (`pnpm build:analyze`)
 
 ### Runtime Performance
 
@@ -372,7 +380,6 @@ const ProjectsPage = lazy(() => import('./pages/Projects'))
 
 - **Vitest**: Fast unit test runner
 - **React Testing Library**: Component testing utilities
-- **MSW**: API mocking for tests
 - **Playwright**: E2E testing framework
 
 ## 🚀 Deployment Architecture

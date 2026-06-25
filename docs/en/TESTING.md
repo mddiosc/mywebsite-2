@@ -22,46 +22,51 @@ The project follows a comprehensive testing approach with multiple levels:
 
 ### Additional Testing Tools
 
-- **MSW (Mock Service Worker)**: API mocking for realistic testing
 - **@testing-library/user-event**: User interaction simulation
-- **Playwright**: End-to-end testing framework (future implementation)
+- **Playwright**: End-to-end testing framework. E2E tests run via Playwright; `pnpm test:e2e`
 
 ## ⚙️ Configuration
 
 ### Vitest Configuration
 
-**File**: `vitest.config.ts`
+**File**: `vite.config.ts` (the `test` block)
 
 ```typescript
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { configDefaults } from 'vitest/config'
+// ...vite plugins, resolve.alias, build...
 
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(() => ({
+  // ...plugins, resolve, build...
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    css: true,
+    setupFiles: './src/test/setup.ts',
+    include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    exclude: [...configDefaults.exclude, 'e2e/*'],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      provider: 'v8' as const,
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/coverage/**',
+        ...(configDefaults.coverage.exclude ?? []),
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
+        'src/vite-env.d.ts',
+        'src/main.tsx',
+        'src/i18n/**',
+        'src/constants/**',
       ],
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 15,
+        statements: 20,
+      },
     },
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-})
+}))
 ```
 
 ### Test Setup
@@ -69,33 +74,17 @@ export default defineConfig({
 **File**: `src/test/setup.ts`
 
 ```typescript
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/vitest'
+import { afterEach, beforeAll, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
-import { afterEach, vi } from 'vitest'
 
-// Cleanup after each test
-afterEach(() => {
-  cleanup()
-})
+// Import and configure i18n for tests
+import './i18n-for-tests'
 
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}))
-
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}))
-
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+// Mock window.matchMedia for components using useReducedMotion
+Object.defineProperty(globalThis, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -105,6 +94,40 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
+})
+
+// Mock IntersectionObserver for framer-motion whileInView in jsdom
+class MockIntersectionObserver {
+  readonly root = null
+  readonly rootMargin = ''
+  readonly thresholds: number[] = []
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return []
+  }
+}
+Object.defineProperty(globalThis, 'IntersectionObserver', {
+  writable: true,
+  value: MockIntersectionObserver,
+})
+
+// Suppress specific known console errors in tests
+const originalError = console.error
+beforeAll(() => {
+  console.error = (...args: unknown[]) => {
+    const firstArg = args[0]
+    const message =
+      firstArg instanceof Error ? firstArg.message : typeof firstArg === 'string' ? firstArg : JSON.stringify(firstArg)
+    if (message.includes('Error sending message') || message.includes('Validation error')) return
+    originalError(...args)
+  }
+})
+
+afterEach(() => {
+  cleanup()
+  vi.clearAllMocks()
 })
 ```
 
@@ -140,9 +163,7 @@ src/
 └── test/
     ├── setup.ts
     ├── utils.tsx
-    └── mocks/
-        ├── handlers.ts
-        └── server.ts
+    └── i18n-for-tests.ts
 ```
 
 ### Naming Conventions
@@ -341,53 +362,72 @@ describe('Project Utils', () => {
 
 ## 🎭 Mocking Strategies
 
-### API Mocking with MSW
+### API Mocking by Stubbing `fetch`
 
-**File**: `src/test/mocks/handlers.ts`
-
-```typescript
-import { rest } from 'msw'
-
-export const handlers = [
-  // Mock GitHub API
-  rest.get('https://api.github.com/users/:username/repos', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json([
-        {
-          id: 1,
-          name: 'mock-project',
-          description: 'Mock project description',
-          html_url: 'https://github.com/user/mock-project',
-          stargazers_count: 42,
-          forks_count: 8,
-          language: 'TypeScript',
-          topics: ['react', 'typescript'],
-          updated_at: '2023-12-01T00:00:00Z',
-          homepage: 'https://mock-project.com',
-        },
-      ])
-    )
-  }),
-  
-  // Mock contact form submission
-  rest.post('/api/contact', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({ success: true, message: 'Message sent successfully' })
-    )
-  }),
-]
-```
-
-**File**: `src/test/mocks/server.ts`
+The project does not use MSW. API calls are mocked by stubbing the global `fetch` with `vi.fn()` / `vi.stubGlobal('fetch', ...)` and by mocking modules with `vi.mock(...)`.
 
 ```typescript
-import { setupServer } from 'msw/node'
-import { handlers } from './handlers'
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 
-export const server = setupServer(...handlers)
+import { useProjects } from './useProjects'
+
+describe('useProjects', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('fetches projects successfully', async () => {
+    const mockProjects = [
+      {
+        id: 1,
+        name: 'mock-project',
+        description: 'Mock project description',
+        html_url: 'https://github.com/user/mock-project',
+        stargazers_count: 42,
+        forks_count: 8,
+        language: 'TypeScript',
+        topics: ['react', 'typescript'],
+        updated_at: '2023-12-01T00:00:00Z',
+        homepage: 'https://mock-project.com',
+      },
+    ]
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockProjects),
+      } as Response),
+    )
+
+    render(<ProjectsList />)
+
+    await waitFor(() => {
+      expect(screen.getByText('mock-project')).toBeInTheDocument()
+    })
+  })
+
+  it('handles API errors', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        json: () => Promise.resolve({ message: 'Server error' }),
+      } as Response),
+    )
+
+    render(<ProjectsList />)
+
+    await waitFor(() => {
+      expect(screen.getByText(/error loading projects/i)).toBeInTheDocument()
+    })
+  })
+})
 ```
+
+For per-test overrides, re-stub `fetch` inside the test or use `vi.mocked(fetch).mockResolvedValueOnce(...)`.
 
 ### Component Mocking
 
@@ -419,35 +459,37 @@ vi.mock('react-router', () => ({
 ### Coverage Configuration
 
 ```typescript
-// vitest.config.ts
-export default defineConfig({
+// vite.config.ts (the `test` block)
+export default defineConfig(() => ({
   test: {
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      thresholds: {
-        global: {
-          branches: 80,
-          functions: 80,
-          lines: 80,
-          statements: 80,
-        },
-      },
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/coverage/**',
-        'src/main.tsx',
+        'src/**/*.{test,spec}.{ts,tsx}',
+        'src/test/**',
+        'src/**/*.d.ts',
+        'src/types/**',
         'src/vite-env.d.ts',
+        'src/main.tsx',
+        'src/i18n/**',
+        'src/constants/**',
       ],
+      thresholds: {
+        lines: 20,
+        functions: 15,
+        branches: 15,
+        statements: 20,
+      },
     },
   },
-})
+}))
 ```
 
 ### Coverage Goals
+
+The thresholds enforced by the configuration above are intentionally low (lines/statements 20%, functions/branches 15%) to keep CI green while coverage grows. The following are aspirational targets, not enforced gates:
 
 - **Components**: 90%+ coverage
 - **Utils**: 95%+ coverage
@@ -482,15 +524,18 @@ export default defineConfig({
 
    ```typescript
    it('displays error message when API fails', async () => {
-     // Mock API to fail
-     server.use(
-       rest.get('/api/projects', (req, res, ctx) => {
-         return res(ctx.status(500))
-       })
+     // Stub fetch to fail
+     vi.stubGlobal(
+       'fetch',
+       vi.fn().mockResolvedValue({
+         ok: false,
+         status: 500,
+         json: () => Promise.resolve({ message: 'Server error' }),
+       } as Response),
      )
-     
+
      render(<ProjectsList />)
-     
+
      await waitFor(() => {
        expect(screen.getByText(/error loading projects/i)).toBeInTheDocument()
      })
@@ -546,7 +591,8 @@ describe('ProjectCard Component', () => {
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "test:ci": "vitest run --coverage --reporter=verbose"
+    "test:coverage:ui": "vitest --ui --coverage",
+    "test:e2e": "playwright test"
   }
 }
 ```
@@ -565,6 +611,9 @@ pnpm test:coverage
 
 # Open Vitest UI
 pnpm test:ui
+
+# Run E2E tests with Playwright
+pnpm test:e2e
 
 # Run specific test file
 pnpm test ProjectCard.test.tsx
@@ -598,9 +647,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       
-      - name: Run tests
-        run: pnpm test:ci
-      
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
         with:
@@ -653,7 +705,7 @@ jobs:
 - [Vitest Documentation](https://vitest.dev/)
 - [React Testing Library Documentation](https://testing-library.com/docs/react-testing-library/intro/)
 - [Testing Library Best Practices](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
-- [MSW Documentation](https://mswjs.io/)
+- [Playwright Documentation](https://playwright.dev/)
 - [Jest DOM Matchers](https://github.com/testing-library/jest-dom)
 
 ---

@@ -8,8 +8,8 @@ This guide provides comprehensive information for developers working on the Migu
 
 Before starting development, ensure you have the following installed:
 
-- **Node.js**: v18.0.0 or higher
-- **pnpm**: v8.0.0 or higher (recommended package manager)
+- **Node.js**: v20 or higher
+- **pnpm**: v10+ (project pins pnpm 11.x via `packageManager`)
 - **Git**: v2.30.0 or higher
 - **VS Code**: Recommended IDE with extensions
 
@@ -128,27 +128,33 @@ style(navbar): improve responsive design
 
 ```bash
 # Development
-pnpm dev                 # Start development server with HMR
-pnpm dev:host           # Start dev server accessible on network
+pnpm dev                 # Start development server with HMR (vite --host)
 pnpm build              # Build for production
+pnpm build:analyze      # Build and analyze bundle size
 pnpm preview            # Preview production build locally
 
 # Code Quality
 pnpm lint               # Run ESLint
-pnpm lint:fix           # Fix ESLint issues automatically
 pnpm format             # Format code with Prettier
 pnpm format:check       # Check code formatting
+pnpm docs:lint          # Lint documentation files
+pnpm docs:lint:fix      # Auto-fix documentation lint issues
 pnpm type-check         # TypeScript type checking
+pnpm quality            # lint + docs:lint + format:check + type-check
 
 # Testing
 pnpm test               # Run test suite
 pnpm test:watch         # Run tests in watch mode
 pnpm test:coverage      # Run tests with coverage report
 pnpm test:ui            # Open Vitest UI
+pnpm test:coverage:ui   # Coverage report with Vitest UI
+pnpm test:e2e           # Run Playwright end-to-end tests
 
 # Git Hooks
 pnpm prepare            # Setup Husky git hooks
 ```
+
+> Note: there is no `lint:fix` script. ESLint auto-fix runs through lint-staged on staged files (`eslint . --fix`), or run it directly: `pnpm exec eslint . --fix`.
 
 ## 📋 Coding Standards
 
@@ -547,8 +553,7 @@ module.exports = {
 1. **Analyze bundle size**
 
    ```bash
-   pnpm build
-   pnpm run analyze  # If bundle analyzer is configured
+   pnpm build:analyze  # Build for production and analyze bundle size
    ```
 
 2. **Import only what you need**

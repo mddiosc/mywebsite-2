@@ -1,9 +1,9 @@
 # Miguel Ángel de Dios - Portafolio Personal 🚀
 
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue.svg)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF.svg)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.0-38B2AC.svg)](https://tailwindcss.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8.0-646CFF.svg)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.2-38B2AC.svg)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > Portafolio personal moderno y responsivo construido con React, TypeScript y tecnologías web de vanguardia.
@@ -66,19 +66,18 @@ pnpm preview
 ### Tecnologías Principales
 
 - **React 19.0** - Biblioteca de UI
-- **TypeScript 5.6** - Seguridad de tipos
-- **Vite 6.0** - Herramienta de build y servidor de desarrollo
-- **Tailwind CSS 4.0** - Framework CSS utility-first
+- **TypeScript 5.9** - Seguridad de tipos
+- **Vite 8.0** - Herramienta de build y servidor de desarrollo
+- **Tailwind CSS 4.2** - Framework CSS utility-first
 
 ### Bibliotecas Clave
 
-- **Framer Motion** - Biblioteca de animaciones
-- **React Router** - Enrutamiento del lado del cliente
-- **React Hook Form** - Gestión de formularios
-- **React Query (TanStack)** - Gestión de estado del servidor
-- **React i18next** - Internacionalización
-- **Zustand** - Gestión de estado global
-- **Axios** - Cliente HTTP
+- **Framer Motion 12.38** - Biblioteca de animaciones
+- **React Router 7.17** - Enrutamiento del lado del cliente
+- **React Hook Form 7.72** - Gestión de formularios
+- **React Query (TanStack) 5.95** - Gestión de estado del servidor
+- **React i18next 15.7** - Internacionalización
+- **Zod 4.3** - Validación de esquemas
 
 ### Herramientas de Desarrollo
 
@@ -102,10 +101,15 @@ mywebsite-2/
 ├── src/
 │   ├── components/        # Componentes UI reutilizables
 │   ├── pages/            # Componentes de páginas
+│   ├── content/          # Contenido markdown del blog
+│   ├── context/          # Proveedores de contexto de React
+│   ├── data/             # Fuentes de datos estáticos
 │   ├── hooks/            # Hooks personalizados de React
+│   ├── i18n/             # Configuración de internacionalización
 │   ├── lib/              # Bibliotecas de utilidades
 │   ├── locales/          # Archivos de traducción
 │   ├── router/           # Configuración de enrutamiento
+│   ├── utils/            # Utilidades generales
 │   └── styles/           # Estilos globales
 └── ...archivos de configuración
 ```
@@ -116,6 +120,7 @@ mywebsite-2/
 - **📁 Proyectos**: Showcase de portafolio de GitHub con demos en vivo
 - **👤 Sobre Mí**: Información personal, habilidades y experiencia
 - **📬 Contacto**: Formulario de contacto con validación reCAPTCHA
+- **📝 Blog**: Publicaciones basadas en markdown con soporte multiidioma
 
 ## 🔧 Scripts Disponibles
 

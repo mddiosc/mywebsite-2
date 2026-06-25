@@ -86,12 +86,12 @@ pages/
 #### Framework Principal
 
 - **React 19.0**: Última versión de React con características concurrentes
-- **TypeScript 5.6**: Seguridad de tipos completa y DX mejorada
-- **Vite 6.0**: Herramienta de build moderna con HMR
+- **TypeScript 5.9**: Seguridad de tipos completa y DX mejorada
+- **Vite 8.0**: Herramienta de build moderna con HMR
 
 #### Enrutamiento
 
-- **React Router 7.2**: Enrutamiento del lado del cliente con rutas anidadas
+- **React Router 7.17**: Enrutamiento del lado del cliente con rutas anidadas
 - **Code splitting basado en rutas**: Optimización automática de bundles
 - **Enrutamiento consciente del idioma**: Estructura URL soporta i18n
 
@@ -104,7 +104,7 @@ pages/
 
 #### Arquitectura de Estilos
 
-- **Tailwind CSS 4.0**: Framework CSS utility-first
+- **Tailwind CSS 4.2**: Framework CSS utility-first
 - **Propiedades CSS Personalizadas**: Soporte para temas dinámicos
 - **Estilos con alcance de componente**: Enfoque CSS modular
 - **Diseño responsivo**: Breakpoints mobile-first
@@ -124,7 +124,7 @@ Hooks Personalizados (useProjects, useAboutData)
      ↓
 React Query (Gestión de Estado del Servidor)
      ↓
-Cliente HTTP (Axios)
+Cliente HTTP (fetch nativo)
      ↓
 APIs Externas (GitHub, Servicio Email)
 ```
@@ -158,14 +158,22 @@ src/
 ├── hooks/                  # Hooks personalizados de React
 ├── lib/                    # Bibliotecas de utilidades
 │   ├── animations.ts       # Configuraciones de animación
-│   ├── axios.ts           # Configuración cliente HTTP
-│   └── queryClient.ts     # Configuración React Query
+│   ├── clientObservability.ts # Observabilidad/logging del cliente
+│   ├── queryClient.ts     # Configuración React Query
+│   ├── security.ts        # Utilidades de seguridad
+│   └── seo.ts             # Helpers SEO
 ├── locales/               # Archivos de traducción
 │   ├── en/                # Traducciones inglés
 │   └── es/                # Traducciones español
 ├── router/                # Configuración de enrutamiento
 │   ├── index.tsx          # Configuración router
 │   └── routes.tsx         # Definiciones de rutas
+├── i18n/                  # Configuración de internacionalización
+├── content/               # Contenido/datos estáticos
+├── context/               # Proveedores de React Context
+├── data/                  # Fuentes de datos y repositorios
+├── utils/                 # Helpers de utilidades
+├── types/                 # Definiciones de tipos TypeScript compartidos
 ├── constants/             # Constantes de aplicación
 ├── styles/               # Estilos globales
 ├── types.ts              # Tipos TypeScript globales
@@ -328,7 +336,7 @@ export const smoothTransition = {
 1. **Code Splitting**: Carga lazy basada en rutas
 2. **Tree Shaking**: Eliminación de código no usado
 3. **Optimización de Assets**: Compresión de imágenes y carga lazy
-4. **Análisis de Bundle**: Integración analizador bundle Webpack
+4. **Análisis de Bundle**: Vite + rollup-plugin-visualizer (`pnpm build:analyze`)
 
 ### Rendimiento en Tiempo de Ejecución
 
@@ -369,7 +377,6 @@ const ProjectsPage = lazy(() => import('./pages/Projects'))
 
 - **Vitest**: Ejecutor de pruebas unitarias rápido
 - **React Testing Library**: Utilidades de pruebas de componentes
-- **MSW**: Mocking de API para pruebas
 - **Playwright**: Framework de pruebas E2E
 
 ## 🚀 Arquitectura de Despliegue

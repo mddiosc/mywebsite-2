@@ -8,8 +8,8 @@ Esta guía proporciona todo lo que necesitas saber para configurar, desarrollar 
 
 Antes de comenzar, asegúrate de tener instalado:
 
-- **Node.js** (v18.0.0 o superior)
-- **pnpm** (v8.0.0 o superior) - Recomendado por rendimiento
+- **Node.js** (v20 o superior)
+- **pnpm** (v10+ - el proyecto fija pnpm 11.x mediante `packageManager`)
 - **Git** (v2.30.0 o superior)
 
 ### Configuración del Entorno
@@ -61,11 +61,14 @@ Antes de comenzar, asegúrate de tener instalado:
 ### Scripts Principales
 
 ```bash
-# Servidor de desarrollo con hot reload
+# Servidor de desarrollo con hot reload (vite --host)
 pnpm dev
 
 # Build de producción
 pnpm build
+
+# Build de producción con análisis del bundle
+pnpm build:analyze
 
 # Preview del build de producción localmente
 pnpm preview
@@ -79,34 +82,32 @@ pnpm test:watch
 # Ejecutar pruebas con reporte de cobertura
 pnpm test:coverage
 
+# Pruebas E2E con Playwright
+pnpm test:e2e
+
 # Linting de código
 pnpm lint
-
-# Corrección automática de problemas de linting
-pnpm lint:fix
 
 # Formateo de código con Prettier
 pnpm format
 
+# Verificación de formato de código
+pnpm format:check
+
+# Linting de documentación
+pnpm docs:lint
+
+# Auto-corrección de linting de documentación
+pnpm docs:lint:fix
+
 # Verificación de tipos TypeScript
 pnpm type-check
+
+# Verificación integral: lint + docs:lint + format:check + type-check
+pnpm quality
 ```
 
-### Scripts de Utilidad
-
-```bash
-# Análisis del tamaño del bundle
-pnpm analyze
-
-# Limpieza de cache y node_modules
-pnpm clean
-
-# Verificación pre-commit (automática con Husky)
-pnpm pre-commit
-
-# Construcción completa con verificaciones
-pnpm build:full
-```
+> Nota: no existe un script `lint:fix`. La auto-corrección de ESLint se ejecuta a través de lint-staged sobre los archivos staged (`eslint . --fix`), o directamente con: `pnpm exec eslint . --fix`.
 
 ## 📁 Estructura del Proyecto
 
@@ -420,7 +421,7 @@ Para estilos que no se pueden expresar con Tailwind:
 ### Configuración Vitest
 
 ```typescript
-// vitest.config.ts
+// vite.config.ts (el bloque `test`)
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
@@ -493,23 +494,39 @@ describe('useCustomHook', () => {
 
 #### Mocking de APIs
 
-```typescript
-// src/test/mocks/handlers.ts
-import { rest } from 'msw'
+El proyecto no usa MSW. Para simular llamadas a la API en las pruebas, stubea el `fetch` global con Vitest:
 
-export const handlers = [
-  rest.get('https://api.github.com/users/:username/repos', (req, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          name: 'proyecto-ejemplo',
-          description: 'Un proyecto de ejemplo',
-        },
-      ])
+```typescript
+import { describe, it, expect, vi, afterEach } from 'vitest'
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
+
+describe('fetch de proyectos', () => {
+  it('devuelve los proyectos desde la API', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [
+          {
+            id: 1,
+            name: 'proyecto-ejemplo',
+            description: 'Un proyecto de ejemplo',
+          },
+        ],
+      })
     )
-  }),
-]
+
+    const repos = await fetch(
+      'https://api.github.com/users/tuusuario/repos'
+    ).then((r) => r.json())
+
+    expect(repos).toHaveLength(1)
+    expect(repos[0].name).toBe('proyecto-ejemplo')
+  })
+})
 ```
 
 ## 🔧 Herramientas de Desarrollo
@@ -691,20 +708,20 @@ VITE_APP_TITLE=Mi Portafolio
 VITE_APP_DESCRIPTION=Portafolio personal
 ```
 
-#### Scripts de Desarrollo Avanzados
+#### Scripts de Desarrollo Adicionales
 
 ```bash
-# Desarrollo con análisis de bundle
-pnpm dev:analyze
+# Build de producción con análisis de bundle
+pnpm build:analyze
 
-# Desarrollo con proxy de API
-pnpm dev:api
+# Análisis de presupuesto de rendimiento
+pnpm performance:budget
 
-# Desarrollo con modo strict de React
-pnpm dev:strict
+# Lighthouse CI
+pnpm lighthouse:ci
 
-# Build con optimizaciones adicionales
-pnpm build:optimized
+# Genera snapshot de proyectos
+pnpm generate:projects-snapshot
 ```
 
 ## 🐛 Debugging
