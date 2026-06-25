@@ -30,67 +30,52 @@ export function useTheme() {
     return 'system'
   })
 
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
-
-  // Get the actual theme based on system preference
-  const getResolvedTheme = useCallback((): 'light' | 'dark' => {
-    if (theme === 'system') {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- SSR safety guard
-      if (globalThis.window !== undefined) {
-        return globalThis.window.matchMedia('(prefers-color-scheme: dark)').matches
-          ? 'dark'
-          : 'light'
-      }
-      return 'light'
+  // Track the live system preference so `resolvedTheme` can be derived during
+  // render (no setState-in-effect). Listener stays always-on so this stays fresh
+  // even while `theme` is an explicit 'light'/'dark', matching the previous
+  // live matchMedia read on theme switch.
+  const [systemPref, setSystemPref] = useState<'light' | 'dark'>(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- SSR safety guard
+    if (globalThis.window !== undefined) {
+      return globalThis.window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     }
-    return theme
-  }, [theme])
+    return 'light'
+  })
 
-  // Update document class and resolved theme
+  // Resolved theme is derived from `theme` + system preference — computed during
+  // render, not stored via setState-in-effect.
+  const resolvedTheme: 'light' | 'dark' = theme === 'system' ? systemPref : theme
+
+  // Sync document class + color-scheme. Pure side-effect, no setState.
   useEffect(() => {
-    const resolved = getResolvedTheme()
-    setResolvedTheme(resolved)
-
     const root = document.documentElement
-    const hasCorrectClass = root.classList.contains(resolved)
+    const hasCorrectClass = root.classList.contains(resolvedTheme)
 
     // Skip DOM class update if already correct (anti-flash: index.html IIFE set it)
     // But always sync color-scheme for native controls (buttons, inputs, scrollbars)
-    root.style.colorScheme = resolved
+    root.style.colorScheme = resolvedTheme
 
     if (hasCorrectClass) return
 
     root.classList.remove('light', 'dark')
-    root.classList.add(resolved)
-  }, [getResolvedTheme])
+    root.classList.add(resolvedTheme)
+  }, [resolvedTheme])
 
-  // Listen for system preference changes
+  // Listen for system preference changes — setState only in async callback.
   useEffect(() => {
-    if (theme !== 'system') return
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- SSR safety guard
+    if (globalThis.window === undefined) return
 
     const mediaQuery = globalThis.window.matchMedia('(prefers-color-scheme: dark)')
-    const handleChange = () => {
-      const resolved = getResolvedTheme()
-      setResolvedTheme(resolved)
-
-      const root = document.documentElement
-      const hasCorrectClass = root.classList.contains(resolved)
-
-      // Always sync color-scheme for native controls
-      root.style.colorScheme = resolved
-
-      // Skip DOM class update if already correct (anti-flash)
-      if (hasCorrectClass) return
-
-      root.classList.remove('light', 'dark')
-      root.classList.add(resolved)
+    const handleChange = (event: MediaQueryListEvent) => {
+      setSystemPref(event.matches ? 'dark' : 'light')
     }
 
     mediaQuery.addEventListener('change', handleChange)
     return () => {
       mediaQuery.removeEventListener('change', handleChange)
     }
-  }, [theme, getResolvedTheme])
+  }, [])
 
   const updateTheme = useCallback((newTheme: Theme) => {
     setTheme(newTheme)
