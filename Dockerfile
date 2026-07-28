@@ -23,7 +23,6 @@ COPY . .
 
 # Build args are injected as environment variables at build time
 # (Vite embeds them into the bundle at compile time, not runtime)
-ARG GITHUB_TOKEN
 ARG VITE_GITHUB_USERNAME
 ARG VITE_FORMSPREE_ID
 ARG VITE_RECAPTCHA_SITE_KEY
@@ -38,7 +37,7 @@ ENV VITE_LINKEDIN_USERNAME=$VITE_LINKEDIN_USERNAME
 ENV VITE_UMAMI_WEBSITE_ID=$VITE_UMAMI_WEBSITE_ID
 ENV VITE_SITE_URL=$VITE_SITE_URL
 
-RUN GITHUB_TOKEN=$GITHUB_TOKEN pnpm run build
+RUN --mount=type=secret,id=GITHUB_TOKEN,env=GITHUB_TOKEN pnpm run build
 
 # ============================================================
 # Stage 2: Production server
