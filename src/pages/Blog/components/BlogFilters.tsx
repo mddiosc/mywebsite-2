@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,24 +23,22 @@ export function BlogFilters({ posts, filters, onFiltersChange }: BlogFiltersProp
   const [isExpanded, setIsExpanded] = useState(false)
 
   // Get all unique tags from posts
-  const allTags = useMemo(() => {
+  const allTags = (() => {
     const tagSet = new Set<string>()
     posts.forEach((post) => {
       post.meta.tags.forEach((tag) => tagSet.add(tag))
     })
     return Array.from(tagSet).sort()
-  }, [posts])
+  })()
 
   // Get filter statistics
-  const filterStats = useMemo(() => {
-    return {
-      totalPosts: posts.length,
-      featuredPosts: posts.filter((post) => post.meta.featured).length,
-      avgReadingTime: Math.round(
-        posts.reduce((sum, post) => sum + post.readingTime, 0) / posts.length,
-      ),
-    }
-  }, [posts])
+  const filterStats = {
+    totalPosts: posts.length,
+    featuredPosts: posts.filter((post) => post.meta.featured).length,
+    avgReadingTime: Math.round(
+      posts.reduce((sum, post) => sum + post.readingTime, 0) / posts.length,
+    ),
+  }
 
   const handleSearchChange = (search: string) => {
     onFiltersChange({ ...filters, search })

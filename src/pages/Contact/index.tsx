@@ -39,10 +39,7 @@ const Contact = () => {
   const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
   const contactEmail = import.meta.env['VITE_CONTACT_EMAIL'] as string | undefined
 
-  const seoUrls = useMemo(
-    () => buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/contact', locale),
-    [locale],
-  )
+  const seoUrls = buildLocalizedSeoUrls(import.meta.env.VITE_SITE_URL, '/contact', locale)
 
   useEffect(() => {
     const addedLinks: HTMLLinkElement[] = []
