@@ -1,8 +1,9 @@
 import { readdirSync } from 'node:fs'
 import path, { join } from 'node:path'
 
+import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import sitemap from 'vite-plugin-sitemap'
@@ -41,6 +42,7 @@ function htmlEnvPlugin() {
 export default defineConfig(() => ({
   plugins: [
     react(),
+    babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
     htmlEnvPlugin(),
     process.env.ANALYZE === 'true' &&
