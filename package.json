@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@12.8.1",
   "scripts": {
     "dev": "pnpm run generate:projects-snapshot && vite --host",
     "generate:projects-snapshot": "node ./scripts/generate-projects-snapshot.mjs",
