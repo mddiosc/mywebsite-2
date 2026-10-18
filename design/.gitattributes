@@ -1,0 +1,3 @@
+# Los .figcraft son zip: nada de diff ni merge línea a línea, y el JSON de
+# tokens (tokens/from-design.json) es lo que se puede diffear.
+*.figcraft binary -diff -merge

@@ -1,0 +1,328 @@
+/* design/theme.tailwind.css — generated from design/theme-variables.json
+ * and cross-checked against src/styles/index.css (Tailwind v4.3.1, the
+ * version installed in this project). Do not hand-edit: regenerate.
+ *
+ * Wiring: this file is a token partial. Either paste its blocks into
+ * src/styles/index.css (replacing the current @theme / .dark) or import it
+ * right after `@import 'tailwindcss';`.
+ *
+ * Values: colours, font and shadows are copied verbatim from index.css, so
+ * importing this file changes nothing visually — it only adds utilities
+ * (radius-*, text-*, and the named padding/gap sizes) that did not exist
+ *
+ * Scale sizes (--size-*) are plain custom properties on purpose: Tailwind v4
+ * has no --size-* theme namespace, they are component sizes, not utilities.
+ * Numeric space/NN tokens are skipped: the default --spacing scale already
+ * gives the same 4px steps (p-4 = 16px = space/16).
+ *
+ * Design-only colours (no counterpart in index.css, kept out of the real
+ * theme until decided): control-border, control-icon, control-surface.
+ */
+
+@theme {
+  /* ---- typography ------------------------------------------------------ */
+  --font-sans: 'Inter', sans-serif;
+
+  /* ---- colours: light (dark lives in .dark below) ---------------------- */
+  --color-accent: #00d4aa;
+  --color-accent-dark: #00aa88;
+  --color-accent-light: #33ddbb;
+  --color-border: #e5e7eb;
+  --color-control-border: #e5e7eb;  /* design-only */
+  --color-control-icon: #6b7280;  /* design-only */
+  --color-control-surface: #f9fafb;  /* design-only */
+  --color-highlight: #8b5cf6;
+  --color-highlight-dark: #7c3aed;
+  --color-highlight-light: #a78bfa;
+  --color-primary: #0066ff;
+  --color-primary-dark: #0052cc;
+  --color-primary-light: #3385ff;
+  --color-surface: #ffffff;
+  --color-surface-card: #ffffff;
+  --color-surface-elevated: #f9fafb;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #6b7280;
+
+  /* ---- radius (Scale) -------------------------------------------------- */
+  --radius-bar: 1px;
+  --radius-card: 24px;
+  --radius-control: 12px;
+  --radius-panel: 16px;
+  --radius-pill: 999px;
+  --radius-small: 6px;
+  --radius-tiny: 4px;
+
+  /* ---- type scale (Type, @theme value = mobile) ------------------------ */
+  --text-body: 16px;
+  --text-body-lg: 18px;
+  --text-body-lg-flow: 15px;
+  --text-body-lg-tight: 15px;
+  --text-body-prose: 15px;
+  --text-body-sm: 14px;
+  --text-body-sm-alt: 14px;
+  --text-body-sm-tight: 13px;
+  --text-caption: 12px;
+  --text-code: 12px;
+  --text-display: 40px;
+  --text-excerpt: 16px;
+  --text-eyebrow: 13px;
+  --text-glyph-lg: 44px;
+  --text-h1-hero: 40px;
+  --text-h1-page: 28px;
+  --text-h1-section: 32px;
+  --text-h2-prose: 20px;
+  --text-h2-section: 32px;
+  --text-h3: 17px;
+  --text-label: 13px;
+  --text-note: 11px;
+  --text-subtitle: 15px;
+  --text-subtitle-lg: 16px;
+  --text-title-sm: 20px;
+  --text-title-xs: 18px;
+  --text-value: 36px;
+  --text-value-lg: 48px;
+  --text-value-md: 28px;
+  --text-value-xl: 32px;
+
+  /* ---- named layout spacing (Layout, @theme value = mobile) ------------ */
+  --spacing-article-body-64: 40px;
+  --spacing-author-48: 48px;
+  --spacing-buttons-row-16: 12px;
+  --spacing-contact-20: 16px;
+  --spacing-contact-96: 64px;
+  --spacing-cta-row-32: 16px;
+  --spacing-feature-cards-32: 16px;
+  --spacing-filters-48: 32px;
+  --spacing-footer-top: 40px;
+  --spacing-form-20: 16px;
+  --spacing-header-14: 10px;
+  --spacing-header-16: 12px;
+  --spacing-header-32: 24px;
+  --spacing-header-40: 28px;
+  --spacing-header-64: 44px;
+  --spacing-header-72: 44px;
+  --spacing-header-80: 44px;
+  --spacing-hero-32: 24px;
+  --spacing-hero-x: 20px;
+  --spacing-hero-y: 48px;
+  --spacing-journey-32: 20px;
+  --spacing-journey-72: 40px;
+  --spacing-journey-row-40: 24px;
+  --spacing-note-x: 20px;
+  --spacing-search-row-0: 12px;
+  --spacing-section-bottom: 56px;
+  --spacing-section-bottom-md: 48px;
+  --spacing-section-inline: 36px;
+  --spacing-section-top: 40px;
+  --spacing-section-top-lg: 56px;
+  --spacing-section-top-xl: 72px;
+  --spacing-section-x: 20px;
+  --spacing-section-x-flush: 20px;
+  --spacing-skills-20: 14px;
+  --spacing-skills-80: 48px;
+  --spacing-stat-row-15: 12px;
+  --spacing-stats-24: 16px;
+  --spacing-status-badge-10: 8px;
+  --spacing-tech-grid-24: 16px;
+  --spacing-tech-stack-56: 32px;
+
+  /* ---- glow shadows (from index.css) ---------------------------------- */
+  --shadow-glow-primary: 0 0 20px rgba(0, 102, 255, 0.3);
+  --shadow-glow-accent: 0 0 20px rgba(0, 212, 170, 0.3);
+}
+
+/* ---- dark mode (verbatim from the project's .dark block) ---------------- */
+.dark {
+  color-scheme: dark;
+  --color-surface: #0a0a0f;
+  --color-surface-elevated: #141419;
+  --color-surface-card: #1a1a22;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-tertiary: #9ca3af;
+  --color-border: #27272a;
+  --color-primary: #4d9fff;
+  --color-primary-light: #80bfff;
+  --color-accent: #33e6c4;
+  --color-accent-light: #66edda;
+  --color-highlight: #a78bfa;
+  --color-highlight-light: #c4b5fd;
+
+  --shadow-glow-primary: 0 0 30px rgba(0, 102, 255, 0.4);
+  --shadow-glow-accent: 0 0 30px rgba(0, 212, 170, 0.4);
+}
+
+/* ---- component sizes (Scale; not a Tailwind namespace) ------------------- */
+:root {
+  --size-avatar: 40px;
+  --size-bar-h: 2px;
+  --size-bar-w: 16px;
+  --size-control: 36px;
+  --size-tile-md: 80px;
+  --size-tile-sm: 48px;
+}
+
+/* ---- tablet: 768px and up (Tailwind md) -------------------------------------------------------- */
+@media (min-width: 768px) {
+  :root {
+    --text-body: 16px;
+    --text-body-lg: 18px;
+    --text-body-lg-flow: 17px;
+    --text-body-lg-tight: 16px;
+    --text-body-prose: 15px;
+    --text-body-sm: 14px;
+    --text-body-sm-alt: 15px;
+    --text-body-sm-tight: 14px;
+    --text-caption: 12px;
+    --text-code: 13px;
+    --text-display: 56px;
+    --text-excerpt: 18px;
+    --text-eyebrow: 14px;
+    --text-glyph-lg: 44px;
+    --text-h1-hero: 64px;
+    --text-h1-page: 36px;
+    --text-h1-section: 44px;
+    --text-h2-prose: 22px;
+    --text-h2-section: 40px;
+    --text-h3: 18px;
+    --text-label: 13px;
+    --text-note: 12px;
+    --text-subtitle: 17px;
+    --text-subtitle-lg: 20px;
+    --text-title-sm: 20px;
+    --text-title-xs: 20px;
+    --text-value: 36px;
+    --text-value-lg: 48px;
+    --text-value-md: 28px;
+    --text-value-xl: 36px;
+  }
+}
+
+/* ---- tablet spacing: 768px and up -------------------------------------------------------- */
+@media (min-width: 768px) {
+  :root {
+    --spacing-article-body-64: 56px;
+    --spacing-author-48: 48px;
+    --spacing-buttons-row-16: 16px;
+    --spacing-contact-20: 16px;
+    --spacing-contact-96: 72px;
+    --spacing-cta-row-32: 32px;
+    --spacing-feature-cards-32: 24px;
+    --spacing-filters-48: 40px;
+    --spacing-footer-top: 48px;
+    --spacing-form-20: 20px;
+    --spacing-header-14: 12px;
+    --spacing-header-16: 14px;
+    --spacing-header-32: 28px;
+    --spacing-header-40: 32px;
+    --spacing-header-64: 56px;
+    --spacing-header-72: 56px;
+    --spacing-header-80: 56px;
+    --spacing-hero-32: 24px;
+    --spacing-hero-x: 32px;
+    --spacing-hero-y: 64px;
+    --spacing-journey-32: 24px;
+    --spacing-journey-72: 56px;
+    --spacing-journey-row-40: 24px;
+    --spacing-note-x: 40px;
+    --spacing-search-row-0: 0px;
+    --spacing-section-bottom: 72px;
+    --spacing-section-bottom-md: 56px;
+    --spacing-section-inline: 48px;
+    --spacing-section-top: 56px;
+    --spacing-section-top-lg: 80px;
+    --spacing-section-top-xl: 96px;
+    --spacing-section-x: 32px;
+    --spacing-section-x-flush: 32px;
+    --spacing-skills-20: 16px;
+    --spacing-skills-80: 56px;
+    --spacing-stat-row-15: 15px;
+    --spacing-stats-24: 24px;
+    --spacing-status-badge-10: 10px;
+    --spacing-tech-grid-24: 20px;
+    --spacing-tech-stack-56: 40px;
+  }
+}
+
+/* ---- desktop: 1280px and up (Tailwind xl) -------------------------------------------------------- */
+@media (min-width: 1280px) {
+  :root {
+    --text-body: 16px;
+    --text-body-lg: 18px;
+    --text-body-lg-flow: 18px;
+    --text-body-lg-tight: 18px;
+    --text-body-prose: 16px;
+    --text-body-sm: 14px;
+    --text-body-sm-alt: 16px;
+    --text-body-sm-tight: 14px;
+    --text-caption: 12px;
+    --text-code: 14px;
+    --text-display: 72px;
+    --text-excerpt: 20px;
+    --text-eyebrow: 16px;
+    --text-glyph-lg: 44px;
+    --text-h1-hero: 96px;
+    --text-h1-page: 48px;
+    --text-h1-section: 60px;
+    --text-h2-prose: 24px;
+    --text-h2-section: 48px;
+    --text-h3: 20px;
+    --text-label: 13px;
+    --text-note: 12px;
+    --text-subtitle: 20px;
+    --text-subtitle-lg: 24px;
+    --text-title-sm: 20px;
+    --text-title-xs: 22px;
+    --text-value: 36px;
+    --text-value-lg: 48px;
+    --text-value-md: 28px;
+    --text-value-xl: 48px;
+  }
+}
+
+/* ---- desktop spacing: 1280px and up -------------------------------------------------------- */
+@media (min-width: 1280px) {
+  :root {
+    --spacing-article-body-64: 64px;
+    --spacing-author-48: 48px;
+    --spacing-buttons-row-16: 16px;
+    --spacing-contact-20: 20px;
+    --spacing-contact-96: 96px;
+    --spacing-cta-row-32: 32px;
+    --spacing-feature-cards-32: 32px;
+    --spacing-filters-48: 48px;
+    --spacing-footer-top: 64px;
+    --spacing-form-20: 20px;
+    --spacing-header-14: 14px;
+    --spacing-header-16: 16px;
+    --spacing-header-32: 32px;
+    --spacing-header-40: 40px;
+    --spacing-header-64: 64px;
+    --spacing-header-72: 72px;
+    --spacing-header-80: 80px;
+    --spacing-hero-32: 32px;
+    --spacing-hero-x: 160px;
+    --spacing-hero-y: 88px;
+    --spacing-journey-32: 32px;
+    --spacing-journey-72: 72px;
+    --spacing-journey-row-40: 40px;
+    --spacing-note-x: 80px;
+    --spacing-search-row-0: 0px;
+    --spacing-section-bottom: 96px;
+    --spacing-section-bottom-md: 72px;
+    --spacing-section-inline: 56px;
+    --spacing-section-top: 80px;
+    --spacing-section-top-lg: 112px;
+    --spacing-section-top-xl: 120px;
+    --spacing-section-x: 56px;
+    --spacing-section-x-flush: 0px;
+    --spacing-skills-20: 20px;
+    --spacing-skills-80: 80px;
+    --spacing-stat-row-15: 15px;
+    --spacing-stats-24: 24px;
+    --spacing-status-badge-10: 10px;
+    --spacing-tech-grid-24: 24px;
+    --spacing-tech-stack-56: 56px;
+  }
+}
